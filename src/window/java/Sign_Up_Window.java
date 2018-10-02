@@ -27,7 +27,7 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.stage.Screen;
-import javafx.stage.Stage;
+//import javafx.stage.Stage;
 
 /**
  *
