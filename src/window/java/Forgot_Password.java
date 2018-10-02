@@ -5,6 +5,7 @@
  */
 package window.java;
 
+import java.util.regex.Pattern;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -70,19 +71,19 @@ public class Forgot_Password {
             
     //
     Text user_id = new Text("User Id :");
-    new_passwd_pane.add(user_id,0,3);
+    new_passwd_pane.add(user_id,0,4);
     //css effects same as that for text on 1st page 
     user_id.setId("forgot-pw");  
             
     //
     TextField user_id_tf = new TextField();
     user_id_tf.setPromptText("Enter your user id");
-    new_passwd_pane.add(user_id_tf,1,3);
+    new_passwd_pane.add(user_id_tf,1,4);
    // user_id_tf.setText(null);
             
     //
     Text new_passwd = new Text("New Password :");
-    new_passwd_pane.add(new_passwd,0,5);
+    new_passwd_pane.add(new_passwd,0,6);
     
     //css effects same as that for text on 1st page 
     new_passwd.setId("forgot-pw");
@@ -90,7 +91,7 @@ public class Forgot_Password {
     //
     PasswordField new_passwd_pf = new PasswordField();
     new_passwd_pf.setPromptText("Enter new Password");
-    new_passwd_pane.add(new_passwd_pf,1,5);
+    new_passwd_pane.add(new_passwd_pf,1,6);
     //new_passwd_pf.setDisable(true);
     
         
@@ -98,11 +99,11 @@ public class Forgot_Password {
     Label passwd_alert = new Label();
     passwd_alert.setText("Password should contain alphabets,numbers and special characters(@,#,$) and"
             + " should be atleast 8 characters long");
-    new_passwd_pane.add(passwd_alert,0,6,5,1);
+    new_passwd_pane.add(passwd_alert,1,7,5,2);
     
     //
     Text confirm_passwd = new Text("Confirm Password :");
-    new_passwd_pane.add(confirm_passwd,0,8);
+    new_passwd_pane.add(confirm_passwd,0,9);
     
     //css effects same as that for text on 1st page 
     confirm_passwd.setId("forgot-pw");
@@ -110,7 +111,7 @@ public class Forgot_Password {
     //
     PasswordField confirm_passwd_pf = new PasswordField();
     confirm_passwd_pf.setPromptText("Confirm Password");
-    new_passwd_pane.add(confirm_passwd_pf,1,8);
+    new_passwd_pane.add(confirm_passwd_pf,1,9);
     
     //
     /*EventHandler<MouseEvent> eventHandler = new EventHandler<MouseEvent>(){
@@ -137,61 +138,25 @@ public class Forgot_Password {
     
     //
     Button change_pw_btn = new Button("Change Password");
-    new_passwd_pane.add(change_pw_btn,0,10);
+    new_passwd_pane.add(change_pw_btn,0,13);
     change_pw_btn.setOnAction(new EventHandler<ActionEvent>(){
         
         @Override
         public void handle(ActionEvent e)
         {
-            
-            if(user_id_tf.getText().isEmpty() && new_passwd_pf.getText().isEmpty() && confirm_passwd_pf.getText().isEmpty())
-            {    
-                Alert enter_id = new Alert(AlertType.INFORMATION);
-                enter_id.setTitle("Incomplete Account Credentials"); 
-                enter_id.setContentText("Enter User Id and Create a new Password");
-                enter_id.show();
-            }
-            else if(user_id_tf.getText().isEmpty() && !new_passwd_pf.getText().isEmpty() && !confirm_passwd_pf.getText().isEmpty())
+            if(user_id_tf.getText().isEmpty() || new_passwd_pf.getText().isEmpty() || confirm_passwd_pf.getText().isEmpty())
             {
-                Alert alert = new Alert(AlertType.INFORMATION);
-                alert.setTitle("Incomplete Account Credentials"); 
-                alert.setContentText("Enter User Id to change Password");
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Incomplete Details"); 
+                alert.setContentText("Please fill all mandatory details");
                 alert.show();
             }
-            else if(!user_id_tf.getText().isEmpty() && new_passwd_pf.getText().isEmpty() && !confirm_passwd_pf.getText().isEmpty())
+            else if(!(Pattern.matches("[a-zA-Z0-9@#$]+", new_passwd_pf.getText())))
             {
-                Alert alert = new Alert(AlertType.INFORMATION);
-                alert.setTitle("Incomplete Account Credentials"); 
-                alert.setContentText("Enter new Password");
-                alert.show();
-            }
-            else if(!user_id_tf.getText().isEmpty() && !new_passwd_pf.getText().isEmpty() && confirm_passwd_pf.getText().isEmpty())
-            {
-                Alert alert = new Alert(AlertType.INFORMATION);
-                alert.setTitle("Incomplete Account Credentials"); 
-                alert.setContentText("Confirm Your Password");
-                alert.show();
-            }
-            else if(!user_id_tf.getText().isEmpty() && new_passwd_pf.getText().isEmpty() && confirm_passwd_pf.getText().isEmpty())
-            {
-                Alert alert = new Alert(AlertType.INFORMATION);
-                alert.setTitle("Incomplete Account Credentials"); 
-                alert.setContentText("Enter new Password");
-                alert.show();
-            }
-            else if(user_id_tf.getText().isEmpty() && !new_passwd_pf.getText().isEmpty() && confirm_passwd_pf.getText().isEmpty())
-            {
-                Alert alert = new Alert(AlertType.INFORMATION);
-                alert.setTitle("Incomplete Account Credentials"); 
-                alert.setContentText("Enter User Id and Confirm new Password");
-                alert.show();
-            }
-            else if(user_id_tf.getText().isEmpty() && new_passwd_pf.getText().isEmpty() && !confirm_passwd_pf.getText().isEmpty())
-            {
-                Alert alert = new Alert(AlertType.INFORMATION);
-                alert.setTitle("Incomplete Account Credentials"); 
-                alert.setContentText("Enter User Id and new Password");
-                alert.show();
+                Alert warning = new Alert(AlertType.WARNING,"Re-Enter Password");
+                warning.setContentText("Password should contain only alphabets,numbers and"
+                        + " special characters(@,#,$)");
+                warning.show();
             }
             else if(new_passwd_pf.getText().length()<8 && confirm_passwd_pf.getText().length()<8)
             {
@@ -207,14 +172,6 @@ public class Forgot_Password {
                 warning.setContentText("Passwords don't match");
                 warning.show();
             }
-            else if(!(new_passwd_pf.getText().contains("@") || new_passwd_pf.getText().contains("#")
-                    || new_passwd_pf.getText().contains("$") /*|| new_passwd_pf.getText()*/))
-            {
-                Alert warning = new Alert(AlertType.WARNING,"Re-Enter Password");
-                warning.setContentText("Password should contain only alphabets,numbers and"
-                        + " special characters(@,#,$)");
-                warning.show();
-            }
             else 
             {
                 Alert confirmation = new Alert(AlertType.CONFIRMATION,"Confirmation",ButtonType.YES,ButtonType.NO);
@@ -226,10 +183,14 @@ public class Forgot_Password {
                     public void handle(DialogEvent event) {
                         if(confirmation.getResult()==ButtonType.YES)
                         {   
-                            Label passwd_changed = new Label("Password changed Successfully"); 
+                            /*Label passwd_changed = new Label("Password changed Successfully"); 
                             passwd_changed.setId("passwd_changed_label"); 
-                            new_passwd_pane.add(passwd_changed,0,13,1,2);
-                
+                            new_passwd_pane.add(passwd_changed,0,13,1,2);*/
+                            new_passwd_page.close();
+                            Alert passwd_changed = new Alert(Alert.AlertType.INFORMATION);
+                            passwd_changed.setTitle("Password Changed");
+                            passwd_changed.setContentText("Password Changed Successfully"); 
+                            passwd_changed.show();
                         }
                         else if(confirmation.getResult()==ButtonType.NO)
                         {
@@ -247,7 +208,7 @@ public class Forgot_Password {
     
     //clear all fields
     Button reset_btn = new Button("Reset");
-    new_passwd_pane.add(reset_btn,1,10);
+    new_passwd_pane.add(reset_btn,1,13);
     
     reset_btn.setOnAction(new EventHandler<ActionEvent>() {
         @Override
@@ -260,7 +221,7 @@ public class Forgot_Password {
     
     //exit forgot password page
     Button exit_btn = new Button("Exit");
-    new_passwd_pane.add(exit_btn, 3, 10);
+    new_passwd_pane.add(exit_btn, 3, 13);
     exit_btn.setOnAction(e -> {
         new_passwd_page.close();
     });
