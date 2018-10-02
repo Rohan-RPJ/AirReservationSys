@@ -439,7 +439,7 @@ public class Window extends Application {
         launch(args);
     }
     
-    private static boolean allField(TextField... textFields)
+    /*private static boolean allField(TextField... textFields)
     {
         for(TextField textField : textFields)
         {
@@ -449,6 +449,6 @@ public class Window extends Application {
             }
         }
         return true;
-    }
+    }*/
   
 }
