@@ -1,0 +1,131 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Sep 25, 2018, 7:35:52 PM
+    Author     : Rohan
+*/
+
+#page{
+    -fx-background-image: url("plane.jpg"); 
+    -fx-background-size: stretch;
+    -fx-font-size: 20px;
+    -fx-font-family: "Calibri";
+    -fx-font-weight: bold;
+    -fx-fill:#181818       
+}
+
+#welcome-label{
+    -fx-font-size: 50px;
+    -fx-font-family: "Arial Black";
+    -fx-text-fill: linear-gradient(#1e9086,#1e2e9a);
+    -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );
+}
+
+.button{
+    -fx-font-size: 18px;
+    -fx-font-family: "Consolas";
+    -fx-font-weight: bold;
+    -fx-text-fill: black;
+    -fx-background-color: linear-gradient(#e9df0f,#e94e0c);
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+    -fx-border-style:none
+}
+
+.button:hover{
+    -fx-background-color: linear-gradient(#e94e0c,#e9df0f);
+}
+#text{
+    -fx-font-size: 30px;
+    -fx-font-family: "Times New Roman";
+    -fx-font-weight: bold;
+    -fx-fill:#181818;
+    -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );
+}
+
+/*.text{
+    -fx-font-size: 20px;
+    -fx-font-family: "Microsoft Sans Serif";
+    -fx-text-fill: #181818;
+    -fx-font-weight: bold;
+}*/
+
+.label{
+    -fx-font-size: 18px;
+    -fx-font-family: "Franklin Gothic Medium";
+    -fx-text-fill: linear-gradient(#3c0c34,#3c06f1);
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow( gaussian , rgba(255,255,255,0.5) , 0,0,0,1 );
+}
+
+.combo-box{
+    -fx-background-color: linear-gradient(transparent,#00dbcd);
+}
+
+.combo-box:hover{
+    -fx-background-color: linear-gradient(#00dbcd,transparent);
+}
+
+.combo-box .list-cell 
+{
+    -fx-background-color: #10fbdd;
+    -fx-text-fill: #000000;
+    -fx-padding: 3 0 2 7;
+    -fx-cell-size: 1.66667em; 
+    -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );
+}   
+
+.combo-box-popup .list-view .list-cell:hover 
+{
+    -fx-background-color: #00dbcd;
+    -fx-text-fill: white;
+}
+
+.scroll-bar .increment-button{
+    -fx-padding: 5px;
+    -fx-background-color:linear-gradient(#019d93,#00dbcd);
+}
+
+.scroll-bar .decrement-button{
+    -fx-padding: 5px;
+    -fx-background-color:linear-gradient(#00dbcd,#019d93);
+}
+
+.scroll-bar{
+    /*-fx-padding: 5px;*/
+    -fx-background-color: #47f3e2;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 8, 0.0 , 0 , 0 );
+}
+
+.scroll-bar .thumb{
+    -fx-background-color:linear-gradient(#065acf,#05a1d8);
+}
+
+.scroll-bar .thumb:hover{
+    -fx-background-color:linear-gradient(#05a1d8,#065acf);
+}
+
+.date-picker .text-field{
+    -fx-background-color: linear-gradient(transparent,#00dbcd);
+    -fx-text-fill: #000000;
+    -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );
+}
+
+.spinner,.spinner .increment-arrow-button,.spinner .decrement-arrow-button{
+    -fx-body-color: linear-gradient(#00dbcd,transparent);
+    -fx-background-color: linear-gradient(#00dbcd,transparent);
+    -fx-text-fill: #000000;
+}
+
+.spinner,.spinner .increment-arrow-button:hover,.spinner .decrement-arrow-button:hover{
+    /*for arrows*/ 
+    -fx-body-color: linear-gradient(transparent,#00dbcd);
+    -fx-background-color: linear-gradient(transparent,#00dbcd);
+}
+
+.text-field{
+    -fx-background-color: #10fbdd;
+    -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );
+}
