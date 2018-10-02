@@ -5,6 +5,7 @@
  */
 package window.java;
 
+
 import java.util.regex.Pattern;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -317,7 +318,8 @@ public class Sign_Up_Window {
             }
             else if(!(user_id_tf.getText().length()>2 && user_id_tf.getText().length()<11 && Pattern.matches("[a-zA-Z0-9_]+", user_id_tf.getText())))
             {
-                Alert warning = new Alert(Alert.AlertType.WARNING,"Re-Enter User-Id");
+                Alert warning = new Alert(Alert.AlertType.WARNING);
+                warning.setTitle("Re-Enter User-Id"); 
                 warning.setContentText("User Id should contain 3 to 10 characters and only letter, number and underscores are allowed");
                 warning.show();
             }
@@ -337,15 +339,17 @@ public class Sign_Up_Window {
             }   
             else if(!(Pattern.matches("[a-zA-Z0-9@#$]+", passwd_pf.getText())))
             {
-                Alert warning = new Alert(Alert.AlertType.WARNING,"Re-Enter Password");
+                Alert warning = new Alert(Alert.AlertType.WARNING);
+                warning.setTitle("Re-enter Password"); 
                 warning.setContentText("Password should contain only alphabets,numbers and"
                         + " special characters(@,#,$)");
                 warning.show();
             }
-            else if(!(Pattern.matches("[a-zA-Z]", f_name_tf.getText()) || Pattern.matches("[a-zA-Z]", m_name_tf.getText())
-                    || Pattern.matches("[a-zA-Z]", l_name_tf.getText())))
+            else if(!(Pattern.matches("[a-zA-Z]+", f_name_tf.getText()) && Pattern.matches("[a-zA-Z]+", m_name_tf.getText())
+                    && Pattern.matches("[a-zA-Z]+", l_name_tf.getText())))
             {
                 Alert warning = new Alert(Alert.AlertType.WARNING,"Re-Enter Name");
+                warning.setTitle("Re-enter Name"); 
                 warning.setContentText("Name field should contain only characters");
                 warning.show();
             }
@@ -357,13 +361,22 @@ public class Sign_Up_Window {
             }*/
             else if(!(mobile_no_tf.getText().length()==10) || Pattern.matches("[0-9]",mobile_no_tf.getText()))
             {
-                Alert error =  new Alert(Alert.AlertType.ERROR,"Invalid mobile number");
+                Alert error =  new Alert(Alert.AlertType.ERROR);
+                error.setTitle("Invalid mobile number"); 
                 error.setContentText("Invalid mobile number");
+                error.show();
+            }
+            else if(!(pin_tf.getText().length()==6) || Pattern.matches("[0-9]",pin_tf.getText()))
+            {
+                Alert error =  new Alert(Alert.AlertType.ERROR);
+                error.setTitle("Invalid Pincode"); 
+                error.setContentText("Invalid Pincode");
                 error.show();
             }
             else 
             {
                 Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION,"Confirmation",ButtonType.YES,ButtonType.NO);
+                confirmation.setTitle("Confirmation"); 
                 confirmation.setContentText("Confirm Register ?"); 
                 confirmation.show();
   
@@ -372,9 +385,14 @@ public class Sign_Up_Window {
                     public void handle(DialogEvent event) {
                         if(confirmation.getResult()==ButtonType.YES)
                         {   
-                            Label registered = new Label("Registered Successfully"); 
+                            /*Label registered = new Label("Registered Successfully"); 
                             registered.setId("register"); 
-                            sign_up_pane.add(registered,0,53,1,2);
+                            sign_up_pane.add(registered,0,53,1,2);*/
+                            sign_up_page.close();
+                            Alert registered = new Alert(Alert.AlertType.INFORMATION);
+                            registered.setTitle("Registered Successfully");
+                            registered.setContentText("Thankyou for Registration"); 
+                            registered.show();
                         }
                         /*else if(confirmation.getResult()==ButtonType.NO)
                         {
@@ -388,7 +406,7 @@ public class Sign_Up_Window {
 
     });
     
-    //clear all fields
+    /*//clear all fields
     Button reset_btn = new Button("Reset");
     sign_up_pane.add(reset_btn,1,50);
     
@@ -406,11 +424,11 @@ public class Sign_Up_Window {
         public void handle(ActionEvent e) {
             allFilled();
         }
-    });
+    });*/
     
     //exit forgot password page
     Button exit_btn = new Button("Exit");
-    sign_up_pane.add(exit_btn, 3, 50);
+    sign_up_pane.add(exit_btn, 1, 50);
     exit_btn.setOnAction(e -> {
         sign_up_page.close();
     });
