@@ -11,6 +11,12 @@ and open the template in the editor.
 #page{
     -fx-background-image: url("plane.jpg"); 
     -fx-background-size: stretch;
+    -fx-background-attachment: fixed;
+    /*-fx-background-image: linear-gradient(to right,blue 0%,red 100%),url('w3css.gif');
+    -fx-background-blend-mode:color-dodge/normal/color/screen/multiply/darken/lighten/saturation/luminosity;
+    -fx-background-clip:border-box/border-box/content-box/initial;
+    -fx-border-bottom: 5px solid red; 
+    -fx-border-bottom-left-radius: 50px 20px;*/
     -fx-font-size: 20px;
     -fx-font-family: "Calibri";
     -fx-font-weight: bold;
