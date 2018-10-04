@@ -11,16 +11,11 @@ and open the template in the editor.
 #page{
     -fx-background-image: url("plane.jpg"); 
     -fx-background-size: stretch;
-    -fx-background-attachment: fixed;
-    /*-fx-background-image: linear-gradient(to right,blue 0%,red 100%),url('w3css.gif');
-    -fx-background-blend-mode:color-dodge/normal/color/screen/multiply/darken/lighten/saturation/luminosity;
-    -fx-background-clip:border-box/border-box/content-box/initial;
-    -fx-border-bottom: 5px solid red; 
-    -fx-border-bottom-left-radius: 50px 20px;*/
     -fx-font-size: 20px;
     -fx-font-family: "Calibri";
     -fx-font-weight: bold;
-    -fx-fill:#181818       
+    -fx-fill:#181818;
+    
 }
 
 #welcome-label{
@@ -35,13 +30,13 @@ and open the template in the editor.
     -fx-font-family: "Consolas";
     -fx-font-weight: bold;
     -fx-text-fill: black;
-    -fx-background-color: linear-gradient(#e9df0f,#e94e0c);
     -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
-    -fx-border-style:none
+    -fx-border-style:none;
+    -fx-background-color:linear-gradient(#065acf,#05a1d8);
 }
 
 .button:hover{
-    -fx-background-color: linear-gradient(#e94e0c,#e9df0f);
+    -fx-background-color:linear-gradient(#05a1d8,#065acf);
 }
 #text{
     -fx-font-size: 30px;
@@ -50,13 +45,6 @@ and open the template in the editor.
     -fx-fill:#181818;
     -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );
 }
-
-/*.text{
-    -fx-font-size: 20px;
-    -fx-font-family: "Microsoft Sans Serif";
-    -fx-text-fill: #181818;
-    -fx-font-weight: bold;
-}*/
 
 .label{
     -fx-font-size: 18px;
@@ -67,16 +55,19 @@ and open the template in the editor.
 }
 
 .combo-box{
-    -fx-background-color: linear-gradient(transparent,#00dbcd);
+    -fx-background-color: linear-gradient(#1ff608,#efd212);
+    -fx-opacity: 0.7;
 }
 
 .combo-box:hover{
-    -fx-background-color: linear-gradient(#00dbcd,transparent);
+    -fx-background-color: linear-gradient(#efd212,#1ff608);
+    -fx-opacity: 0.7;
 }
 
 .combo-box .list-cell 
 {
-    -fx-background-color: #10fbdd;
+    -fx-opacity: 1.0;
+    -fx-background-color: linear-gradient(#81f957,#fae349);
     -fx-text-fill: #000000;
     -fx-padding: 3 0 2 7;
     -fx-cell-size: 1.66667em; 
@@ -114,24 +105,40 @@ and open the template in the editor.
 }
 
 .date-picker .text-field{
-    -fx-background-color: linear-gradient(transparent,#00dbcd);
-    -fx-text-fill: #000000;
+    -fx-opacity: 0.75;
+    -fx-background-color: linear-gradient(#81f957,#fae349);
     -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );
-}
-
-.spinner,.spinner .increment-arrow-button,.spinner .decrement-arrow-button{
-    -fx-body-color: linear-gradient(#00dbcd,transparent);
-    -fx-background-color: linear-gradient(#00dbcd,transparent);
     -fx-text-fill: #000000;
 }
 
-.spinner,.spinner .increment-arrow-button:hover,.spinner .decrement-arrow-button:hover{
+.spinner{
+    -fx-opacity: 0.7;
+    -fx-background-color: linear-gradient(#1ff608,#efd212);
+    -fx-text-fill: #000000;
+}
+
+.spinner:hover{
+    -fx-opacity: 0.7;
+    -fx-background-color: linear-gradient(#efd212,#1ff608);
+    -fx-text-fill: #000000;
+}
+
+.spinner .increment-arrow-button,.spinner .decrement-arrow-button{
+    -fx-opacity: 0.8;
+    -fx-body-color: linear-gradient(#1ff608,#efd212);
+    -fx-background-color: linear-gradient(#1ff608,#efd212);
+    -fx-text-fill: #000000;
+}
+
+.spinner .increment-arrow-button:hover,.spinner .decrement-arrow-button:hover{
+    -fx-opacity: 0.8;
     /*for arrows*/ 
-    -fx-body-color: linear-gradient(transparent,#00dbcd);
-    -fx-background-color: linear-gradient(transparent,#00dbcd);
+    -fx-body-color: linear-gradient(#efd212,#1ff608);
+    -fx-background-color: linear-gradient(#efd212,#1ff608);
 }
 
 .text-field{
-    -fx-background-color: #10fbdd;
+    -fx-opacity: 0.75;
+    -fx-background-color: linear-gradient(#81f957,#fae349);
     -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );
 }
