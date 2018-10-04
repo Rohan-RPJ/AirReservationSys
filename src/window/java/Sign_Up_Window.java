@@ -25,7 +25,10 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import javafx.stage.Stage; 
@@ -74,9 +77,18 @@ public class Sign_Up_Window {
     //
     sign_up_pane.centerShapeProperty();
             
+    Rectangle label_bg = new Rectangle();
+    label_bg.setFill(Color.LIGHTBLUE);
+    label_bg.getStyleClass().add("my-label_bg");
+    sign_up_pane.add(label_bg,0,4,5,1);
+    
+    label_bg.setWidth(Screen.getPrimary().getVisualBounds().getWidth()); //setting the width of rectangle   
+    label_bg.setHeight(20);
+//    label_bg.setClip(acc_details_lbl); 
     //
     Label acc_details_lbl = new Label("Account Details");
     sign_up_pane.add(acc_details_lbl,0,4,2,1);
+    
     
     //
     Text user_id = new Text("User Id :");
@@ -434,6 +446,9 @@ public class Sign_Up_Window {
     });
     
     //
+    
+    
+    //
     ScrollPane rootPane = new ScrollPane();
     rootPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
     rootPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS); 
@@ -460,5 +475,4 @@ public class Sign_Up_Window {
     sign_up_page.show();
     }
 
-    
 }
