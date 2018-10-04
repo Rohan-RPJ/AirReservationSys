@@ -108,6 +108,7 @@ public class Window extends Application {
         //ComboBox for Source States
         ComboBox from_city_list = new ComboBox();
         from_city_list.getItems().addAll("Mumbai","New Delhi","Bengaluru","Chennai");
+        from_city_list.setPromptText("---------select city---------");
         from_city_list.setMaxSize(300,50);
         page_1.add(from_city_list,1,9);
         
@@ -120,13 +121,22 @@ public class Window extends Application {
         depart_date.setEditable(false); 
         page_1.add(depart_date,2,9);
         
+        //return date
+        DatePicker return_date = new DatePicker();
+        return_date.setPromptText("Return Date");
+        return_date.setEditable(false);
+        page_1.add(return_date,2,11);
+        
         //disabling dates before toady's date and dates after 1 year  
         depart_date.setDayCellFactory(picker -> new DateCell(){
             @Override
             public void updateItem(LocalDate date, boolean empty){
                 super.updateItem(date, empty);
                 LocalDate today = LocalDate.now();
-                setDisable(empty || date.compareTo(today)<0 || date.isAfter(today.plusYears(1)));   
+                if(return_date.getValue()==null)
+                    setDisable(empty || date.compareTo(today)<0 || date.isAfter(today.plusYears(1)));   
+                else if(return_date.getValue()!=null)
+                    setDisable(empty || date.compareTo(return_date.getValue())>0 || date.compareTo(today)<0 || date.isAfter(return_date.getValue().plusYears(1)));
             }
         });
     
@@ -134,27 +144,27 @@ public class Window extends Application {
         Text to_state_text = new Text("To Destination:");
         page_1.add(to_state_text,0,11);
  
-        //ComboBox for Destination States
+        //ComboBox for Destination Cities
         ComboBox to_city_list = new ComboBox();
         to_city_list.getItems().addAll("Mumbai","New Delhi","Bengaluru","Chennai");
+        to_city_list.setPromptText("---------select city---------");
         to_city_list.setMaxSize(300,50);
         page_1.add(to_city_list,1,11);
         
         //css effects for comobox to_state_list
         to_city_list.setId("combobox");
-        
-        //return date
-        DatePicker return_date = new DatePicker();
-        return_date.setPromptText("Return Date");
-        return_date.setEditable(false);
-        page_1.add(return_date,2,11);
+
         
         //disabling dates before departure date and dates after 1 year  
         return_date.setDayCellFactory(picker -> new DateCell(){
             @Override
             public void updateItem(LocalDate date, boolean empty){
-                
-                setDisable(empty || date.compareTo(depart_date.getValue())<0 || date.isAfter(depart_date.getValue().plusYears(1))); 
+                super.updateItem(date, empty);
+                LocalDate today = LocalDate.now();
+                if(depart_date.getValue()!=null)
+                    setDisable(empty || date.compareTo(depart_date.getValue())<0 || date.isAfter(depart_date.getValue().plusYears(1)));
+                else if(depart_date.getValue()==null)
+                    setDisable(empty || date.compareTo(today)<0 || date.isAfter(today.plusYears(1)));
             }
         });
         
@@ -168,131 +178,9 @@ public class Window extends Application {
         
         //if round trip selected then enabling return date
         round_trip_btn.setOnAction(e -> {
+            
             return_date.setDisable(false); 
-        });
-        
-       /* //Label if source state not selected
-        Label select_state_label = new Label(" first select your journey place");
-        page_1.add(select_state_label, 1, 11);
-        
-        //setAction to find airports if any of the Source states is selected 
-        from_state_list.setOnAction(new EventHandler<ActionEvent>(){
-            
-            @Override 
-            public void handle(ActionEvent e)
-            {
-                select_state_label.setText("");
-                ComboBox from_airport_box = new ComboBox();
-                if(from_state_list.getValue()=="Maharashtra" && to_state_list.getValue()!="Maharashtra")
-                {     
-                    //Airports for Maharashtra
-                    //from_airport_box = new ComboBox();
-                    from_airport_box.getItems().addAll("Chhatrapati Shivaji Airport","Pune Airport","Kolhapur Airport");                   
-                }
-                else if(from_state_list.getValue()=="Gujarat" && to_state_list.getValue()!="Gujarat")
-                {      
-                    //Airports for Gujarat
-                    //from_airport_box = new ComboBox();
-                    from_airport_box.getItems().addAll("Surat Airport","Rajkot Airport","Bhuj Airport");
-                }
-                else if(from_state_list.getValue()=="Rajasthan" && to_state_list.getValue()!="Rajasthan")
-                {
-                    //Airports for Rajasthan
-                   // from_airport_box = new ComboBox();
-                    from_airport_box.getItems().addAll("Jaipur Airport","Jaisalmer Airport","Kota Airport");
-                }
-                else if(from_state_list.getValue()=="Goa" && to_state_list.getValue()!="Goa")
-                {
-                    //Airport for Goa
-                    //from_airport_box = new ComboBox();
-                    from_airport_box.getItems().addAll("Dabolim Airport");
-                } 
-                else if(from_state_list.getValue()=="Uttar Pradesh" && to_state_list.getValue()!="Uttar Pradesh")
-                {        
-                    //Airports for Uttar Pradesh
-                    //from_airport_box = new ComboBox();
-                    from_airport_box.getItems().addAll("Agra Civil Enclave","Allahbad Airport","Kanpur Airport");
-                }
-                else
-                {
-                    //if no airport selected
-                    //from_airport_box = new ComboBox();
-                }
-                
-                //set size of ComboBox
-                from_airport_box.setMaxSize(300,50);
-                
-                //css effects for comobox from_airport_box
-                from_airport_box.setId("combobox");
-                page_1.add(from_airport_box,1,11);
-            }          
-        });
-        
-        //text for Select Airport:
-        Text from_text = new Text("Select Airport :");
-        page_1.add(from_text,0,11);       
-           
-        //Label if destination state not selected
-        Label dest_state_label = new Label(" first select your destination place");
-        page_1.add(dest_state_label, 1, 15);
-        
-        //setAction to find airports if any of the Destination states is selected 
-        to_state_list.setOnAction(new EventHandler<ActionEvent>(){
-            
-            @Override            
-            public void handle(ActionEvent e)
-            {
-                dest_state_label.setText("");
-                ComboBox to_airport_box;
-                if(to_state_list.getValue()=="Maharashtra" && from_state_list.getValue()!="Maharashtra")
-                {        
-                    //Airports for Maharashtra
-                    to_airport_box = new ComboBox();
-                    to_airport_box.getItems().addAll("Chhatrapati Shivaji Airport","Pune Airport","Kolhapur Airport");                   
-                }
-                else if(to_state_list.getValue()=="Gujarat" && from_state_list.getValue()!="Gujarat")
-                {                      
-                    //Airports for Gujarat
-                    to_airport_box = new ComboBox();
-                    to_airport_box.getItems().addAll("Surat Airport","Rajkot Airport","Bhuj Airport");
-                }
-                else if(to_state_list.getValue()=="Rajasthan" && from_state_list.getValue()!="Rajasthan")
-                {
-                    //Airports for Rajasthan
-                    to_airport_box = new ComboBox();
-                    to_airport_box.getItems().addAll("Jaipur Airport","Jaisalmer Airport","Kota Airport");
-                }
-                else if(to_state_list.getValue()=="Goa" && from_state_list.getValue()!="Goa")
-                {
-                    //Airports for Dabolim
-                    to_airport_box = new ComboBox();
-                    to_airport_box.getItems().addAll("Dabolim Airport");
-                } 
-                else if(to_state_list.getValue()=="Uttar Pradesh" && from_state_list.getValue()!="Uttar Pradesh")
-                {      
-                    //Airports for Uttar Pradesh
-                    to_airport_box = new ComboBox();
-                    to_airport_box.getItems().addAll("Agra Civil Enclave","Allahbad Airport","Kanpur Airport");
-                }
-                else
-                {
-                    //if source and destination states are equal
-                    Text warning = new Text("Select different State");
-                    page_1.add(warning,1,15);
-                    to_airport_box = new ComboBox();
-                    to_airport_box.setPromptText(""); 
-                }
-                to_airport_box.setMaxSize(300,50);
-                page_1.add(to_airport_box,1,15);
-                
-                //css effects for comobox to_airport_box
-                to_airport_box.setId("combobox");
-            }          
-        });
-        
-        //Text for Destination Airport
-        Text to_text = new Text("Destination Airport :");
-        page_1.add(to_text,0,15);   */    
+        });   
         
         //Text for Class
         Text select_class = new Text("Select Class :");
@@ -306,6 +194,9 @@ public class Window extends Application {
         
         //css effects for comobox class_list
         class_list.setId("combobox");
+        
+        class_list.setPromptText("--------select class--------"); 
+//        class_list.setMinSize(to_city_list.getWidth(),to_city_list.getHeight());
         
         //Text for travellers
         Text travellers_txt = new Text("Traveller(s) :");
@@ -357,7 +248,6 @@ public class Window extends Application {
         TextField username_tf = new TextField();
         username_tf.setPromptText("Enter Username");  
         page_1.add(username_tf,1,21,1,1);
-        
         
         //T
         Text passwd_text = new Text("Password :");
