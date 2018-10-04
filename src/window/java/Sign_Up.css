@@ -13,7 +13,7 @@ and open the template in the editor.
     -fx-font-family: "Verdana";
     -fx-font-size: 15px;
     -fx-font-weight: bold;
-    -fx-fill: linear-gradient(#003d89,#1e2e9a);
+    /*-fx-fill: linear-gradient(#003d89,#1e2e9a);*/
 }
 
 #text{
@@ -28,4 +28,14 @@ and open the template in the editor.
     -fx-text-fill: #05a40a;
     -fx-font-weight: bold;
     -fx-effect: innershadow(three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2);
+}
+
+.my-label_bg{
+    -fx-fill: azure;
+    -fx-stroke: transparent;
+    
+}
+.label {
+    -fx-text-fill: linear-gradient(#003d89,#1e2e9a);
+    -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );
 }
