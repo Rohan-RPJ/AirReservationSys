@@ -82,17 +82,18 @@ public class Sign_Up_Window extends Application{
     //
     sign_up_pane.centerShapeProperty();
             
-    Rectangle label_bg = new Rectangle();
-    label_bg.setFill(Color.LIGHTBLUE);
-    label_bg.getStyleClass().add("my-label_bg");
-    sign_up_pane.add(label_bg,0,4,4,1);
+    //rectangle as background for acc_details label
+    Rectangle acc_detail_text_bg = new Rectangle();
+    //acc_detail_text_bg.setFill(Color.LIGHTBLUE);
     
-    label_bg.setWidth(Screen.getPrimary().getVisualBounds().getWidth()); //setting the width of rectangle   
-    label_bg.setHeight(20);
-
+    acc_detail_text_bg.getStyleClass().add("my-label_bg");
+    sign_up_pane.add(acc_detail_text_bg,0,4,4,1);
+    acc_detail_text_bg.setWidth(Screen.getPrimary().getVisualBounds().getWidth()); //setting the width of rectangle   
+    acc_detail_text_bg.setHeight(20);
+    
     Label acc_details_lbl = new Label("Account Details");
     sign_up_pane.add(acc_details_lbl,0,4,2,1);
-    
+
     
     //
     Text user_id = new Text("User Id :");
@@ -140,6 +141,15 @@ public class Sign_Up_Window extends Application{
     PasswordField confirm_passwd_pf = new PasswordField();
     confirm_passwd_pf.setPromptText("Confirm Password");
     sign_up_pane.add(confirm_passwd_pf,1,12,3,1);
+    
+    //rectangle as background for acc_details label
+    Rectangle per_detail_txt_bg = new Rectangle();
+    //per_detail_txt_bg.setFill(Color.LIGHTBLUE);
+    
+    per_detail_txt_bg.getStyleClass().add("my-label_bg");
+    sign_up_pane.add(per_detail_txt_bg,0,14,4,1);
+    per_detail_txt_bg.setWidth(Screen.getPrimary().getVisualBounds().getWidth()); //setting the width of rectangle   
+    per_detail_txt_bg.setHeight(20);
     
     //
     Label personal_details_lbl = new Label("Personal Details");
@@ -198,6 +208,7 @@ public class Sign_Up_Window extends Application{
     
     //
     DatePicker dob_dp = new DatePicker();
+    dob_dp.setPromptText("Date of Birth"); 
     sign_up_pane.add(dob_dp,1,24,3,1);
     dob_dp.setEditable(false); 
     
@@ -211,11 +222,12 @@ public class Sign_Up_Window extends Application{
             }
     }); 
     //
-    Text occupation_txt = new Text("Occupation :");
+    Text occupation_txt = new Text("Occupation :"); 
     sign_up_pane.add(occupation_txt,0,26);
     
     //
     ComboBox occ_cb = new ComboBox();
+    occ_cb.setPromptText("----select occupation----");
     occ_cb.getItems().addAll("Government","Public","Private","Professional","SelfEmployed","Student","Others"); 
     sign_up_pane.add(occ_cb,1,26,3,1);
     
@@ -225,6 +237,7 @@ public class Sign_Up_Window extends Application{
     
     //
     ComboBox country_cb = new ComboBox();
+    country_cb.setPromptText("----select country----");
     country_cb.getItems().addAll("India","Antarcta","Australia","Brazil"); 
     sign_up_pane.add(country_cb,1,28,3,1);
     
@@ -257,8 +270,18 @@ public class Sign_Up_Window extends Application{
     
     //
     ComboBox nationality_cb = new ComboBox();
+    nationality_cb.setPromptText("----select nationality----");
     nationality_cb.getItems().addAll("India","Antarctica","Australia","Brazil"); 
     sign_up_pane.add(nationality_cb,1,34,3,1);
+    
+    //rectangle as background for acc_details label
+    Rectangle res_add_txt_bg = new Rectangle();
+    //res_add_txt_bg.setFill(Color.LIGHTBLUE);
+    
+    res_add_txt_bg.getStyleClass().add("my-label_bg");
+    sign_up_pane.add(res_add_txt_bg,0,36,4,1);
+    res_add_txt_bg.setWidth(Screen.getPrimary().getVisualBounds().getWidth()); //setting the width of rectangle   
+    res_add_txt_bg.setHeight(20);
     
     //Residential address label
     Label res_add_lbl = new Label("Residential Address");
@@ -306,6 +329,7 @@ public class Sign_Up_Window extends Application{
     
     //
     ComboBox city_cb = new ComboBox();
+    city_cb.setPromptText("----select city/town----");
     city_cb.getItems().addAll("Mumbai","New Delhi","Bengaluru","Chennai");
     sign_up_pane.add(city_cb,1,46,3,1);
     
@@ -424,7 +448,7 @@ public class Sign_Up_Window extends Application{
                             SignUpData sud = new SignUpData();
                             sud.return_mob_no();
                             
-                            DriverClass dc = new DriverClass();
+                            /*DriverClass dc = new DriverClass();
                             if(dc.getStatus()==-1)
                             {
                                 Alert mob_no_exist = new Alert(Alert.AlertType.ERROR);
@@ -433,13 +457,13 @@ public class Sign_Up_Window extends Application{
                                         + "Please add a new number");
                             }
                             if(dc.getStatus==1)
-                            {
+                            {*/
                             sign_up_page.close();
                             Alert registered = new Alert(Alert.AlertType.INFORMATION);
                             registered.setTitle("Registered Successfully");
                             registered.setContentText("Thankyou for Registration"); 
                             registered.show();
-                            }
+                            //}
                         }
                         /*else if(confirmation.getResult()==ButtonType.NO)
                         {
