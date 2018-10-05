@@ -111,6 +111,7 @@ public class Window extends Application {
         from_city_list.setPromptText("---------select city---------");
         from_city_list.setMaxSize(300,50);
         page_1.add(from_city_list,1,9);
+ 
         
         //css effects for combobox from_state_list
         from_city_list.setId("combobox");
@@ -269,7 +270,9 @@ public class Window extends Application {
             @Override
             public void handle(ActionEvent e)
             {       
-                new Forgot_Password();
+                Stage new_passwd_page = new Stage();
+                Forgot_Password fp = new Forgot_Password();
+                fp.start(new_passwd_page); 
             }      
         }); 
         
@@ -282,7 +285,9 @@ public class Window extends Application {
         page_1.add(sign_up_btn, 1, 26);
         
         sign_up_btn.setOnAction(e->{
-           new Sign_Up_Window();
+           Stage sign_up_page = new Stage();
+           Sign_Up_Window spw = new Sign_Up_Window();
+           spw.start(sign_up_page); 
         });
     
         
@@ -328,6 +333,7 @@ public class Window extends Application {
     public static void main(String[] args) {
         launch(args);
     }
+    
     
     /*private static boolean allField(TextField... textFields)
     {
