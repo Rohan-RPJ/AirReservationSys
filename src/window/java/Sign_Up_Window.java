@@ -206,7 +206,7 @@ public class Sign_Up_Window extends Application{
                 super.updateItem(date, empty);
                 LocalDate today = LocalDate.now();
                 //dates disabled beyond current date
-                setDisable(empty || date.compareTo(dob_dp.getValue())>0);
+                setDisable(empty || date.compareTo(today)>0);
             }
     }); 
     //
