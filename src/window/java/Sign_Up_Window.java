@@ -6,7 +6,9 @@
 package window.java;
 
 
+import java.time.LocalDate;
 import java.util.regex.Pattern;
+import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -17,6 +19,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.DialogEvent;
 import javafx.scene.control.Label;
@@ -25,7 +28,6 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.layout.Background;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -37,12 +39,13 @@ import javafx.stage.Stage;
  *
  * @author Rohan
  */
-public class Sign_Up_Window {
-    Sign_Up_Window(){
-        //new account page
-    Stage sign_up_page = new Stage();
+public class Sign_Up_Window extends Application{
+    
+    @Override
+    public void start(Stage sign_up_page) {
+    
     sign_up_page.setTitle("Sign Up");
-    //new_passwd_page.setFullScreen(true); 
+    //sign_up_page.setFullScreen(true); 
 
             
     //GridPane Layout 
@@ -95,12 +98,12 @@ public class Sign_Up_Window {
     sign_up_pane.add(user_id,0,6);
     //css effects same as that for text on 1st page 
     user_id.setId("sign-up");  
-            
+    
     //
     TextField user_id_tf = new TextField();
     user_id_tf.setPromptText("Enter your user id");
     sign_up_pane.add(user_id_tf,1,6,3,1);
-            
+    user_id_tf.setId("required");  
     //
     Label user_id_alert = new Label("Between 3 to 10 characters.Only letter, number and underscores are allowed");
     sign_up_pane.add(user_id_alert,1,7,5,1);
@@ -196,6 +199,16 @@ public class Sign_Up_Window {
     DatePicker dob_dp = new DatePicker();
     sign_up_pane.add(dob_dp,1,24,3,1);
     dob_dp.setEditable(false); 
+    
+    dob_dp.setDayCellFactory(picker -> new DateCell(){
+        @Override
+        public void updateItem(LocalDate date, boolean empty){
+                super.updateItem(date, empty);
+                LocalDate today = LocalDate.now();
+                //dates disabled beyond current date
+                setDisable(empty || date.compareTo(dob_dp.getValue())>0);
+            }
+    }); 
     //
     Text occupation_txt = new Text("Occupation :");
     sign_up_pane.add(occupation_txt,0,26);
@@ -238,7 +251,7 @@ public class Sign_Up_Window {
     
     //
     ComboBox nationality_cb = new ComboBox();
-    nationality_cb.getItems().addAll("India","Antarcta","Australia","Brazil"); 
+    nationality_cb.getItems().addAll("India","Antarctica","Australia","Brazil"); 
     sign_up_pane.add(nationality_cb,1,34,3,1);
     
     //Residential address label
@@ -400,6 +413,9 @@ public class Sign_Up_Window {
                             /*Label registered = new Label("Registered Successfully"); 
                             registered.setId("register"); 
                             sign_up_pane.add(registered,0,53,1,2);*/
+                            
+                            //return all field values to database
+                            
                             sign_up_page.close();
                             Alert registered = new Alert(Alert.AlertType.INFORMATION);
                             registered.setTitle("Registered Successfully");
@@ -431,7 +447,6 @@ public class Sign_Up_Window {
                 textField.clear(); 
             }
         }
-        
         @Override
         public void handle(ActionEvent e) {
             allFilled();
@@ -474,5 +489,5 @@ public class Sign_Up_Window {
         
     sign_up_page.show();
     }
-
 }
+
