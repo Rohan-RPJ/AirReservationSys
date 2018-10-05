@@ -6,6 +6,7 @@
 package window.java;
 
 import java.util.regex.Pattern;
+import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -29,10 +30,11 @@ import javafx.stage.Stage;
  *
  * @author Rohan
  */
-public class Forgot_Password {
-    Forgot_Password(){
-        //new account page
-    Stage new_passwd_page = new Stage();
+public class Forgot_Password extends Application {
+    
+    @Override
+    public void start(Stage new_passwd_page){
+    
     new_passwd_page.setTitle("Forgot Password");
     //new_passwd_page.setFullScreen(true); 
 
