@@ -34,6 +34,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import javafx.stage.Stage; 
+import returndata.signup_data.SignUpData;
 
 /**
  *
@@ -41,6 +42,7 @@ import javafx.stage.Stage;
  */
 public class Sign_Up_Window extends Application{
     
+    public TextField user_id_tf,mobile_no_tf;
     @Override
     public void start(Stage sign_up_page) {
     
@@ -58,7 +60,7 @@ public class Sign_Up_Window extends Application{
     //sign_up_pane.setGridLinesVisible(true); 
                 
     //
-    sign_up_pane.setAlignment(Pos.CENTER);          
+    sign_up_pane.setAlignment(Pos.CENTER_LEFT);          
             
     //scenetitle
     Label sign_up_scene_title = new Label();
@@ -83,12 +85,11 @@ public class Sign_Up_Window extends Application{
     Rectangle label_bg = new Rectangle();
     label_bg.setFill(Color.LIGHTBLUE);
     label_bg.getStyleClass().add("my-label_bg");
-    sign_up_pane.add(label_bg,0,4,5,1);
+    sign_up_pane.add(label_bg,0,4,4,1);
     
     label_bg.setWidth(Screen.getPrimary().getVisualBounds().getWidth()); //setting the width of rectangle   
     label_bg.setHeight(20);
-//    label_bg.setClip(acc_details_lbl); 
-    //
+
     Label acc_details_lbl = new Label("Account Details");
     sign_up_pane.add(acc_details_lbl,0,4,2,1);
     
@@ -100,7 +101,7 @@ public class Sign_Up_Window extends Application{
     user_id.setId("sign-up");  
     
     //
-    TextField user_id_tf = new TextField();
+    user_id_tf = new TextField();
     user_id_tf.setPromptText("Enter your user id");
     sign_up_pane.add(user_id_tf,1,6,3,1);
     user_id_tf.setId("required");  
@@ -126,7 +127,7 @@ public class Sign_Up_Window extends Application{
     Label passwd_alert = new Label();
     passwd_alert.setText("Password should contain alphabets,numbers and special characters(@,#,$) and"
             + " should be atleast 8 characters long");
-    sign_up_pane.add(passwd_alert,1,10,5,1);
+    sign_up_pane.add(passwd_alert,1,10,7,1);
     
     //
     Text confirm_passwd_txt = new Text("Confirm Password :");
@@ -228,8 +229,13 @@ public class Sign_Up_Window extends Application{
     sign_up_pane.add(country_cb,1,28,3,1);
     
     //
-    Text email_txt = new Text("Email :");
+    Label star = new Label("*");
+    star.setId("i");
+    star.applyCss();
+    //
+    Text email_txt = new Text("Email "+star.getText()+" :");
     sign_up_pane.add(email_txt,0,30);
+    
     
     //
     TextField email_tf = new TextField();
@@ -241,7 +247,7 @@ public class Sign_Up_Window extends Application{
     sign_up_pane.add(mobile_no_txt,0,32);
     
     //
-    TextField mobile_no_tf = new TextField();
+    mobile_no_tf = new TextField();
     mobile_no_tf.setPromptText("Enter mobile no.");
     sign_up_pane.add(mobile_no_tf,1,32,3,1);
     
@@ -415,12 +421,25 @@ public class Sign_Up_Window extends Application{
                             sign_up_pane.add(registered,0,53,1,2);*/
                             
                             //return all field values to database
+                            SignUpData sud = new SignUpData();
+                            sud.return_mob_no();
                             
+                            DriverClass dc = new DriverClass();
+                            if(dc.getStatus()==-1)
+                            {
+                                Alert mob_no_exist = new Alert(Alert.AlertType.ERROR);
+                                mob_no_exist.setTitle("Error"); 
+                                mob_no_exist.setContentText("Mobile number already exists\n"
+                                        + "Please add a new number");
+                            }
+                            if(dc.getStatus==1)
+                            {
                             sign_up_page.close();
                             Alert registered = new Alert(Alert.AlertType.INFORMATION);
                             registered.setTitle("Registered Successfully");
                             registered.setContentText("Thankyou for Registration"); 
                             registered.show();
+                            }
                         }
                         /*else if(confirmation.getResult()==ButtonType.NO)
                         {
@@ -472,7 +491,7 @@ public class Sign_Up_Window extends Application{
     rootPane.setContent(sign_up_pane);   
     
     //
-    Scene new_passwd_scene = new Scene(rootPane,450,350);
+    Scene new_passwd_scene = new Scene(rootPane,1000,600);
             
     new_passwd_scene.getStylesheets().add(Sign_Up_Window.class.getResource("Sign_Up.css").toExternalForm());
     sign_up_page.setScene(new_passwd_scene);
