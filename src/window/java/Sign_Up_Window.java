@@ -44,7 +44,14 @@ import javafx.stage.Stage;
  */
 public class Sign_Up_Window extends Application{
     
-    public TextField user_id_tf,mobile_no_tf;
+    public TextField user_id_tf,mobile_no_tf,f_name_tf,m_name_tf,l_name_tf,email_tf;
+    public TextField flat_tf,street_tf,area_tf,pin_tf;
+    public PasswordField passwd_pf,confirm_passwd_pf;
+    public RadioButton male_rbtn,female_rbtn,transgender_rbtn;
+    public ToggleGroup gender_tg;
+    public DatePicker dob_dp;
+    public ComboBox occ_cb,country_cb,nationality_cb,city_cb;
+    
     @Override
     public void start(Stage sign_up_page) {
     
@@ -120,7 +127,7 @@ public class Sign_Up_Window extends Application{
     passwd_txt.setId("sign-up");
              
     //
-    PasswordField passwd_pf = new PasswordField();
+    passwd_pf = new PasswordField();
     passwd_pf.setPromptText("Enter Password");
     sign_up_pane.add(passwd_pf,1,9,3,1);
     //new_passwd_pf.setDisable(true);
@@ -140,7 +147,7 @@ public class Sign_Up_Window extends Application{
     confirm_passwd_txt.setId("sign-up");
              
     //
-    PasswordField confirm_passwd_pf = new PasswordField();
+    confirm_passwd_pf = new PasswordField();
     confirm_passwd_pf.setPromptText("Confirm Password");
     sign_up_pane.add(confirm_passwd_pf,1,12,3,1);
     
@@ -162,7 +169,7 @@ public class Sign_Up_Window extends Application{
     sign_up_pane.add(f_name_txt,0,16);
     
     //
-    TextField f_name_tf = new TextField();
+    f_name_tf = new TextField();
     f_name_tf.setPromptText("Enter first name");
     sign_up_pane.add(f_name_tf,1,16,3,1);
     
@@ -171,7 +178,7 @@ public class Sign_Up_Window extends Application{
     sign_up_pane.add(m_name_txt,0,18);
     
     //
-    TextField m_name_tf = new TextField();
+    m_name_tf = new TextField();
     m_name_tf.setPromptText("Enter middle name");
     sign_up_pane.add(m_name_tf,1,18,3,1);
     
@@ -180,7 +187,7 @@ public class Sign_Up_Window extends Application{
     sign_up_pane.add(l_name_txt,0,20);
     
     //
-    TextField l_name_tf = new TextField();
+    l_name_tf = new TextField();
     l_name_tf.setPromptText("Enter last name");
     sign_up_pane.add(l_name_tf,1,20,3,1);
     
@@ -189,17 +196,17 @@ public class Sign_Up_Window extends Application{
     sign_up_pane.add(gender_txt,0,22);
     
     //RadioButton for male,female,transgender
-    RadioButton male_rbtn = new RadioButton("Male");
+    male_rbtn = new RadioButton("Male");
     sign_up_pane.add(male_rbtn,1,22);
     
-    RadioButton female_rbtn = new RadioButton("Female");
+    female_rbtn = new RadioButton("Female");
     sign_up_pane.add(female_rbtn,2,22);
     
-    RadioButton transgender_rbtn = new RadioButton("Transgender");
+    transgender_rbtn = new RadioButton("Transgender");
     sign_up_pane.add(transgender_rbtn,3,22);
     
     //Toggling Gender RadioButtons
-    ToggleGroup gender_tg = new ToggleGroup();
+    gender_tg = new ToggleGroup();
     male_rbtn.setToggleGroup(gender_tg);
     female_rbtn.setToggleGroup(gender_tg);
     transgender_rbtn.setToggleGroup(gender_tg);
@@ -209,7 +216,7 @@ public class Sign_Up_Window extends Application{
     sign_up_pane.add(dob_txt,0,24);
     
     //
-    DatePicker dob_dp = new DatePicker();
+    dob_dp = new DatePicker();
     dob_dp.setPromptText("Date of Birth"); 
     sign_up_pane.add(dob_dp,1,24,3,1);
     dob_dp.setEditable(false); 
@@ -228,7 +235,7 @@ public class Sign_Up_Window extends Application{
     sign_up_pane.add(occupation_txt,0,26);
     
     //
-    ComboBox occ_cb = new ComboBox();
+    occ_cb = new ComboBox();
     occ_cb.setPromptText("----select occupation----");
     occ_cb.getItems().addAll("Government","Public","Private","Professional","SelfEmployed","Student","Others"); 
     sign_up_pane.add(occ_cb,1,26,3,1);
@@ -238,7 +245,7 @@ public class Sign_Up_Window extends Application{
     sign_up_pane.add(country_txt,0,28);
     
     //
-    ComboBox country_cb = new ComboBox();
+    country_cb = new ComboBox();
     country_cb.setPromptText("----select country----");
     country_cb.getItems().addAll("India","Antarcta","Australia","Brazil"); 
     sign_up_pane.add(country_cb,1,28,3,1);
@@ -254,7 +261,7 @@ public class Sign_Up_Window extends Application{
     
     
     //
-    TextField email_tf = new TextField();
+    email_tf = new TextField();
     email_tf.setPromptText("Enter email id");
     sign_up_pane.add(email_tf,1,30,3,1);
     
@@ -272,7 +279,7 @@ public class Sign_Up_Window extends Application{
     sign_up_pane.add(nationality_txt,0,34);
     
     //
-    ComboBox nationality_cb = new ComboBox();
+    nationality_cb = new ComboBox();
     nationality_cb.setPromptText("----select nationality----");
     nationality_cb.getItems().addAll("India","Antarctica","Australia","Brazil"); 
     sign_up_pane.add(nationality_cb,1,34,3,1);
@@ -295,7 +302,7 @@ public class Sign_Up_Window extends Application{
     sign_up_pane.add(flat_txt,0,38);
     
     //
-    TextField flat_tf = new TextField();
+    flat_tf = new TextField();
     flat_tf.setPromptText("flat/door/block");
     sign_up_pane.add(flat_tf,1,38,3,1);
     
@@ -304,7 +311,7 @@ public class Sign_Up_Window extends Application{
     sign_up_pane.add(street_txt,0,40);
     
     //
-    TextField street_tf = new TextField();
+    street_tf = new TextField();
     street_tf.setPromptText("street/lane");
     sign_up_pane.add(street_tf,1,40,3,1);
     
@@ -313,7 +320,7 @@ public class Sign_Up_Window extends Application{
     sign_up_pane.add(area_txt,0,42);
     
     //
-    TextField area_tf = new TextField();
+    area_tf = new TextField();
     area_tf.setPromptText("area/locality");
     sign_up_pane.add(area_tf,1,42,3,1);
     
@@ -322,7 +329,7 @@ public class Sign_Up_Window extends Application{
     sign_up_pane.add(pin_txt,0,44);
     
     //
-    TextField pin_tf = new TextField();
+    pin_tf = new TextField();
     pin_tf.setPromptText("enter pincode");
     sign_up_pane.add(pin_tf,1,44,3,1);
     
@@ -331,20 +338,20 @@ public class Sign_Up_Window extends Application{
     sign_up_pane.add(city_txt,0,46);
     
     //
-    ComboBox city_cb = new ComboBox();
+    city_cb = new ComboBox();
     city_cb.setPromptText("----select city/town----");
     city_cb.getItems().addAll("Mumbai","New Delhi","Bengaluru","Chennai");
     sign_up_pane.add(city_cb,1,46,3,1);
     
     //getValue of selected RadioButton
-    gender_tg.selectedToggleProperty().addListener(new ChangeListener<Toggle>(){
+    /*gender_tg.selectedToggleProperty().addListener(new ChangeListener<Toggle>(){
                 @Override
                 public void changed(ObservableValue<? extends Toggle> ov, Toggle t, Toggle t1)
                 {
                     RadioButton chk = (RadioButton)t1.getToggleGroup().getSelectedToggle();
                     System.out.println(chk.getText());
                 }
-            });
+            });*/
     
     //
     Button submit_btn = new Button("Submit Registration");
