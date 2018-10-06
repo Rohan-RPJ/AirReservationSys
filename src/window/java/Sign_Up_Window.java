@@ -9,6 +9,8 @@ package window.java;
 import java.time.LocalDate;
 import java.util.regex.Pattern;
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -27,14 +29,14 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import javafx.stage.Stage; 
-import returndata.signup_data.SignUpData;
+
 
 /**
  *
@@ -246,7 +248,8 @@ public class Sign_Up_Window extends Application{
     star.setId("i");
     star.applyCss();
     //
-    Text email_txt = new Text("Email "+star.getText()+" :");
+    Text email_txt = new Text("Email ");
+    email_txt.setText(email_txt.getText().concat(star.getText()+" :")); 
     sign_up_pane.add(email_txt,0,30);
     
     
@@ -333,8 +336,15 @@ public class Sign_Up_Window extends Application{
     city_cb.getItems().addAll("Mumbai","New Delhi","Bengaluru","Chennai");
     sign_up_pane.add(city_cb,1,46,3,1);
     
-    //
-
+    //getValue of selected RadioButton
+    gender_tg.selectedToggleProperty().addListener(new ChangeListener<Toggle>(){
+                @Override
+                public void changed(ObservableValue<? extends Toggle> ov, Toggle t, Toggle t1)
+                {
+                    RadioButton chk = (RadioButton)t1.getToggleGroup().getSelectedToggle();
+                    System.out.println(chk.getText());
+                }
+            });
     
     //
     Button submit_btn = new Button("Submit Registration");
@@ -356,6 +366,7 @@ public class Sign_Up_Window extends Application{
         @Override
         public void handle(ActionEvent e)
         {
+            
             if(allFilled())
             {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -428,6 +439,7 @@ public class Sign_Up_Window extends Application{
                 error.setContentText("Invalid Pincode");
                 error.show();
             }
+            
             else 
             {
                 Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION,"Confirmation",ButtonType.YES,ButtonType.NO);
@@ -445,8 +457,7 @@ public class Sign_Up_Window extends Application{
                             sign_up_pane.add(registered,0,53,1,2);*/
                             
                             //return all field values to database
-                            SignUpData sud = new SignUpData();
-                            sud.return_mob_no();
+                            
                             
                             /*DriverClass dc = new DriverClass();
                             if(dc.getStatus()==-1)
@@ -456,14 +467,16 @@ public class Sign_Up_Window extends Application{
                                 mob_no_exist.setContentText("Mobile number already exists\n"
                                         + "Please add a new number");
                             }
-                            if(dc.getStatus==1)
-                            {*/
+                            if(dc.getStatus==1)*/
+                            
+                            
                             sign_up_page.close();
                             Alert registered = new Alert(Alert.AlertType.INFORMATION);
                             registered.setTitle("Registered Successfully");
                             registered.setContentText("Thankyou for Registration"); 
                             registered.show();
-                            //}
+                            
+                      
                         }
                         /*else if(confirmation.getResult()==ButtonType.NO)
                         {
@@ -472,8 +485,9 @@ public class Sign_Up_Window extends Application{
                         }*/ 
                     }       
                 }); 
-            }    
-        } 
+                }
+               
+            }
 
     });
     
