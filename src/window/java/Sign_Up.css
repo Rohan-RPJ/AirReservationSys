@@ -84,14 +84,14 @@ and open the template in the editor.
 .date-picker .text-field{
     -fx-opacity: 0.75;
     -fx-background-color: linear-gradient(#81f957,#fae349);
-    -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );
+    -fx-effect: innershadow(gaussian, rgba(0,0,0,0.8),5,0,0,2);
     -fx-text-fill: #000000;
 }
 
 .text-field{
     -fx-opacity: 0.75;
     -fx-background-color: linear-gradient(#81f957,#fae349);
-    -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );
+    -fx-effect: innershadow(gaussian, rgba(0,0,0,0.8),5,0,0,2);
 }
 
 .combo-box{
