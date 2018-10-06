@@ -100,10 +100,57 @@ class User{
     }
     */
     
+    //getter functions 
+    public String getUserId()
+    {
+         return userId;
+    }
+    public String getPassword()
+    {
+        return password;
+    }
+    public String getFirstName()
+    {
+        return firstName;
+    }
+    public String getLastName()
+    {
+        return lastName;
+    }
+    public String getMiddleName()
+    {
+        return middleName;
+    }
+    public String getMobileNo()
+    {
+        return mobileNo;
+    }
+    public String getOccupation()
+    {
+        return occupation;
+    }
+    public String getNationality()
+    {
+        return nationality;
+    }
+    public String getEmail()
+    {
+        return email;
+    }
+    public String getResAddress()
+    {
+        return resAddress;
+    }
+    public String getCountry()
+    {
+        return country;
+    }
+    
 }
 public class Sign_Up_Window extends Application{
     
     public TextField user_id_tf,mobile_no_tf;
+    private User u= new User();
     public static void main(String args[]){
         launch(args);
     }
@@ -487,7 +534,7 @@ public class Sign_Up_Window extends Application{
                             
                             //return all field values to database
                             // sud = new SignUpData();
-                            
+                            System.out.println("User ID:"+getFormDetails().getUserId());
                             //System.out.println("Mobile no received is:"+sud.return_mob_no());
                             /*DriverClass dc = new DriverClass();
                             if(dc.getStatus()==-1)
@@ -572,6 +619,12 @@ public class Sign_Up_Window extends Application{
     sign_up_page.setHeight(primaryScreenBounds.getHeight());
         
     sign_up_page.show();
+    }
+    
+    public User getFormDetails()
+    {
+        u.setUserId(user_id_tf.getText());
+        return  u;
     }
 }
 
