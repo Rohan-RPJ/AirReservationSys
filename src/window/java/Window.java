@@ -7,8 +7,7 @@ package window.java;
 
 import java.time.LocalDate;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene; 
@@ -16,18 +15,16 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
-import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -38,13 +35,23 @@ import javafx.stage.Stage;
  */
 public class Window extends Application {
     
+    //Decalration of fields
+    public RadioButton one_trip_btn,round_trip_btn;
+    public ComboBox from_city_list,to_city_list,class_list;
+    public DatePicker depart_date,return_date;
+    public Spinner adult_no,child_no,infant_no;
+    public Button search_btn;
+    public Scene scene;
+    public Image logo;
+    public GridPane page_1;
+    
     @Override
     public void start(Stage primaryStage) {
         //setting full screen 
         //primaryStage.setFullScreen(true); 
         
         //Setting gridPane as layout for the page
-        GridPane page_1 = new GridPane();
+        page_1 = new GridPane();
         
         //making gridlines visible
         //page_1.setGridLinesVisible(true);
@@ -60,7 +67,7 @@ public class Window extends Application {
         page_1.setPadding(new Insets(50,50,50,50));
         
         //Logo Image
-        Image logo = new Image(Window.class.getResourceAsStream("air-logo.png")); 
+        logo = new Image(Window.class.getResourceAsStream("air-logo.png")); 
         ImageView logo_view = new ImageView(logo);
         
         //adding logo image to gridpane
@@ -79,8 +86,8 @@ public class Window extends Application {
         page_1.add(scenetitle, 1,0,4,2);
         
         //Radio Buttons 
-        RadioButton one_trip_btn = new RadioButton("One Way Trip");
-        RadioButton round_trip_btn = new RadioButton("Round Trip");
+        one_trip_btn = new RadioButton("One Way Trip");
+        round_trip_btn = new RadioButton("Round Trip");
         
         //ToggleGroup to select any one option for RadioButtons
         ToggleGroup group = new ToggleGroup();
@@ -106,7 +113,7 @@ public class Window extends Application {
         page_1.add(from_state_text,0,9);
         
         //ComboBox for Source States
-        ComboBox from_city_list = new ComboBox();
+        from_city_list = new ComboBox();
         from_city_list.getItems().addAll("Mumbai","New Delhi","Bengaluru","Chennai");
         from_city_list.setPromptText("---------select city---------");
         from_city_list.setMaxSize(300,50);
@@ -117,13 +124,13 @@ public class Window extends Application {
         from_city_list.setId("combobox");
         
         //departure date
-        DatePicker depart_date = new DatePicker();
+        depart_date = new DatePicker();
         depart_date.setPromptText("Departure Date");        
         depart_date.setEditable(false); 
         page_1.add(depart_date,2,9);
         
         //return date
-        DatePicker return_date = new DatePicker();
+        return_date = new DatePicker();
         return_date.setPromptText("Return Date");
         return_date.setEditable(false);
         page_1.add(return_date,2,11);
@@ -146,7 +153,7 @@ public class Window extends Application {
         page_1.add(to_state_text,0,11);
  
         //ComboBox for Destination Cities
-        ComboBox to_city_list = new ComboBox();
+        to_city_list = new ComboBox();
         to_city_list.getItems().addAll("Mumbai","New Delhi","Bengaluru","Chennai");
         to_city_list.setPromptText("---------select city---------");
         to_city_list.setMaxSize(300,50);
@@ -188,7 +195,7 @@ public class Window extends Application {
         page_1.add(select_class,0,14);
         
         //ComboBox for selecting Class
-        ComboBox class_list = new ComboBox();
+        class_list = new ComboBox();
         class_list.getItems().addAll("Economy","Business","First");
         class_list.setMaxSize(300,50);
         page_1.add(class_list,1,14,1,1);
@@ -207,83 +214,65 @@ public class Window extends Application {
         //css effects for comobox travellers
         //travellers_txt.setId("combobox");
         
-        //ComboBox for selecting Class
+        //
         Text adult_txt = new Text("Adult(above 15 yrs) :");
         page_1.add(adult_txt,0,16);
         
-        final Spinner adult_no = new Spinner();
+        adult_no = new Spinner();
         //value_factory for adult i.e. setting range of values for no. of adults
         SpinnerValueFactory adult_range = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,4,0);
         adult_no.setValueFactory(adult_range); 
-        page_1.add(adult_no, 1, 16);
+        page_1.add(adult_no, 0, 17);
         
         Text child_txt = new Text("Child(2-15 yrs) :");
-        page_1.add(child_txt,0,17);
+        page_1.add(child_txt,1,16);
         
-        final Spinner child_no = new Spinner();
+        child_no = new Spinner();
         //value_factory for child i.e. setting range of values for no. of child
         SpinnerValueFactory child_range = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,4,0);
         child_no.setValueFactory(child_range);
         page_1.add(child_no, 1, 17);
         
         Text infant_txt = new Text("Infant(Under 2 yrs) :");
-        page_1.add(infant_txt,0,18);
+        page_1.add(infant_txt,2,16);
         
-        final Spinner infant_no = new Spinner();
+        infant_no = new Spinner();
         //value_factory for infant i.e. setting range of values for no. of infants
         SpinnerValueFactory infant_range = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,4,0);
         infant_no.setValueFactory(infant_range);
-        page_1.add(infant_no, 1, 18);
+        page_1.add(infant_no, 2, 17);
         
-        
-        //Text for account details 
-        Text account_text = new Text("Enter Your Account Details");
-        account_text.setId("text");
-        page_1.add(account_text,0,20,3,1);
-        
+        search_btn = new Button("Search");
+        search_btn.setMaxSize(250, 50);
+        page_1.add(search_btn,1,23,2,1); 
+  
         //
-        Text username_text = new Text("Username :");
-        page_1.add(username_text,0,21);
-        
-        //
-        TextField username_tf = new TextField();
-        username_tf.setPromptText("Enter Username");  
-        page_1.add(username_tf,1,21,1,1);
-        
-        //T
-        Text passwd_text = new Text("Password :");
-        page_1.add(passwd_text,0,22);      
-        
-        //
-        PasswordField passwd_pf = new PasswordField();
-        passwd_pf.setPromptText("Enter Password");
-        page_1.add(passwd_pf,1,22);
-        
-        //forgot_password?
-        Hyperlink forgot_pw = new Hyperlink("(forgot password ?)");
-        page_1.add(forgot_pw,0,23);
-        forgot_pw.setId("forgot-pw");
-        
-        //
-        forgot_pw.setOnAction(new EventHandler<ActionEvent>(){
- 
-            @Override
-            public void handle(ActionEvent e)
-            {       
-                Stage new_passwd_page = new Stage();
-                Forgot_Password fp = new Forgot_Password();
-                fp.start(new_passwd_page); 
-            }      
-        }); 
+        Login_scene ls = new Login_scene();
+        ls.start(primaryStage);
         
         //
         Button sign_in_btn = new Button("Sign in");
-        page_1.add(sign_in_btn, 0, 26);
+        page_1.add(sign_in_btn, 0,26);
+        sign_in_btn.setOnAction(e ->{
+            
+            Image bg = new Image(Window.class.getResourceAsStream("plane.jpg")); 
+            ImageView bg_view = new ImageView(bg);
+            primaryStage.setScene(ls.login_scene);
+            page_1.setVisible(false);
+            
+            ls.stackpane.getChildren().addAll(bg_view,ls.sign_in_pane);
+   
+            
+        }); 
         
         //
         Button sign_up_btn = new Button("Sign up");
-        page_1.add(sign_up_btn, 1, 26);
         
+        //
+        page_1.add(sign_up_btn, 2, 26);
+        GridPane.setHalignment(sign_up_btn, HPos.RIGHT); 
+        
+        //
         sign_up_btn.setOnAction(e->{
            Stage sign_up_page = new Stage();
            Sign_Up_Window spw = new Sign_Up_Window();
@@ -301,17 +290,16 @@ public class Window extends Application {
         //rootPane.setVmax(2);
         //rootPane.setHmax(2);
         //rootPane.setVvalue(20);
-        rootPane.setContent(page_1);   
-        
-        
+        rootPane.setContent(page_1);  
+       
         
         //instantiating scene
-        Scene scene = new Scene(rootPane, 1000, 600);
+        scene = new Scene(rootPane, 1000, 600);
         
         scene.getStylesheets().add(Window.class.getResource("Window.css").toExternalForm());
         primaryStage.setScene(scene);
         primaryStage.setTitle("AeroSwing National Flights");
-        //primaryStage.setResizable(false);
+        //primaryStage.setResizable(false);  
         
         //setting primaryStage to the size of screen of pc
         Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
@@ -322,6 +310,8 @@ public class Window extends Application {
         primaryStage.setWidth(primaryScreenBounds.getWidth());
           //setting height of stage to height of screen
         primaryStage.setHeight(primaryScreenBounds.getHeight());
+        
+        //primaryStage.initStyle(StageStyle.TRANSPARENT); 
         
         //show Stage
         primaryStage.show();
