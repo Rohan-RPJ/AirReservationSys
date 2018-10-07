@@ -37,13 +37,120 @@ import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import javafx.stage.Stage; 
 
-
 /**
  *
  * @author Rohan
  */
+
+class User{
+    //all the fields
+    private String userId, password, firstName, lastName , middleName, gender;
+    private String occupation, country, email, mobileNo, nationality , resAddress;
+    
+    //Setter methods for all the fields
+    public void setUserId(String userId)
+    {
+        this.userId=userId;
+    }
+    public void setPassword(String password)
+    {
+        this.password=password;
+    }
+    public void setFirstName(String firstName)
+    {
+        this.firstName=firstName;
+    }
+    public void setLastName(String lastName)
+    {
+        this.lastName=lastName;
+    }
+    public void setMiddleName(String middleName)
+    {
+        this.middleName=middleName;
+    }
+    public void setMobileNo(String mobileNo)
+    {
+        this.mobileNo=mobileNo;
+    }
+    public void setOccupation(String occupation)
+    {
+        this.occupation=occupation;
+    }
+    public void setNationality(String nationality)
+    {
+        this.nationality=nationality;
+    }
+    public void setEmail(String email)
+    {
+        this.email=email;
+    }
+    public void setResAddress(String resAddress)
+    {
+        this.resAddress=resAddress;
+    }
+    public void setCountry(String country)
+    {
+        this.country=country;
+    }
+    
+    //NOtE: date setter() and date field not added yet
+    /*
+    public void setDob(String dob)
+    {
+        this.dob=dob;
+    }
+    */
+    
+    //getter functions 
+    public String getUserId()
+    {
+         return userId;
+    }
+    public String getPassword()
+    {
+        return password;
+    }
+    public String getFirstName()
+    {
+        return firstName;
+    }
+    public String getLastName()
+    {
+        return lastName;
+    }
+    public String getMiddleName()
+    {
+        return middleName;
+    }
+    public String getMobileNo()
+    {
+        return mobileNo;
+    }
+    public String getOccupation()
+    {
+        return occupation;
+    }
+    public String getNationality()
+    {
+        return nationality;
+    }
+    public String getEmail()
+    {
+        return email;
+    }
+    public String getResAddress()
+    {
+        return resAddress;
+    }
+    public String getCountry()
+    {
+        return country;
+    }
+    
+}
 public class Sign_Up_Window extends Application{
     
+
     public TextField user_id_tf,mobile_no_tf,f_name_tf,m_name_tf,l_name_tf,email_tf;
     public TextField flat_tf,street_tf,area_tf,pin_tf;
     public PasswordField passwd_pf,confirm_passwd_pf;
@@ -52,10 +159,11 @@ public class Sign_Up_Window extends Application{
     public DatePicker dob_dp;
     public ComboBox occ_cb,country_cb,nationality_cb,city_cb;
     
-    @Override
+   @Override
     public void start(Stage sign_up_page) {
     
     sign_up_page.setTitle("Sign Up");
+    
     //sign_up_page.setFullScreen(true); 
 
             
@@ -91,18 +199,17 @@ public class Sign_Up_Window extends Application{
     //
     sign_up_pane.centerShapeProperty();
             
-    //rectangle as background for acc_details label
-    Rectangle acc_detail_text_bg = new Rectangle();
-    //acc_detail_text_bg.setFill(Color.LIGHTBLUE);
+    Rectangle label_bg = new Rectangle();
+    label_bg.setFill(Color.LIGHTBLUE);
+    label_bg.getStyleClass().add("my-label_bg");
+    sign_up_pane.add(label_bg,0,4,4,1);
     
-    acc_detail_text_bg.getStyleClass().add("my-label_bg");
-    sign_up_pane.add(acc_detail_text_bg,0,4,4,1);
-    acc_detail_text_bg.setWidth(Screen.getPrimary().getVisualBounds().getWidth()); //setting the width of rectangle   
-    acc_detail_text_bg.setHeight(20);
-    
+    label_bg.setWidth(Screen.getPrimary().getVisualBounds().getWidth()); //setting the width of rectangle   
+    label_bg.setHeight(20);
+
     Label acc_details_lbl = new Label("Account Details");
     sign_up_pane.add(acc_details_lbl,0,4,2,1);
-
+    
     
     //
     Text user_id = new Text("User Id :");
@@ -150,15 +257,6 @@ public class Sign_Up_Window extends Application{
     confirm_passwd_pf = new PasswordField();
     confirm_passwd_pf.setPromptText("Confirm Password");
     sign_up_pane.add(confirm_passwd_pf,1,12,3,1);
-    
-    //rectangle as background for acc_details label
-    Rectangle per_detail_txt_bg = new Rectangle();
-    //per_detail_txt_bg.setFill(Color.LIGHTBLUE);
-    
-    per_detail_txt_bg.getStyleClass().add("my-label_bg");
-    sign_up_pane.add(per_detail_txt_bg,0,14,4,1);
-    per_detail_txt_bg.setWidth(Screen.getPrimary().getVisualBounds().getWidth()); //setting the width of rectangle   
-    per_detail_txt_bg.setHeight(20);
     
     //
     Label personal_details_lbl = new Label("Personal Details");
@@ -231,7 +329,7 @@ public class Sign_Up_Window extends Application{
             }
     }); 
     //
-    Text occupation_txt = new Text("Occupation :"); 
+    Text occupation_txt = new Text("Occupation :");
     sign_up_pane.add(occupation_txt,0,26);
     
     //
@@ -283,15 +381,6 @@ public class Sign_Up_Window extends Application{
     nationality_cb.setPromptText("----select nationality----");
     nationality_cb.getItems().addAll("India","Antarctica","Australia","Brazil"); 
     sign_up_pane.add(nationality_cb,1,34,3,1);
-    
-    //rectangle as background for acc_details label
-    Rectangle res_add_txt_bg = new Rectangle();
-    //res_add_txt_bg.setFill(Color.LIGHTBLUE);
-    
-    res_add_txt_bg.getStyleClass().add("my-label_bg");
-    sign_up_pane.add(res_add_txt_bg,0,36,4,1);
-    res_add_txt_bg.setWidth(Screen.getPrimary().getVisualBounds().getWidth()); //setting the width of rectangle   
-    res_add_txt_bg.setHeight(20);
     
     //Residential address label
     Label res_add_lbl = new Label("Residential Address");
@@ -464,8 +553,10 @@ public class Sign_Up_Window extends Application{
                             sign_up_pane.add(registered,0,53,1,2);*/
                             
                             //return all field values to database
-                            
-                            
+
+                            // sud = new SignUpData();
+                            System.out.println("User ID:"+getFormDetails().getUserId());
+                            //System.out.println("Mobile no received is:"+sud.return_mob_no());
                             /*DriverClass dc = new DriverClass();
                             if(dc.getStatus()==-1)
                             {
@@ -473,17 +564,18 @@ public class Sign_Up_Window extends Application{
                                 mob_no_exist.setTitle("Error"); 
                                 mob_no_exist.setContentText("Mobile number already exists\n"
                                         + "Please add a new number");
-                            }
-                            if(dc.getStatus==1)*/
-                            
-                            
+
+                            }*/
+                            //if(dc.getStatus==1)
+                            {
+    
                             sign_up_page.close();
                             Alert registered = new Alert(Alert.AlertType.INFORMATION);
                             registered.setTitle("Registered Successfully");
                             registered.setContentText("Thankyou for Registration"); 
                             registered.show();
-                            
-                      
+
+                            }
                         }
                         /*else if(confirmation.getResult()==ButtonType.NO)
                         {
@@ -535,10 +627,10 @@ public class Sign_Up_Window extends Application{
     rootPane.setFitToWidth(true); 
     rootPane.setContent(sign_up_pane);   
     
-    //
+    //DriverClass
     Scene new_passwd_scene = new Scene(rootPane,1000,600);
             
-    new_passwd_scene.getStylesheets().add(Sign_Up_Window.class.getResource("Sign_Up.css").toExternalForm());
+//    new_passwd_scene.getStylesheets().add(Sign_Up_Window.class.getResource("Sign_Up.css").toExternalForm());
     sign_up_page.setScene(new_passwd_scene);
     
     //setting primaryStage to the size of screen of pc
@@ -552,6 +644,12 @@ public class Sign_Up_Window extends Application{
     sign_up_page.setHeight(primaryScreenBounds.getHeight());
         
     sign_up_page.show();
+    }
+    
+    public User getFormDetails()
+    {
+        u.setUserId(user_id_tf.getText());
+        return  u;
     }
 }
 
