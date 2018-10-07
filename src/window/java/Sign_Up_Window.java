@@ -9,6 +9,8 @@ package window.java;
 import java.time.LocalDate;
 import java.util.regex.Pattern;
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -27,20 +29,22 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import javafx.stage.Stage; 
+
 
 /**
  *
  * @author Rohan
  */
 
-class User{
+
+/*class User{
     //all the fields
     private String userId, password, firstName, lastName , middleName, gender;
     private String occupation, country, email, mobileNo, nationality , resAddress;
@@ -90,7 +94,7 @@ class User{
     {
         this.country=country;
     }
-    
+    */
     //NOtE: date setter() and date field not added yet
     /*
     public void setDob(String dob)
@@ -98,7 +102,7 @@ class User{
         this.dob=dob;
     }
     */
-    
+    /*
     //getter functions 
     public String getUserId()
     {
@@ -145,10 +149,10 @@ class User{
         return country;
     }
     
-}
+} */
+
 public class Sign_Up_Window extends Application{
     
-
     public TextField user_id_tf,mobile_no_tf,f_name_tf,m_name_tf,l_name_tf,email_tf;
     public TextField flat_tf,street_tf,area_tf,pin_tf;
     public PasswordField passwd_pf,confirm_passwd_pf;
@@ -156,12 +160,12 @@ public class Sign_Up_Window extends Application{
     public ToggleGroup gender_tg;
     public DatePicker dob_dp;
     public ComboBox occ_cb,country_cb,nationality_cb,city_cb;
-    private User u= new User();
-   @Override
+    //private User u = new User();
+    
+    @Override
     public void start(Stage sign_up_page) {
     
     sign_up_page.setTitle("Sign Up");
-    
     //sign_up_page.setFullScreen(true); 
 
             
@@ -197,17 +201,18 @@ public class Sign_Up_Window extends Application{
     //
     sign_up_pane.centerShapeProperty();
             
-    Rectangle label_bg = new Rectangle();
-    label_bg.setFill(Color.LIGHTBLUE);
-    label_bg.getStyleClass().add("my-label_bg");
-    sign_up_pane.add(label_bg,0,4,4,1);
+    //rectangle as background for acc_details label
+    Rectangle acc_detail_text_bg = new Rectangle();
+    //acc_detail_text_bg.setFill(Color.LIGHTBLUE);
     
-    label_bg.setWidth(Screen.getPrimary().getVisualBounds().getWidth()); //setting the width of rectangle   
-    label_bg.setHeight(20);
-
+    acc_detail_text_bg.getStyleClass().add("my-label_bg");
+    sign_up_pane.add(acc_detail_text_bg,0,4,4,1);
+    acc_detail_text_bg.setWidth(Screen.getPrimary().getVisualBounds().getWidth()); //setting the width of rectangle   
+    acc_detail_text_bg.setHeight(20);
+    
     Label acc_details_lbl = new Label("Account Details");
     sign_up_pane.add(acc_details_lbl,0,4,2,1);
-    
+
     
     //
     Text user_id = new Text("User Id :");
@@ -255,6 +260,15 @@ public class Sign_Up_Window extends Application{
     confirm_passwd_pf = new PasswordField();
     confirm_passwd_pf.setPromptText("Confirm Password");
     sign_up_pane.add(confirm_passwd_pf,1,12,3,1);
+    
+    //rectangle as background for acc_details label
+    Rectangle per_detail_txt_bg = new Rectangle();
+    //per_detail_txt_bg.setFill(Color.LIGHTBLUE);
+    
+    per_detail_txt_bg.getStyleClass().add("my-label_bg");
+    sign_up_pane.add(per_detail_txt_bg,0,14,4,1);
+    per_detail_txt_bg.setWidth(Screen.getPrimary().getVisualBounds().getWidth()); //setting the width of rectangle   
+    per_detail_txt_bg.setHeight(20);
     
     //
     Label personal_details_lbl = new Label("Personal Details");
@@ -327,7 +341,7 @@ public class Sign_Up_Window extends Application{
             }
     }); 
     //
-    Text occupation_txt = new Text("Occupation :");
+    Text occupation_txt = new Text("Occupation :"); 
     sign_up_pane.add(occupation_txt,0,26);
     
     //
@@ -379,6 +393,15 @@ public class Sign_Up_Window extends Application{
     nationality_cb.setPromptText("----select nationality----");
     nationality_cb.getItems().addAll("India","Antarctica","Australia","Brazil"); 
     sign_up_pane.add(nationality_cb,1,34,3,1);
+    
+    //rectangle as background for acc_details label
+    Rectangle res_add_txt_bg = new Rectangle();
+    //res_add_txt_bg.setFill(Color.LIGHTBLUE);
+    
+    res_add_txt_bg.getStyleClass().add("my-label_bg");
+    sign_up_pane.add(res_add_txt_bg,0,36,4,1);
+    res_add_txt_bg.setWidth(Screen.getPrimary().getVisualBounds().getWidth()); //setting the width of rectangle   
+    res_add_txt_bg.setHeight(20);
     
     //Residential address label
     Label res_add_lbl = new Label("Residential Address");
@@ -551,9 +574,9 @@ public class Sign_Up_Window extends Application{
                             sign_up_pane.add(registered,0,53,1,2);*/
                             
                             //return all field values to database
-
+                            
                             // sud = new SignUpData();
-                            System.out.println("User ID:"+getFormDetails().getUserId());
+                            //System.out.println("User ID:"+getFormDetails().getUserId());
                             //System.out.println("Mobile no received is:"+sud.return_mob_no());
                             /*DriverClass dc = new DriverClass();
                             if(dc.getStatus()==-1)
@@ -562,18 +585,17 @@ public class Sign_Up_Window extends Application{
                                 mob_no_exist.setTitle("Error"); 
                                 mob_no_exist.setContentText("Mobile number already exists\n"
                                         + "Please add a new number");
-
-                            }*/
-                            //if(dc.getStatus==1)
-                            {
-    
+                            }
+                            if(dc.getStatus==1)*/
+                            
+                            
                             sign_up_page.close();
                             Alert registered = new Alert(Alert.AlertType.INFORMATION);
                             registered.setTitle("Registered Successfully");
                             registered.setContentText("Thankyou for Registration"); 
                             registered.show();
-
-                            }
+                            
+                      
                         }
                         /*else if(confirmation.getResult()==ButtonType.NO)
                         {
@@ -625,11 +647,11 @@ public class Sign_Up_Window extends Application{
     rootPane.setFitToWidth(true); 
     rootPane.setContent(sign_up_pane);   
     
-    //DriverClass
-    Scene new_passwd_scene = new Scene(rootPane,1000,600);
+    //
+    Scene sign_up_scene = new Scene(rootPane,1000,600);
             
-//    new_passwd_scene.getStylesheets().add(Sign_Up_Window.class.getResource("Sign_Up.css").toExternalForm());
-    sign_up_page.setScene(new_passwd_scene);
+    sign_up_scene.getStylesheets().add(Sign_Up_Window.class.getResource("Sign_Up.css").toExternalForm());
+    sign_up_page.setScene(sign_up_scene);
     
     //setting primaryStage to the size of screen of pc
     Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
@@ -644,10 +666,10 @@ public class Sign_Up_Window extends Application{
     sign_up_page.show();
     }
     
-    public User getFormDetails()
+    /*public User getFormDetails()
     {
         u.setUserId(user_id_tf.getText());
         return  u;
-    }
+    }*/
 }
 
