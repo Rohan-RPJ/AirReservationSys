@@ -9,7 +9,7 @@ and open the template in the editor.
 */
 
 #sign-up{
-    -fx-background-color: linear-gradient(#065acf,#05a1d8); 
+    -fx-background-color: linear-gradient(#1193b8,#23c1ef,transparent); 
     -fx-font-family: "Verdana";
     -fx-font-size: 15px;
     -fx-font-weight: bold;
@@ -31,7 +31,7 @@ and open the template in the editor.
 }
 
 .my-label_bg{
-    -fx-fill: lightgreen;
+    -fx-fill: azure;
     -fx-stroke: transparent;
     
 }
@@ -123,4 +123,5 @@ and open the template in the editor.
 #i{
     -fx-font-weight: bold;
     -fx-fill: red;
+
 }
