@@ -95,6 +95,14 @@ class User{
         this.country=country;
     }
     
+    public void setGender(String gender)
+    {
+        this.gender=gender;
+    }
+    public void setPin(String pin)
+    {
+        this.pin=pin;
+    }
     //NOtE: date setter() and date field not added yet
     /*
     public void setDob(String dob)
@@ -108,10 +116,20 @@ class User{
     {
          return userId;
     }
+    public String getPin()
+    {
+        return pin;
+    }
     public String getPassword()
     {
         return password;
     }
+
+    public String getGender()
+    {
+        return gender;
+    }
+
     public String getFirstName()
     {
         return firstName;
