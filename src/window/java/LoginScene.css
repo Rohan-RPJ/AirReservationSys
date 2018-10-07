@@ -1,0 +1,44 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Oct 7, 2018, 12:39:24 AM
+    Author     : Rohan
+*/
+
+.button{
+    -fx-font-size: 18px;
+    -fx-font-family: "Consolas";
+    -fx-font-weight: bold;
+    -fx-text-fill: #ffffff;
+    -fx-background-color:linear-gradient(#0731c0,#076dc0);
+    -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );
+    -fx-background-radius: 50em;
+    -fx-opacity: 0.9;
+}
+
+.button:hover{
+    -fx-background-color:linear-gradient(#076dc0,#0731c0);
+    -fx-opacity: 1.0;
+}
+
+#text{
+    -fx-font-size: 25px;
+    -fx-font-weight: bold;
+    -fx-fill:#181818;
+    -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );
+}
+
+#forgot-pw{
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-fill: linear-gradient(#003d89,#1e2e9a);
+}
+
+.text-field{
+    -fx-effect: innershadow(gaussian, rgba(0,0,0,0.8),5,0,0,2);
+    -fx-font-weight: bold;
+    -fx-font-size: 15px;
+}
