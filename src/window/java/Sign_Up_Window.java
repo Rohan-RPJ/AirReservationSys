@@ -6,6 +6,7 @@
 package window.java;
 
 
+import com.sun.prism.paint.Color;
 import java.time.LocalDate;
 import java.util.regex.Pattern;
 import javafx.application.Application;
@@ -46,8 +47,8 @@ import javafx.stage.Stage;
 
 class User{
     //all the fields
-    private String userId, password, firstName, lastName , middleName, gender, dob;
-    private String occupation, country, email, mobileNo, nationality , resAddress,pin;
+    private String userId, password, firstName, lastName , middleName, gender;
+    private String occupation, country, email, mobileNo, nationality , resAddress;
     
     //Setter methods for all the fields  
     public void setUserId(String userId)
@@ -94,18 +95,14 @@ class User{
     {
         this.country=country;
     }
-    public void setGender(String gender)
-    {
-        this.gender=gender;
-    }
+    
+    //NOtE: date setter() and date field not added yet
+    /*
     public void setDob(String dob)
     {
         this.dob=dob;
     }
-    public void setPin(String pin)
-    {
-        this.pin=pin;
-    }
+    */
     
     //getter functions 
     public String getUserId()
@@ -152,18 +149,7 @@ class User{
     {
         return country;
     }
-    public String getGender()
-    {
-        return gender;
-    }
-    public String getDob()
-    {
-        return dob;
-    }
-    public String getPin()
-    {
-        return pin;
-    }
+    
 } 
 
 public class Sign_Up_Window extends Application{
@@ -465,6 +451,16 @@ public class Sign_Up_Window extends Application{
     city_cb.getItems().addAll("Mumbai","New Delhi","Bengaluru","Chennai");
     sign_up_pane.add(city_cb,1,46,3,1);
     
+    //getValue of selected RadioButton
+    /*gender_tg.selectedToggleProperty().addListener(new ChangeListener<Toggle>(){
+                @Override
+                public void changed(ObservableValue<? extends Toggle> ov, Toggle t, Toggle t1)
+                {
+                    RadioButton chk = (RadioButton)t1.getToggleGroup().getSelectedToggle();
+                    System.out.println(chk.getText());
+                }
+            });*/
+    
     //
     Button submit_btn = new Button("Submit Registration");
     sign_up_pane.add(submit_btn,0,50);
@@ -584,7 +580,7 @@ public class Sign_Up_Window extends Application{
                             //return all field values to database
                             
                             // sud = new SignUpData();
-                            System.out.println("User ID:"+getFormDetails().getUserId()+"\n"+occ_cb.getValue().toString());
+                            System.out.println("User ID:"+getFormDetails().getUserId());
                             //System.out.println("Mobile no received is:"+sud.return_mob_no());
                             /*DriverClass dc = new DriverClass();
                             if(dc.getStatus()==-1)
@@ -677,44 +673,13 @@ public class Sign_Up_Window extends Application{
     public User getFormDetails() 
     {
         u.setUserId(user_id_tf.getText()); 
+        return  u;
          
-        u.setPassword(passwd_pf.getText());
+        /*u.setPassword(passwd_pf.getText());
+        return u;*/
         
-        u.setFirstName(f_name_tf.getText());
-   
-        u.setLastName(l_name_tf.getText());
-    
-        u.setMiddleName(m_name_tf.getText());
-    
-        u.setMobileNo(mobile_no_tf.getText());
-    
-        u.setOccupation(occ_cb.getValue().toString());
-    
-        u.setNationality(nationality_cb.getValue().toString());
-    
-        u.setEmail(email_tf.getText());
-    
-        u.setResAddress(flat_tf.getText()+" "+street_tf.getText()+" "+area_tf.getText()
-                +" "+pin_tf.getText()+" "+city_cb.getValue());
-    
-        u.setCountry(country_cb.getValue().toString());
-    
-        //getValue of selected RadioButton
-        gender_tg.selectedToggleProperty().addListener(new ChangeListener<Toggle>(){
-            
-            @Override
-            public void changed(ObservableValue<? extends Toggle> ov, Toggle t, Toggle t1)
-            {
-                RadioButton chk = (RadioButton)t1.getToggleGroup().getSelectedToggle();
-                u.setGender(chk.getText());
-            }
-        });
-    
-        u.setDob(dob_dp.getValue().toString());
-    
-        u.setPin(pin_tf.getText());
         
-        return u;   
-    }  
+    }
+    
 }
 
