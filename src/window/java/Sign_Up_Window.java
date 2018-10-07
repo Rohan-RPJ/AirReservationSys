@@ -44,12 +44,12 @@ import javafx.stage.Stage;
  */
 
 
-/*class User{
+class User{
     //all the fields
-    private String userId, password, firstName, lastName , middleName, gender;
+    private String userId, password, firstName, lastName , middleName, gender, dob;
     private String occupation, country, email, mobileNo, nationality , resAddress;
     
-    //Setter methods for all the fields
+    //Setter methods for all the fields  
     public void setUserId(String userId)
     {
         this.userId=userId;
@@ -94,15 +94,15 @@ import javafx.stage.Stage;
     {
         this.country=country;
     }
-    */
-    //NOtE: date setter() and date field not added yet
-    /*
+    public void setGender(String gender)
+    {
+        this.gender=gender;
+    }
     public void setDob(String dob)
     {
         this.dob=dob;
     }
-    */
-    /*
+    
     //getter functions 
     public String getUserId()
     {
@@ -148,8 +148,15 @@ import javafx.stage.Stage;
     {
         return country;
     }
-    
-} */
+    public String getGender()
+    {
+        return gender;
+    }
+    public String getDob()
+    {
+        return dob;
+    }
+} 
 
 public class Sign_Up_Window extends Application{
     
@@ -160,7 +167,7 @@ public class Sign_Up_Window extends Application{
     public ToggleGroup gender_tg;
     public DatePicker dob_dp;
     public ComboBox occ_cb,country_cb,nationality_cb,city_cb;
-    //private User u = new User();
+    private User u = new User();
     
     @Override
     public void start(Stage sign_up_page) {
@@ -215,7 +222,7 @@ public class Sign_Up_Window extends Application{
 
     
     //
-    Text user_id = new Text("User Id :");
+    Text user_id = new Text("User Id *");
     sign_up_pane.add(user_id,0,6);
     //css effects same as that for text on 1st page 
     user_id.setId("sign-up");  
@@ -230,7 +237,7 @@ public class Sign_Up_Window extends Application{
     sign_up_pane.add(user_id_alert,1,7,5,1);
             
     //
-    Text passwd_txt = new Text("New Password :");
+    Text passwd_txt = new Text("New Password *");
     sign_up_pane.add(passwd_txt,0,9);
     
     //css effects same as that for text on 1st page 
@@ -250,7 +257,7 @@ public class Sign_Up_Window extends Application{
     sign_up_pane.add(passwd_alert,1,10,7,1);
     
     //
-    Text confirm_passwd_txt = new Text("Confirm Password :");
+    Text confirm_passwd_txt = new Text("Confirm Password *");
     sign_up_pane.add(confirm_passwd_txt,0,12);
     
     //css effects same as that for text on 1st page 
@@ -275,7 +282,7 @@ public class Sign_Up_Window extends Application{
     sign_up_pane.add(personal_details_lbl,0,14,2,1);
     
     //
-    Text f_name_txt = new Text("First Name :");
+    Text f_name_txt = new Text("First Name *");
     sign_up_pane.add(f_name_txt,0,16);
     
     //
@@ -284,7 +291,7 @@ public class Sign_Up_Window extends Application{
     sign_up_pane.add(f_name_tf,1,16,3,1);
     
     //
-    Text m_name_txt = new Text("Middle Name :");
+    Text m_name_txt = new Text("Middle Name ");
     sign_up_pane.add(m_name_txt,0,18);
     
     //
@@ -293,7 +300,7 @@ public class Sign_Up_Window extends Application{
     sign_up_pane.add(m_name_tf,1,18,3,1);
     
     //
-    Text l_name_txt = new Text("Last Name :");
+    Text l_name_txt = new Text("Last Name ");
     sign_up_pane.add(l_name_txt,0,20);
     
     //
@@ -302,7 +309,7 @@ public class Sign_Up_Window extends Application{
     sign_up_pane.add(l_name_tf,1,20,3,1);
     
     //
-    Text gender_txt = new Text("Gender :");
+    Text gender_txt = new Text("Gender *");
     sign_up_pane.add(gender_txt,0,22);
     
     //RadioButton for male,female,transgender
@@ -322,7 +329,7 @@ public class Sign_Up_Window extends Application{
     transgender_rbtn.setToggleGroup(gender_tg);
     
     //
-    Text dob_txt = new Text("Date of Birth :");
+    Text dob_txt = new Text("Date of Birth *");
     sign_up_pane.add(dob_txt,0,24);
     
     //
@@ -341,7 +348,7 @@ public class Sign_Up_Window extends Application{
             }
     }); 
     //
-    Text occupation_txt = new Text("Occupation :"); 
+    Text occupation_txt = new Text("Occupation *"); 
     sign_up_pane.add(occupation_txt,0,26);
     
     //
@@ -351,7 +358,7 @@ public class Sign_Up_Window extends Application{
     sign_up_pane.add(occ_cb,1,26,3,1);
     
     //
-    Text country_txt = new Text("Country :");
+    Text country_txt = new Text("Country *");
     sign_up_pane.add(country_txt,0,28);
     
     //
@@ -361,12 +368,9 @@ public class Sign_Up_Window extends Application{
     sign_up_pane.add(country_cb,1,28,3,1);
     
     //
-    Label star = new Label("*");
-    star.setId("i");
-    star.applyCss();
+    
     //
-    Text email_txt = new Text("Email ");
-    email_txt.setText(email_txt.getText().concat(star.getText()+" :")); 
+    Text email_txt = new Text("Email *");
     sign_up_pane.add(email_txt,0,30);
     
     
@@ -376,7 +380,7 @@ public class Sign_Up_Window extends Application{
     sign_up_pane.add(email_tf,1,30,3,1);
     
     //
-    Text mobile_no_txt = new Text("Mobile no. :");
+    Text mobile_no_txt = new Text("Mobile no. *");
     sign_up_pane.add(mobile_no_txt,0,32);
     
     //
@@ -385,7 +389,7 @@ public class Sign_Up_Window extends Application{
     sign_up_pane.add(mobile_no_tf,1,32,3,1);
     
     //
-    Text nationality_txt = new Text("Nationality :");
+    Text nationality_txt = new Text("Nationality *");
     sign_up_pane.add(nationality_txt,0,34);
     
     //
@@ -408,7 +412,7 @@ public class Sign_Up_Window extends Application{
     sign_up_pane.add(res_add_lbl,0,36,3,1);
     
     //flat/door/block no text
-    Text flat_txt = new Text("Flat/Door/Block :");
+    Text flat_txt = new Text("Flat/Door/Block *");
     sign_up_pane.add(flat_txt,0,38);
     
     //
@@ -417,7 +421,7 @@ public class Sign_Up_Window extends Application{
     sign_up_pane.add(flat_tf,1,38,3,1);
     
     //street/lane text
-    Text street_txt = new Text("Street/Lane :");
+    Text street_txt = new Text("Street/Lane ");
     sign_up_pane.add(street_txt,0,40);
     
     //
@@ -426,7 +430,7 @@ public class Sign_Up_Window extends Application{
     sign_up_pane.add(street_tf,1,40,3,1);
     
     //area/locality text
-    Text area_txt = new Text("Area/Locality :");
+    Text area_txt = new Text("Area/Locality ");
     sign_up_pane.add(area_txt,0,42);
     
     //
@@ -435,7 +439,7 @@ public class Sign_Up_Window extends Application{
     sign_up_pane.add(area_tf,1,42,3,1);
     
     //pincode text
-    Text pin_txt = new Text("Pincode :");
+    Text pin_txt = new Text("Pincode *");
     sign_up_pane.add(pin_txt,0,44);
     
     //
@@ -453,31 +457,27 @@ public class Sign_Up_Window extends Application{
     city_cb.getItems().addAll("Mumbai","New Delhi","Bengaluru","Chennai");
     sign_up_pane.add(city_cb,1,46,3,1);
     
-    //getValue of selected RadioButton
-    /*gender_tg.selectedToggleProperty().addListener(new ChangeListener<Toggle>(){
-                @Override
-                public void changed(ObservableValue<? extends Toggle> ov, Toggle t, Toggle t1)
-                {
-                    RadioButton chk = (RadioButton)t1.getToggleGroup().getSelectedToggle();
-                    System.out.println(chk.getText());
-                }
-            });*/
-    
     //
     Button submit_btn = new Button("Submit Registration");
     sign_up_pane.add(submit_btn,0,50);
     submit_btn.setOnAction(new EventHandler<ActionEvent>(){
         
-        private boolean allFilled(TextField... textFields)
+        private boolean allFilled()
         {
-            for(TextField textField : textFields)
+            if(user_id_tf.getText().isEmpty() || passwd_pf.getText().isEmpty() || confirm_passwd_pf.getText().isEmpty())
             {
-                if(textField.getText().trim().isEmpty())
-                {
-                    return true;
-                }
+                return true;
             }
-            return false;
+            else if(f_name_tf.getText().isEmpty() || email_tf.getText().isEmpty() || mobile_no_tf.getText().isEmpty())
+            {
+                return true;
+            }
+            else if(flat_tf.getText().isEmpty() || pin_tf.getText().isEmpty())
+            {
+                return true;
+            }
+            else
+                return false;
         }
         
         @Override
@@ -490,7 +490,7 @@ public class Sign_Up_Window extends Application{
                 alert.setTitle("Incomplete Details"); 
                 alert.setContentText("Please fill all mandatory details");
                 alert.show();
-            }
+            }  
             else if(gender_tg.getSelectedToggle()==null || dob_dp.getValue()==null || occ_cb.getValue()==null || country_cb.getValue()==null 
                     || city_cb.getValue()==null || nationality_cb.getValue()==null)
             {
@@ -528,8 +528,8 @@ public class Sign_Up_Window extends Application{
                         + " special characters(@,#,$)");
                 warning.show();
             }
-            else if(!(Pattern.matches("[a-zA-Z]+", f_name_tf.getText()) && Pattern.matches("[a-zA-Z]+", m_name_tf.getText())
-                    && Pattern.matches("[a-zA-Z]+", l_name_tf.getText())))
+            else if(!(Pattern.matches("[a-zA-Z]+", f_name_tf.getText())) && (!Pattern.matches("[a-zA-Z]+", m_name_tf.getText()) || m_name_tf.getText()==null)
+                    && (!Pattern.matches("[a-zA-Z]+", l_name_tf.getText()) || l_name_tf.getText()==null))
             {
                 Alert warning = new Alert(Alert.AlertType.WARNING,"Re-Enter Name");
                 warning.setTitle("Re-enter Name"); 
@@ -576,7 +576,7 @@ public class Sign_Up_Window extends Application{
                             //return all field values to database
                             
                             // sud = new SignUpData();
-                            //System.out.println("User ID:"+getFormDetails().getUserId());
+                            System.out.println("User ID:"+getFormDetails().getUserId()+"\n"+occ_cb.getValue().toString());
                             //System.out.println("Mobile no received is:"+sud.return_mob_no());
                             /*DriverClass dc = new DriverClass();
                             if(dc.getStatus()==-1)
@@ -605,7 +605,7 @@ public class Sign_Up_Window extends Application{
                     }       
                 }); 
                 }
-               
+               System.out.println(user_id_tf.getText());  
             }
 
     });
@@ -666,10 +666,46 @@ public class Sign_Up_Window extends Application{
     sign_up_page.show();
     }
     
-    /*public User getFormDetails()
+    public User getFormDetails() 
     {
-        u.setUserId(user_id_tf.getText());
-        return  u;
-    }*/
+        u.setUserId(user_id_tf.getText()); 
+         
+        u.setPassword(passwd_pf.getText());
+        
+        u.setFirstName(f_name_tf.getText());
+   
+        u.setLastName(l_name_tf.getText());
+    
+        u.setMiddleName(m_name_tf.getText());
+    
+        u.setMobileNo(mobile_no_tf.getText());
+    
+        u.setOccupation(occ_cb.getValue().toString());
+    
+        u.setNationality(nationality_cb.getValue().toString());
+    
+        u.setEmail(email_tf.getText());
+    
+        u.setResAddress(flat_tf.getText()+" "+street_tf.getText()+" "+area_tf.getText()
+                +" "+pin_tf.getText()+" "+city_cb.getValue());
+    
+        u.setCountry(country_cb.getValue().toString());
+    
+        //getValue of selected RadioButton
+        gender_tg.selectedToggleProperty().addListener(new ChangeListener<Toggle>(){
+            
+            @Override
+            public void changed(ObservableValue<? extends Toggle> ov, Toggle t, Toggle t1)
+            {
+                RadioButton chk = (RadioButton)t1.getToggleGroup().getSelectedToggle();
+                u.setGender(chk.getText());
+            }
+        });
+    
+        u.setDob(dob_dp.getValue().toString());
+    
+        
+        return u;   
+    }  
 }
 
