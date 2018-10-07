@@ -47,7 +47,7 @@ import javafx.stage.Stage;
 class User{
     //all the fields
     private String userId, password, firstName, lastName , middleName, gender, dob;
-    private String occupation, country, email, mobileNo, nationality , resAddress;
+    private String occupation, country, email, mobileNo, nationality , resAddress,pin;
     
     //Setter methods for all the fields  
     public void setUserId(String userId)
@@ -102,6 +102,10 @@ class User{
     {
         this.dob=dob;
     }
+    public void setPin(String pin)
+    {
+        this.pin=pin;
+    }
     
     //getter functions 
     public String getUserId()
@@ -155,6 +159,10 @@ class User{
     public String getDob()
     {
         return dob;
+    }
+    public String getPin()
+    {
+        return pin;
     }
 } 
 
@@ -704,6 +712,7 @@ public class Sign_Up_Window extends Application{
     
         u.setDob(dob_dp.getValue().toString());
     
+        u.setPin(pin_tf.getText());
         
         return u;   
     }  
