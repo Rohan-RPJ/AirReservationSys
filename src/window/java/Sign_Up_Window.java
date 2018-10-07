@@ -7,6 +7,7 @@ package window.java;
 
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.regex.Pattern;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
@@ -46,9 +47,9 @@ import javafx.stage.Stage;
 
 class User{
     //all the fields
-    private String userId, password, firstName, lastName , middleName, gender;
+    private String userId, password, firstName, lastName , middleName, gender, pin;
     private String occupation, country, email, mobileNo, nationality , resAddress;
-    
+    private String dob;
     //Setter methods for all the fields
     public void setUserId(String userId)
     {
@@ -104,12 +105,12 @@ class User{
         this.pin=pin;
     }
     //NOtE: date setter() and date field not added yet
-    /*
+    
     public void setDob(String dob)
     {
         this.dob=dob;
     }
-    */
+    
     
     //getter functions 
     public String getUserId()
@@ -166,7 +167,10 @@ class User{
     {
         return country;
     }
-    
+    public String getDob()
+    {
+        return dob;
+    }
 } 
 
 public class Sign_Up_Window extends Application{
@@ -595,6 +599,22 @@ public class Sign_Up_Window extends Application{
                             
                             // sud = new SignUpData();
                             System.out.println("User ID:"+getFormDetails().getUserId());
+                            System.out.println("Pass:"+getFormDetails().getPassword());
+                            System.out.println("First Name:"+getFormDetails().getFirstName());
+                            System.out.println("Middle Name:"+getFormDetails().getMiddleName());
+                            System.out.println("Last name:"+getFormDetails().getLastName());
+                            System.out.println("Mobile no"+getFormDetails().getMobileNo());
+                            System.out.println("Email:"+getFormDetails().getEmail());
+                            System.out.println("Gender:"+getFormDetails().getGender());
+                            System.out.println("Residential Address:"+getFormDetails().getResAddress());
+                            System.out.println("Pincode:"+getFormDetails().getPin());
+                            System.out.println("Nationality:"+getFormDetails().getNationality());
+                            System.out.println("Country:"+getFormDetails().getCountry());
+                            System.out.println("Occupation:"+getFormDetails().getOccupation());
+                            System.out.println("Date of Birth:"+getFormDetails().getDob());
+                            
+                            
+                            
                             //System.out.println("Mobile no received is:"+sud.return_mob_no());
                             /*DriverClass dc = new DriverClass();
                             if(dc.getStatus()==-1)
@@ -703,6 +723,11 @@ public class Sign_Up_Window extends Application{
 
         RadioButton gender= (RadioButton)gender_tg.getSelectedToggle();
         u.setGender(gender.getText());
+
+        u.setNationality(nationality_cb.getValue().toString());
+        u.setCountry(country_cb.getValue().toString());
+        u.setOccupation(occ_cb.getValue().toString());
+        u.setDob(dob_dp.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
         return  u;
     }
 }
