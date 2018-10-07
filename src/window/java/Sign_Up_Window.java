@@ -44,7 +44,7 @@ import javafx.stage.Stage;
  */
 
 
-/*class User{
+class User{
     //all the fields
     private String userId, password, firstName, lastName , middleName, gender;
     private String occupation, country, email, mobileNo, nationality , resAddress;
@@ -94,7 +94,7 @@ import javafx.stage.Stage;
     {
         this.country=country;
     }
-    */
+    
     //NOtE: date setter() and date field not added yet
     /*
     public void setDob(String dob)
@@ -102,7 +102,7 @@ import javafx.stage.Stage;
         this.dob=dob;
     }
     */
-    /*
+    
     //getter functions 
     public String getUserId()
     {
@@ -149,7 +149,7 @@ import javafx.stage.Stage;
         return country;
     }
     
-} */
+} 
 
 public class Sign_Up_Window extends Application{
     
@@ -160,8 +160,8 @@ public class Sign_Up_Window extends Application{
     public ToggleGroup gender_tg;
     public DatePicker dob_dp;
     public ComboBox occ_cb,country_cb,nationality_cb,city_cb;
-    //private User u = new User();
-    
+    private User u = new User();
+
     @Override
     public void start(Stage sign_up_page) {
     
@@ -576,7 +576,7 @@ public class Sign_Up_Window extends Application{
                             //return all field values to database
                             
                             // sud = new SignUpData();
-                            //System.out.println("User ID:"+getFormDetails().getUserId());
+                            System.out.println("User ID:"+getFormDetails().getUserId());
                             //System.out.println("Mobile no received is:"+sud.return_mob_no());
                             /*DriverClass dc = new DriverClass();
                             if(dc.getStatus()==-1)
@@ -650,13 +650,8 @@ public class Sign_Up_Window extends Application{
     //
     Scene sign_up_scene = new Scene(rootPane,1000,600);
             
-<<<<<<< HEAD
-  new_passwd_scene.getStylesheets().add(Sign_Up_Window.class.getResource("Sign_Up.css").toExternalForm());
-    sign_up_page.setScene(new_passwd_scene);
-=======
     sign_up_scene.getStylesheets().add(Sign_Up_Window.class.getResource("Sign_Up.css").toExternalForm());
     sign_up_page.setScene(sign_up_scene);
->>>>>>> a529f206be884fb7aff5d342d8fd202e3d61d948
     
     //setting primaryStage to the size of screen of pc
     Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
@@ -670,11 +665,27 @@ public class Sign_Up_Window extends Application{
         
     sign_up_page.show();
     }
-    
-    /*public User getFormDetails()
+    //chal jyafa nahi tha xd l
+    public User getFormDetails()
     {
         u.setUserId(user_id_tf.getText());
+        u.setPassword(passwd_pf.getText());
+
+        u.setFirstName(f_name_tf.getText());
+        u.setMiddleName(m_name_tf.getText());
+        u.setLastName(l_name_tf.getText());
+        //storing the address in one line and concating the fields into one line
+        String address= flat_tf.getText()+","+ street_tf.getText()+","+area_tf.getText();
+        u.setResAddress(address);
+
+        u.setMobileNo(mobile_no_tf.getText());
+        u.setEmail(email_tf.getText());
+        
+        u.setPin(pin_tf.getText());
+
+        RadioButton gender= (RadioButton)gender_tg.getSelectedToggle();
+        u.setGender(gender.getText());
         return  u;
-    }*/
+    }
 }
 
