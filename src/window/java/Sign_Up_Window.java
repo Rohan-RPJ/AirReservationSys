@@ -628,7 +628,7 @@ public class Sign_Up_Window extends Application{
     //DriverClass
     Scene new_passwd_scene = new Scene(rootPane,1000,600);
             
-//    new_passwd_scene.getStylesheets().add(Sign_Up_Window.class.getResource("Sign_Up.css").toExternalForm());
+  new_passwd_scene.getStylesheets().add(Sign_Up_Window.class.getResource("Sign_Up.css").toExternalForm());
     sign_up_page.setScene(new_passwd_scene);
     
     //setting primaryStage to the size of screen of pc
