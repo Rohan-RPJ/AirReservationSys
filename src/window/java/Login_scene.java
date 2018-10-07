@@ -12,6 +12,7 @@ import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.PasswordField;
@@ -107,6 +108,16 @@ public class Login_scene extends Application{
         signin_btn.setMaxWidth(350); 
         GridPane.setHalignment(signin_btn, HPos.CENTER); 
         sign_in_pane.add(signin_btn, 4, 17, 2, 2); 
+        signin_btn.setOnAction(e -> {
+            
+            if(username_tf.getText().isEmpty() || passwd_pf.getText().isEmpty())
+            {
+                Alert warning = new Alert(Alert.AlertType.WARNING);
+                warning.setTitle("Warning"); 
+                warning.setContentText("Both fields are mandatory"); 
+                warning.show();
+            }
+        });
         
         //forgot_password?
         Hyperlink forgot_pw = new Hyperlink("(forgot password ?)");
@@ -152,5 +163,10 @@ public class Login_scene extends Application{
         
         //
         login_scene.getStylesheets().add(Window.class.getResource("LoginScene.css").toExternalForm());
+    }
+    
+    public static void main(String args[])
+    {
+        launch(args);
     }
 }
