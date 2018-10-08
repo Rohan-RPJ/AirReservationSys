@@ -6,6 +6,7 @@
 package window.java;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import javafx.application.Application;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -24,7 +25,6 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -33,10 +33,97 @@ import javafx.stage.Stage;
  *
  * @author Rohan
  */
+
+class Traveller{
+    //all the fields
+    private String trip, fromCity, toCity, classType, departDate, returnDate;
+    private String adults, childs, infants;
+    public int adult, child, infant;
+    //Setter methods for all the fields
+
+    public void setTrip(String trip)
+    {
+        this.trip=trip;
+    }
+    public void setFromCity(String fromCity)
+    {
+        this.fromCity=fromCity;
+    }
+    public void setToCity(String toCity)
+    {
+        this.toCity=toCity;
+    }
+    public void setClassType(String classType)
+    {
+        this.classType=classType;
+    }
+    public void setDepartDate(String departDate)
+    {
+        this.departDate=departDate;
+    }
+    public void setReturnDate(String returnDate)
+    {
+        this.returnDate=returnDate;
+    }
+    public void setAdults(String adults)
+    {
+        this.adults=adults;
+    }
+    public void setChilds(String childs)
+    {
+        this.childs=childs;
+    }
+    public void setInfants(String infants)
+    {
+        this.infants=infants;
+    }
+    
+    //getter functions 
+    public String getTrip()
+    {
+         return trip;
+    }
+    public String getFromCity()
+    {
+        return fromCity;
+    }
+    public String getToCity()
+    {
+        return toCity;
+    }
+
+    public String getClassType()
+    {
+        return classType;
+    }
+
+    public String getDepartDate()
+    {
+        return departDate;
+    }
+    public String getReturnDate()
+    {
+        return returnDate;
+    }
+    public String getAdults()
+    {
+        return adults;
+    }
+    public String getChilds()
+    {
+        return childs;
+    }
+    public String getInfants()
+    {
+        return infants;
+    }
+} 
+
 public class Window extends Application {
     
     //Decalration of fields
     public RadioButton one_trip_btn,round_trip_btn;
+    public ToggleGroup trip_tg;
     public ComboBox from_city_list,to_city_list,class_list;
     public DatePicker depart_date,return_date;
     public Spinner adult_no,child_no,infant_no;
@@ -44,6 +131,7 @@ public class Window extends Application {
     public Scene scene;
     public Image logo;
     public GridPane page_1;
+    private Traveller t = new Traveller(); 
     
     @Override
     public void start(Stage primaryStage) {
@@ -90,9 +178,9 @@ public class Window extends Application {
         round_trip_btn = new RadioButton("Round Trip");
         
         //ToggleGroup to select any one option for RadioButtons
-        ToggleGroup group = new ToggleGroup();
-        one_trip_btn.setToggleGroup(group);
-        round_trip_btn.setToggleGroup(group);
+        trip_tg = new ToggleGroup();
+        one_trip_btn.setToggleGroup(trip_tg);
+        round_trip_btn.setToggleGroup(trip_tg);
         
         //Setting Title for radioButtons
         Text select_trip_text = new Text("Select Your Trip");
@@ -241,10 +329,6 @@ public class Window extends Application {
         SpinnerValueFactory infant_range = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,4,0);
         infant_no.setValueFactory(infant_range);
         page_1.add(infant_no, 2, 17);
-        
-        search_btn = new Button("Search");
-        search_btn.setMaxSize(250, 50);
-        page_1.add(search_btn,1,23,2,1); 
   
         //
         Login_scene ls = new Login_scene();
@@ -280,6 +364,14 @@ public class Window extends Application {
         });
     
         
+        search_btn = new Button("Search");
+        search_btn.setMaxSize(250, 50);
+        page_1.add(search_btn,1,23,2,1); 
+        search_btn.setOnAction(e->{
+            
+            //Make your Driver Class Here
+            
+        });
         
         
         ScrollPane rootPane = new ScrollPane();
@@ -324,17 +416,28 @@ public class Window extends Application {
         launch(args);
     }
     
-    
-    /*private static boolean allField(TextField... textFields)
+    public Traveller getFlightDetails()
     {
-        for(TextField textField : textFields)
-        {
-            if(textField.getText().trim().isEmpty())
-            {
-                return false;
-            }
-        }
-        return true;
-    }*/
-  
+        
+        RadioButton trip = (RadioButton)trip_tg.getSelectedToggle();
+        t.setTrip(trip.getText());
+    
+        t.setFromCity(from_city_list.getValue().toString());
+    
+        t.setToCity(to_city_list.getValue().toString());
+    
+        t.setClassType(class_list.getValue().toString());
+
+        t.setDepartDate(depart_date.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+    
+        t.setReturnDate(return_date.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+    
+        t.setAdults(adult_no.getValue().toString());
+    
+        t.setChilds(child_no.getValue().toString());
+    
+        t.setInfants(infant_no.getValue().toString());
+        
+        return t;
+    }
 }
