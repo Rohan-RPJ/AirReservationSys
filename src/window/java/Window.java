@@ -371,7 +371,7 @@ public class Window extends Application {
         //search button ActionEvent
         search_btn.setOnAction(e->{
             
-            DashBoard db = new DashBoard();
+            AllDetails db = new AllDetails();
             db.adults = getFlightDetails().getAdults();
             db.childs = getFlightDetails().getChilds();
             db.infants = getFlightDetails().getInfants();
