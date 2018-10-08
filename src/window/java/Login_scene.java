@@ -126,6 +126,8 @@ public class Login_scene extends Application{
             else{
                 hello_user_lbl = new Label("Hello "/*+s.getf_name()*/+"!");
                 hello_user_lbl.setStyle("-fx-font-size: 13px; -fx-text-fill: green");
+                w.primaryStage.setScene(scene);
+                
                 w.page_1.add(hello_user_lbl, 0, 27);
                 
                 w.sign_in_btn.setDisable(true); 
