@@ -35,7 +35,7 @@ and open the template in the editor.
     -fx-stroke: transparent;
     
 }
-.label {
+.label{
     -fx-text-fill: linear-gradient(#003d89,#1e2e9a);
     -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );
 }
@@ -120,8 +120,3 @@ and open the template in the editor.
     -fx-text-fill: white;
 }
 
-#i{
-    -fx-font-weight: bold;
-    -fx-fill: red;
-
-}
