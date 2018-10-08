@@ -26,7 +26,7 @@ and open the template in the editor.
 
 #text{
     -fx-font-size: 25px;
-    -fx-font-weight: bold;
+    /*-fx-font-weight: bold;*/
     -fx-fill:#181818;
     -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );
 }
@@ -41,4 +41,17 @@ and open the template in the editor.
     -fx-effect: innershadow(gaussian, rgba(0,0,0,0.8),5,0,0,2);
     -fx-font-weight: bold;
     -fx-font-size: 15px;
+}
+
+.scroll-bar .increment-button{
+    -fx-padding: 5px;
+}
+
+.scroll-bar .decrement-button{
+    -fx-padding: 5px;
+}
+
+.scroll-bar{
+    -fx-background-color: #cccccc;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 8, 0.0 , 0 , 0 );
 }
