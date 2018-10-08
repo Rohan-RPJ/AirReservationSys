@@ -129,7 +129,7 @@ public class Login_scene extends Application{
                 w.primaryStage.setScene(scene);
                 w.page_1.setVisible(true);
                 w.page_1.add(hello_user_lbl, 0, 27);
-                
+                w.sign_in_btn,setVisible(false);
                 w.sign_in_btn.setDisable(true); 
                 w.page_1.add(w.sign_out_btn, 0, 26); 
             }
