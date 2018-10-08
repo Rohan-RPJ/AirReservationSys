@@ -15,6 +15,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -37,7 +38,8 @@ public class Login_scene extends Application{
     public Button signup_btn,signin_btn,close_btn;
     public TextField username_tf;
     public PasswordField passwd_pf;
- 
+    public Label hello_user_lbl;
+    
     @Override
     public void start(Stage primaryStage)
     {
@@ -108,8 +110,12 @@ public class Login_scene extends Application{
         signin_btn.setMaxWidth(350); 
         GridPane.setHalignment(signin_btn, HPos.CENTER); 
         sign_in_pane.add(signin_btn, 4, 17, 2, 2); 
+        
+        //SignIn button ActionEvent
         signin_btn.setOnAction(e -> {
             
+            //DriverClass dc = new DriverClass();
+            //User u =new User();
             if(username_tf.getText().isEmpty() || passwd_pf.getText().isEmpty())
             {
                 Alert warning = new Alert(Alert.AlertType.WARNING);
@@ -117,15 +123,23 @@ public class Login_scene extends Application{
                 warning.setContentText("Both fields are mandatory"); 
                 warning.show();
             }
+            else{
+                hello_user_lbl = new Label("Hello "/*+s.getf_name()*/+"!");
+                hello_user_lbl.setStyle("-fx-font-size: 13px; -fx-text-fill: green");
+                w.page_1.add(hello_user_lbl, 0, 27);
+                
+                w.sign_in_btn.setDisable(true); 
+                w.page_1.add(w.sign_out_btn, 0, 26); 
+            }
         });
         
-        //forgot_password?
+        //forgot_password? 
         Hyperlink forgot_pw = new Hyperlink("(forgot password ?)");
         sign_in_pane.add(forgot_pw,6,22,3,1);
         GridPane.setHalignment(forgot_pw, HPos.RIGHT); 
         forgot_pw.setId("forgot-pw");
         
-        //
+        //forgotpassword actionEvent
         forgot_pw.setOnAction(new EventHandler<ActionEvent>(){
  
             @Override
@@ -143,7 +157,8 @@ public class Login_scene extends Application{
         signup_btn.setMaxWidth(150); 
         GridPane.setHalignment(signup_btn, HPos.CENTER);
         sign_in_pane.add(signup_btn, 2, 22, 2, 1);
-        //
+        
+        //SignUp button ActionEvent
         signup_btn.setOnAction(e->{
            Stage sign_up_page = new Stage();
            Sign_Up_Window spw = new Sign_Up_Window();
@@ -155,6 +170,7 @@ public class Login_scene extends Application{
         GridPane.setHalignment(close_btn, HPos.RIGHT);
         sign_in_pane.add(close_btn, 8, 0);
         
+        //Close button ActionEvent
         close_btn.setOnAction((ActionEvent e) -> {
             w.start(primaryStage); 
             primaryStage.setScene(w.scene);
