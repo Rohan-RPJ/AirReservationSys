@@ -7,6 +7,7 @@
 package window.java;
 
 
+import driver.DriverClass;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.regex.Pattern;
@@ -57,7 +58,7 @@ public class Sign_Up_Window extends Application{
     public DatePicker dob_dp;
     public ComboBox occ_cb,country_cb,nationality_cb,city_cb;
     private User u = new User();
-
+    private DriverClass dc;
     @Override
     public void start(Stage sign_up_page) {
     
@@ -490,30 +491,48 @@ public class Sign_Up_Window extends Application{
                             
                             
                             //System.out.println("Mobile no received is:"+sud.return_mob_no());
-                            /*DriverClass dc = new DriverClass();
-                            if(dc.getStatus()==-1)
+                             dc = new DriverClass();
+                             dc.setUserData(getFormDetails());
+                             dc.checkRecord();
+                             dc.close();
+                             System.out.println("Status flag for sign-up"+dc.getStatus());
+                            if(dc.getStatus()==0)
                             {
                                 Alert mob_no_exist = new Alert(Alert.AlertType.ERROR);
                                 mob_no_exist.setTitle("Error"); 
                                 mob_no_exist.setContentText("Mobile number already exists\n"
                                         + "Please add a new number");
                             }
-                            if(dc.getStatus==1)*/
+                            else if(dc.getStatus()==-1)
+                            {
+                                Alert mob_no_exist = new Alert(Alert.AlertType.ERROR);
+                                mob_no_exist.setTitle("Error"); 
+                                mob_no_exist.setContentText("User ID already exists\n"
+                                        + "Please add a other user");
+                            }
+                            else if(dc.getStatus()==-2)
+                            {
+                                Alert mob_no_exist = new Alert(Alert.AlertType.ERROR);
+                                mob_no_exist.setTitle("Error"); 
+                                mob_no_exist.setContentText("Email already exists\n"
+                                        + "Please add a new email");
+                            }
+                            if(dc.getStatus()==1)
                             
-                            
+                            {
                             sign_up_page.close();
                             Alert registered = new Alert(Alert.AlertType.INFORMATION);
                             registered.setTitle("Registered Successfully");
                             registered.setContentText("Thankyou for Registration"); 
                             registered.show();
-                            
+                            }
                       
                         }
-                        /*else if(confirmation.getResult()==ButtonType.NO)
+                        else if(confirmation.getResult()==ButtonType.NO)
                         {
                             passwd_pf.setText("");    
                             confirm_passwd_pf.setText(""); 
-                        }*/ 
+                        } 
                     }       
                 }); 
                 }
