@@ -127,14 +127,19 @@ public class Window extends Application {
     public ComboBox from_city_list,to_city_list,class_list;
     public DatePicker depart_date,return_date;
     public Spinner adult_no,child_no,infant_no;
-    public Button search_btn;
+    public Button search_btn, sign_in_btn, sign_up_btn, sign_out_btn;
     public Scene scene;
     public Image logo;
     public GridPane page_1;
+    
     private Traveller t = new Traveller(); 
     
     @Override
     public void start(Stage primaryStage) {
+        
+        Login_scene ls = new Login_scene();
+        ls.start(primaryStage);
+        
         //setting full screen 
         //primaryStage.setFullScreen(true); 
         
@@ -329,13 +334,10 @@ public class Window extends Application {
         SpinnerValueFactory infant_range = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,4,0);
         infant_no.setValueFactory(infant_range);
         page_1.add(infant_no, 2, 17);
-  
-        //
-        Login_scene ls = new Login_scene();
-        ls.start(primaryStage);
+
         
-        //
-        Button sign_in_btn = new Button("Sign in");
+        //signIn button actionevent
+        sign_in_btn = new Button("Sign in");
         page_1.add(sign_in_btn, 0,26);
         sign_in_btn.setOnAction(e ->{
             
@@ -350,13 +352,11 @@ public class Window extends Application {
         }); 
         
         //
-        Button sign_up_btn = new Button("Sign up");
-        
-        //
+        sign_up_btn = new Button("Sign up");
         page_1.add(sign_up_btn, 2, 26);
         GridPane.setHalignment(sign_up_btn, HPos.RIGHT); 
         
-        //
+        //signUp btn actionEvent
         sign_up_btn.setOnAction(e->{
            Stage sign_up_page = new Stage();
            Sign_Up_Window spw = new Sign_Up_Window();
@@ -367,12 +367,28 @@ public class Window extends Application {
         search_btn = new Button("Search");
         search_btn.setMaxSize(250, 50);
         page_1.add(search_btn,1,23,2,1); 
+        
+        //search button ActionEvent
         search_btn.setOnAction(e->{
             
-            //Make your Driver Class Here
+            DashBoard db = new DashBoard();
+            db.adults = getFlightDetails().getAdults();
+            db.childs = getFlightDetails().getChilds();
+            db.infants = getFlightDetails().getInfants();
+            db.start(primaryStage); 
+            primaryStage.setScene(db.s);
+            page_1.setVisible(false);
             
         });
         
+        sign_out_btn = new Button("Sign Out");
+        //sign_out btn actionEvent
+        sign_out_btn.setOnAction(e->{
+            
+            ls.hello_user_lbl.setDisable(true); 
+            sign_in_btn.setDisable(false); 
+            
+        });
         
         ScrollPane rootPane = new ScrollPane();
         rootPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
