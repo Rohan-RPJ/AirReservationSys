@@ -386,6 +386,8 @@ public class Window extends Application {
         sign_out_btn.setOnAction(e->{
             
             ls.hello_user_lbl.setDisable(true); 
+            sign_out_btn.setVisible(false);
+            sign_out_btn.setDisable(true);
             sign_in_btn.setDisable(false); 
             
         });
