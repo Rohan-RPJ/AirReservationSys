@@ -151,7 +151,8 @@ public class AllDetails extends Application{
         Label pass_detail_lbl = new Label("Passenger Details");
         pass_detail_lbl.setStyle("-fx-font-size: 30px");
         center_gp.add(pass_detail_lbl, 0, 0, 2, 1);
-
+      
+      //  Line line = new Line(0, 0, , startY);
             
         int i=0,j=1;
         //Passenger Details of no. of adults selected 
