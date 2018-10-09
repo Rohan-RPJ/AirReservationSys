@@ -7,6 +7,10 @@
 package window.java;
 
 
+<<<<<<< HEAD
+=======
+import driver.DriverClass;
+>>>>>>> ee08b227aeb7fb98a8bcb71ec5ef93305afde217
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.regex.Pattern;
@@ -38,7 +42,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import javafx.stage.Stage; 
-
+import window.java.User;
 
 /**
  *
@@ -46,129 +50,6 @@ import javafx.stage.Stage;
  */
 
 
-class User{
-    //all the fields
-    private String userId, password, firstName, lastName , middleName, gender, pin;
-    private String occupation, country, email, mobileNo, nationality , resAddress;
-    private String dob;
-    //Setter methods for all the fields
-
-    public void setUserId(String userId)
-    {
-        this.userId=userId;
-    }
-    public void setPassword(String password)
-    {
-        this.password=password;
-    }
-    public void setFirstName(String firstName)
-    {
-        this.firstName=firstName;
-    }
-    public void setLastName(String lastName)
-    {
-        this.lastName=lastName;
-    }
-    public void setMiddleName(String middleName)
-    {
-        this.middleName=middleName;
-    }
-    public void setMobileNo(String mobileNo)
-    {
-        this.mobileNo=mobileNo;
-    }
-    public void setOccupation(String occupation)
-    {
-        this.occupation=occupation;
-    }
-    public void setNationality(String nationality)
-    {
-        this.nationality=nationality;
-    }
-    public void setEmail(String email)
-    {
-        this.email=email;
-    }
-    public void setResAddress(String resAddress)
-    {
-        this.resAddress=resAddress;
-    }
-    public void setCountry(String country)
-    {
-        this.country=country;
-    }
-    public void setGender(String gender)
-    {
-        this.gender=gender;
-    }
-    public void setPin(String pin)
-    {
-        this.pin=pin;
-    }
-    public void setDob(String dob)
-    {
-        this.dob=dob;
-    }
-    //getter functions 
-    public String getUserId()
-    {
-         return userId;
-    }
-    public String getPin()
-    {
-        return pin;
-    }
-    public String getPassword()
-    {
-        return password;
-    }
-
-    public String getGender()
-    {
-        return gender;
-    }
-
-    public String getFirstName()
-    {
-        return firstName;
-    }
-    public String getLastName()
-    {
-        return lastName;
-    }
-    public String getMiddleName()
-    {
-        return middleName;
-    }
-    public String getMobileNo()
-    {
-        return mobileNo;
-    }
-    public String getOccupation()
-    {
-        return occupation;
-    }
-    public String getNationality()
-    {
-        return nationality;
-    }
-    public String getEmail()
-    {
-        return email;
-    }
-    public String getResAddress()
-    {
-        return resAddress;
-    }
-    public String getCountry()
-    {
-        return country;
-    }
-    public String getDob()
-    {
-        return dob;
-    }
-} 
 
 public class Sign_Up_Window extends Application{
     
@@ -180,6 +61,7 @@ public class Sign_Up_Window extends Application{
     public DatePicker dob_dp;
     public ComboBox occ_cb,country_cb,nationality_cb,city_cb;
     private User u = new User();
+    private DriverClass dc;
     @Override
     public void start(Stage sign_up_page) {
     
@@ -215,7 +97,6 @@ public class Sign_Up_Window extends Application{
     
     //css effects for label
     sign_up_scene_title.setId("text");
-      
     //rectangle as background for acc_details label
     Rectangle acc_detail_text_bg = new Rectangle();
     //acc_detail_text_bg.setFill(Color.LIGHTBLUE);
@@ -464,7 +345,7 @@ public class Sign_Up_Window extends Application{
     city_cb.setPromptText("----select city/town----");
     city_cb.getItems().addAll("Mumbai","New Delhi","Bengaluru","Chennai");
     sign_up_pane.add(city_cb,1,46,3,1);
-    
+
     //
     Button submit_btn = new Button("Submit Registration");
     sign_up_pane.add(submit_btn,0,50);
@@ -577,6 +458,9 @@ public class Sign_Up_Window extends Application{
                     public void handle(DialogEvent event) {
                         if(confirmation.getResult()==ButtonType.YES)
                         {   
+                            /*Label registered = new Label("Registered Successfully"); 
+                            registered.setId("register"); 
+                            sign_up_pane.add(registered,0,53,1,2);*/
                             
                             //return all field values to database
                             
@@ -596,36 +480,56 @@ public class Sign_Up_Window extends Application{
                             System.out.println("Occupation:"+getFormDetails().getOccupation());
                             System.out.println("Date of Birth:"+getFormDetails().getDob());
                             
-             
+                            
+                            
                             //System.out.println("Mobile no received is:"+sud.return_mob_no());
-                            /*DriverClass dc = new DriverClass();
-                            if(dc.getStatus()==-1)
+                             dc = new DriverClass();
+                             dc.setUserData(getFormDetails());
+                             dc.checkRecord();
+                             dc.close();
+                             System.out.println("Status flag for sign-up"+dc.getStatus());
+                            if(dc.getStatus()==0)
                             {
                                 Alert mob_no_exist = new Alert(Alert.AlertType.ERROR);
                                 mob_no_exist.setTitle("Error"); 
                                 mob_no_exist.setContentText("Mobile number already exists\n"
                                         + "Please add a new number");
                             }
-                            if(dc.getStatus==1)*/
+                            else if(dc.getStatus()==-1)
+                            {
+                                Alert mob_no_exist = new Alert(Alert.AlertType.ERROR);
+                                mob_no_exist.setTitle("Error"); 
+                                mob_no_exist.setContentText("User ID already exists\n"
+                                        + "Please add a other user");
+                            }
+                            else if(dc.getStatus()==-2)
+                            {
+                                Alert mob_no_exist = new Alert(Alert.AlertType.ERROR);
+                                mob_no_exist.setTitle("Error"); 
+                                mob_no_exist.setContentText("Email already exists\n"
+                                        + "Please add a new email");
+                            }
+                            if(dc.getStatus()==1)
                             
-                            
+                            {
                             sign_up_page.close();
                             Alert registered = new Alert(Alert.AlertType.INFORMATION);
                             registered.setTitle("Registered Successfully");
                             registered.setContentText("Thankyou for Registration"); 
                             registered.show();
-                            
+                            }
                       
                         }
-                        /*else if(confirmation.getResult()==ButtonType.NO)
+                        else if(confirmation.getResult()==ButtonType.NO)
                         {
                             passwd_pf.setText("");    
                             confirm_passwd_pf.setText(""); 
-                        }*/ 
+                        } 
                     }       
                 }); 
                 }
-             }
+               
+            }
 
     });
     
@@ -683,7 +587,8 @@ public class Sign_Up_Window extends Application{
     sign_up_page.setHeight(primaryScreenBounds.getHeight());
         
     sign_up_page.show();
-    }    //chal jyafa nahi tha xd l
+	}
+	
     public User getFormDetails()
     {
         u.setUserId(user_id_tf.getText());
