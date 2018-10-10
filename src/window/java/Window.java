@@ -12,6 +12,7 @@ import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene; 
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button; 
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DateCell;
@@ -131,7 +132,7 @@ public class Window extends Application {
     public Scene scene;
     public Image logo;
     public GridPane page_1;
-    
+    public Label hello_user_lbl;
     private Traveller t = new Traveller(); 
     
     @Override
@@ -335,19 +336,25 @@ public class Window extends Application {
         infant_no.setValueFactory(infant_range);
         page_1.add(infant_no, 2, 17);
 
-        
+        //background for login scene
+        Image bg = new Image(Window.class.getResourceAsStream("plane.jpg")); 
+        ImageView bg_view = new ImageView(bg);
+        ls.stackpane.getChildren().addAll(bg_view,ls.sign_in_pane);
+            
         //signIn button actionevent
         sign_in_btn = new Button("Sign in");
         page_1.add(sign_in_btn, 0,26);
         sign_in_btn.setOnAction(e ->{
             
-            Image bg = new Image(Window.class.getResourceAsStream("plane.jpg")); 
-            ImageView bg_view = new ImageView(bg);
-            primaryStage.setScene(ls.login_scene);
-            page_1.setVisible(false);
             
-            ls.stackpane.getChildren().addAll(bg_view,ls.sign_in_pane);
-   
+            primaryStage.setScene(ls.login_scene); 
+            page_1.setVisible(false);
+            ls.sign_in_pane.setVisible(true); 
+            ls.sign_in_pane.setDisable(false); 
+            ls.stackpane.setVisible(true); 
+            ls.stackpane.setDisable(false); 
+            ls.username_tf.clear();
+            ls.passwd_pf.clear();
             
         }); 
         
@@ -385,12 +392,59 @@ public class Window extends Application {
         //sign_out btn actionEvent
         sign_out_btn.setOnAction(e->{
             
-            ls.hello_user_lbl.setDisable(true); 
+            hello_user_lbl.setVisible(false); 
             sign_out_btn.setVisible(false);
             sign_out_btn.setDisable(true);
             sign_in_btn.setDisable(false); 
+            sign_in_btn.setVisible(true); 
             
         });
+        
+        page_1.add(sign_out_btn, 0, 26);
+        sign_out_btn.setVisible(false); 
+        sign_out_btn.setDisable(true); 
+        
+        hello_user_lbl = new Label("Hello "/*+s.getf_name()*/+"!");
+        hello_user_lbl.setStyle("-fx-font-size: 40px; -fx-text-fill: green");
+        page_1.add(hello_user_lbl, 0, 27);
+        hello_user_lbl.setVisible(false); 
+        hello_user_lbl.setDisable(true); 
+
+        
+        //SignIn button of login scene 
+        ls.signin_btn.setOnAction(e -> {
+            
+            //DriverClass dc = new DriverClass();
+            //User u =new User();
+            if(ls.username_tf.getText().isEmpty() || ls.passwd_pf.getText().isEmpty())
+            {
+                Alert warning = new Alert(Alert.AlertType.WARNING);
+                warning.setTitle("Warning"); 
+                warning.setContentText("Both fields are mandatory"); 
+                warning.show();
+            }
+            else{
+                
+                primaryStage.setScene(scene);
+                page_1.setVisible(true);
+                sign_in_btn.setVisible(false);
+                sign_in_btn.setDisable(true);
+                
+                sign_out_btn.setVisible(true); 
+                sign_out_btn.setDisable(false);
+                
+                hello_user_lbl.setVisible(true); 
+                hello_user_lbl.setDisable(false);
+        
+                ls.username_tf.clear();
+                ls.passwd_pf.clear();
+                ls.stackpane.setVisible(false); 
+                ls.stackpane.setDisable(true); 
+                ls.sign_in_pane.setDisable(true); 
+                ls.sign_in_pane.setVisible(false); 
+            }
+        });
+        
         
         ScrollPane rootPane = new ScrollPane();
         rootPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);

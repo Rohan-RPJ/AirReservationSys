@@ -38,7 +38,7 @@ public class Login_scene extends Application{
     public Button signup_btn,signin_btn,close_btn;
     public TextField username_tf;
     public PasswordField passwd_pf;
-    public Label hello_user_lbl;
+    
     
     @Override
     public void start(Stage primaryStage)
@@ -111,29 +111,7 @@ public class Login_scene extends Application{
         GridPane.setHalignment(signin_btn, HPos.CENTER); 
         sign_in_pane.add(signin_btn, 4, 17, 2, 2); 
         
-        //SignIn button ActionEvent
-        signin_btn.setOnAction(e -> {
-            
-            //DriverClass dc = new DriverClass();
-            //User u =new User();
-            if(username_tf.getText().isEmpty() || passwd_pf.getText().isEmpty())
-            {
-                Alert warning = new Alert(Alert.AlertType.WARNING);
-                warning.setTitle("Warning"); 
-                warning.setContentText("Both fields are mandatory"); 
-                warning.show();
-            }
-            else{
-                hello_user_lbl = new Label("Hello "/*+s.getf_name()*/+"!");
-                hello_user_lbl.setStyle("-fx-font-size: 13px; -fx-text-fill: green");
-                w.primaryStage.setScene(scene);
-                w.page_1.setVisible(true);
-                w.page_1.add(hello_user_lbl, 0, 27);
-                w.sign_in_btn,setVisible(false);
-                w.sign_in_btn.setDisable(true); 
-                w.page_1.add(w.sign_out_btn, 0, 26); 
-            }
-        });
+        
         
         //forgot_password? 
         Hyperlink forgot_pw = new Hyperlink("(forgot password ?)");
