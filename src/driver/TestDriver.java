@@ -16,7 +16,7 @@ public class TestDriver {
         User u =new User();
         u.setFirstName("abhi");
         u.setMiddleName("s");
-        u.setUserId("akg");
+        u.setUserId("adj");
         u.setPassword("lol12345");
         u.setLastName("Hola");
         u.setMobileNo("1234567890");
@@ -32,5 +32,6 @@ public class TestDriver {
         System.out.println("Record inserted");}
         
         System.out.println("Driver object created");
+        dc.close();
     }
 }

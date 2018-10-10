@@ -7,6 +7,7 @@
 package driver;
 
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.sql.*;
 import java.util.Properties;
@@ -82,7 +83,7 @@ public class DriverClass {
       //Handle errors for JDBC
       se.printStackTrace();
         }
-        catch(Exception e){
+        catch(IOException e){
             System.out.println("Unknown error");
             e.printStackTrace();
         }
@@ -108,15 +109,20 @@ public class DriverClass {
     
     public void setUserData(User u)
     {
+        System.out.println("\t Inside setUserData()");
         this.u=u;
+        
     }
     
     public void setFlag(int status)
     {
+        System.out.println("\t Inside setFlag()");
         flag =  status;
+        System.out.println("\t Value of flag set to"+status);
     }
     public void checkRecord()
     {
+        System.out.println("\t Inside checkRecord()");
         String sql= "SELECT userId, mobileno, email FROM userData WHERE "+
                         "userId='"+u.getUserId()+"' OR "+
                         "email='"+u.getEmail()+"' OR "+
@@ -124,32 +130,41 @@ public class DriverClass {
         System.out.println("Sent check record sql is: "+sql);
         try {
             rs = st.executeQuery(sql);
+        System.out.println("\t\t Executing sql query... ");
             
             
         if(!rs.next()) //no previous record exists
         {
+            System.out.println("\t\t Inside if block of checkRecord... ");
+        
             setFlag(1);
+            insertRecord();
             
         }
         else
         {
-            while(rs.next())
+            System.out.println("\t\t Inside else block of checkRecord... ");
+            rs.first();
+            do
             {
                 String uid,mobileno,email;
                 uid= rs.getString("userId");
                 mobileno= rs.getString("mobileno");
                 email=rs.getString("email");
-                
+                System.out.println("Record: "+uid+ ","+mobileno+","+email);
                 if(u.getUserId().equals(uid)){
                     setFlag(-1);
+                    System.out.println("user name exists :"+uid);
                 }
                 else if(u.getEmail().equals(email)){
-                    setFlag(0);
+                    setFlag(-3);
+                    System.out.println("email exists :"+email);
                 }
                 else if(u.getMobileNo().equals(mobileno)){
                     setFlag(-2);
+                    System.out.println("mobile exists :"+mobileno);
                 }
-            }
+            }while(rs.next());
         }
         
        } catch (SQLException ex) {
@@ -160,6 +175,7 @@ public class DriverClass {
     
     public void insertRecord()
     {
+        System.out.println("\t Inside insertRecord()");
         try {
             String sql= "INSERT INTO userData VALUES('"+
                     u.getUserId()+"', "+
@@ -176,6 +192,7 @@ public class DriverClass {
             System.out.println("Sent sql is: "+sql);
             st.executeUpdate(sql);
         } catch (SQLException ex) {
+            
             ex.printStackTrace();}
     }
     /**
