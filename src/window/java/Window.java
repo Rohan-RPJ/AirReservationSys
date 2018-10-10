@@ -429,21 +429,21 @@ public class Window extends Application {
             }
             else{
                 
-                /*if(dc.checkCredentials(1)==0)
+                /*if(dc.checkCredentials()==0)
                 {
                     Alert warning = new Alert(Alert.AlertType.WARNING);
                     warning.setTitle("Warning"); 
                     warning.setContentText("Username or Password is Incorrect"); 
                     warning.show();
                 }
-                else if(dc.checkCredentials(1)==-1)
+                else if(dc.checkCredentials()==-1)
                 {
                     Alert warning = new Alert(Alert.AlertType.WARNING);
                     warning.setTitle("Warning"); 
                     warning.setContentText("Account does not exists"); 
                     warning.show();
                 }
-                else if(dc.checkCredentials(1)==1)
+                else if(dc.checkCredentials()==1)
                 {
                     primaryStage.setScene(scene);
                     page_1.setVisible(true);
