@@ -113,7 +113,48 @@ public class DriverClass {
         this.u=u;
         
     }
+
+    public User getUserData()
+    {
+        return u;
+    }
     
+    public int checkCredentials(){
+        //setting default values of email and mobile no before sending query
+        u.setEmail("NULL");
+        u.setMobileNo("NULL");
+
+        if(checkRecord())
+        {
+            String sql= "SELECT password FROM userData WHERE "
+                        +"userId='"+u.getUserId()+"'";
+                    rs= st.executeQuery(sql);
+                    System.out.println("Sent sql query for checkCredentials is :"+sql);
+            //checking if records are there
+            if(rs.next())
+            {
+                String sql= "SELECT password FROM userData WHERE "
+                        +"userId='"+u.getUserId()+"' AND "+
+                        "password=SHA1('"+u.getPassword()"')";
+                    rs= st.executeQuery(sql);
+                    System.out.println("Sent sql query for password is :"+sql);
+                    
+                    //password did not match as no records fetched
+                    if(!rs.next())
+                    {
+                        return 0;
+                    }
+                    //else successful login
+                    else
+                    {
+                        return 1;
+                    }
+                
+            }    
+        }
+        return -1;
+
+    }
     public void setFlag(int status)
     {
         System.out.println("\t Inside setFlag()");
