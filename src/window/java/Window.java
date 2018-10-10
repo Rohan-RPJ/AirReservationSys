@@ -5,6 +5,7 @@
  */
 package window.java;
 
+import driver.DriverClass;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import javafx.application.Application;
@@ -137,6 +138,10 @@ public class Window extends Application {
     
     @Override
     public void start(Stage primaryStage) {
+        
+        User u =new User();
+        
+        DriverClass dc = new DriverClass();
         
         Login_scene ls = new Login_scene();
         ls.start(primaryStage);
@@ -404,8 +409,8 @@ public class Window extends Application {
         sign_out_btn.setVisible(false); 
         sign_out_btn.setDisable(true); 
         
-        hello_user_lbl = new Label("Hello "/*+s.getf_name()*/+"!");
-        hello_user_lbl.setStyle("-fx-font-size: 40px; -fx-text-fill: green");
+        hello_user_lbl = new Label("Hello "+/*dc.getUserData().getFirstName()+*/"!");
+        hello_user_lbl.setStyle("-fx-font-size: 25px; -fx-text-fill: green");
         page_1.add(hello_user_lbl, 0, 27);
         hello_user_lbl.setVisible(false); 
         hello_user_lbl.setDisable(true); 
@@ -413,9 +418,8 @@ public class Window extends Application {
         
         //SignIn button of login scene 
         ls.signin_btn.setOnAction(e -> {
+              
             
-            //DriverClass dc = new DriverClass();
-            //User u =new User();
             if(ls.username_tf.getText().isEmpty() || ls.passwd_pf.getText().isEmpty())
             {
                 Alert warning = new Alert(Alert.AlertType.WARNING);
@@ -425,23 +429,40 @@ public class Window extends Application {
             }
             else{
                 
-                primaryStage.setScene(scene);
-                page_1.setVisible(true);
-                sign_in_btn.setVisible(false);
-                sign_in_btn.setDisable(true);
+                /*if(dc.checkCredentials(1)==0)
+                {
+                    Alert warning = new Alert(Alert.AlertType.WARNING);
+                    warning.setTitle("Warning"); 
+                    warning.setContentText("Username or Password is Incorrect"); 
+                    warning.show();
+                }
+                else if(dc.checkCredentials(1)==-1)
+                {
+                    Alert warning = new Alert(Alert.AlertType.WARNING);
+                    warning.setTitle("Warning"); 
+                    warning.setContentText("Account does not exists"); 
+                    warning.show();
+                }
+                else if(dc.checkCredentials(1)==1)
+                {
+                    primaryStage.setScene(scene);
+                    page_1.setVisible(true);
+                    sign_in_btn.setVisible(false);
+                    sign_in_btn.setDisable(true);
                 
-                sign_out_btn.setVisible(true); 
-                sign_out_btn.setDisable(false);
-                
-                hello_user_lbl.setVisible(true); 
-                hello_user_lbl.setDisable(false);
+                    sign_out_btn.setVisible(true); 
+                    sign_out_btn.setDisable(false);
+                    
+                    hello_user_lbl.setVisible(true); 
+                    hello_user_lbl.setDisable(false);
         
-                ls.username_tf.clear();
-                ls.passwd_pf.clear();
-                ls.stackpane.setVisible(false); 
-                ls.stackpane.setDisable(true); 
-                ls.sign_in_pane.setDisable(true); 
-                ls.sign_in_pane.setVisible(false); 
+                    ls.username_tf.clear();
+                    ls.passwd_pf.clear();
+                    ls.stackpane.setVisible(false); 
+                    ls.stackpane.setDisable(true); 
+                    ls.sign_in_pane.setDisable(true); 
+                    ls.sign_in_pane.setVisible(false); 
+                }*/
             }
         });
         
