@@ -332,14 +332,14 @@ public class AllDetails extends Application{
                     alert.setContentText("All Fields are mandatory");
                     alert.show();
                 }   
-                else if(!(mob_no_tf.getText().length()==10) || Pattern.matches("[0-9]",mob_no_tf.getText()))
+                else if(!(mob_no_tf.getText().length()==10) || !Pattern.matches("[0-9]{10}",mob_no_tf.getText()))
                 {   
                     Alert error =  new Alert(Alert.AlertType.ERROR);
                     error.setTitle("Invalid mobile number"); 
                     error.setContentText("Invalid mobile number");
                     error.show();
                 }
-                else if(!(pin_tf.getText().length()==6) || Pattern.matches("[0-9]",pin_tf.getText()))
+                else if(!(pin_tf.getText().length()==6) || !Pattern.matches("[0-9]{6}",pin_tf.getText()))
                 {
                     Alert error =  new Alert(Alert.AlertType.ERROR);
                     error.setTitle("Invalid Pincode"); 
