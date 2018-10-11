@@ -429,14 +429,14 @@ public class Sign_Up_Window extends Application{
                 warning.setContentText("User Id should contain 3 to 10 characters and only letter, number and underscores are allowed");
                 warning.show();
             }*/
-            else if(!(mobile_no_tf.getText().length()==10) || Pattern.matches("[0-9]",mobile_no_tf.getText()))
+            else if(!(mobile_no_tf.getText().length()==10) || !Pattern.matches("[0-9]{10}",mobile_no_tf.getText()))
             {
                 Alert error =  new Alert(Alert.AlertType.ERROR);
                 error.setTitle("Invalid mobile number"); 
                 error.setContentText("Invalid mobile number");
                 error.show();
             }
-            else if(!(pin_tf.getText().length()==6) || Pattern.matches("[0-9]",pin_tf.getText()))
+            else if(!(pin_tf.getText().length()==6) || !Pattern.matches("[0-9]{10}",pin_tf.getText()))
             {
                 Alert error =  new Alert(Alert.AlertType.ERROR);
                 error.setTitle("Invalid Pincode"); 
