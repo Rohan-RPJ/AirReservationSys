@@ -119,12 +119,12 @@ public class DriverClass {
         return u;
     }
     
-    public int checkCredentials(){
+    public int checkCredentials() throws SQLException{
         //setting default values of email and mobile no before sending query
         u.setEmail("NULL");
         u.setMobileNo("NULL");
-
-        if(checkRecord())
+        
+        
         {
             String sql= "SELECT password FROM userData WHERE "
                         +"userId='"+u.getUserId()+"'";
@@ -133,9 +133,8 @@ public class DriverClass {
             //checking if records are there
             if(rs.next())
             {
-                String sql= "SELECT password FROM userData WHERE "
-                        +"userId='"+u.getUserId()+"' AND "+
-                        "password=SHA1('"+u.getPassword()"')";
+                 sql= "SELECT * FROM userData WHERE "+"userId='"+u.getUserId()+"' AND "+
+                        "password=SHA1('"+u.getPassword()+"')" ;
                     rs= st.executeQuery(sql);
                     System.out.println("Sent sql query for password is :"+sql);
                     
@@ -147,12 +146,21 @@ public class DriverClass {
                     //else successful login
                     else
                     {
+                        rs.first();
+                        String f_name=rs.getString("f_name");
+                        u.setFirstName(f_name);
+                        
+                        
                         return 1;
                     }
                 
-            }    
+            } 
+            else //account does not exists
+            {
+                return -1;
+            }
         }
-        return -1;
+        
 
     }
     public void setFlag(int status)
