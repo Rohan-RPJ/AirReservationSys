@@ -6,8 +6,11 @@
 package window.java;
 
 import driver.DriverClass;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -409,7 +412,7 @@ public class Window extends Application {
         sign_out_btn.setVisible(false); 
         sign_out_btn.setDisable(true); 
         
-        hello_user_lbl = new Label("Hello "+/*dc.getUserData().getFirstName()+*/"!");
+        hello_user_lbl = new Label();
         hello_user_lbl.setStyle("-fx-font-size: 25px; -fx-text-fill: green");
         page_1.add(hello_user_lbl, 0, 27);
         hello_user_lbl.setVisible(false); 
@@ -428,41 +431,49 @@ public class Window extends Application {
                 warning.show();
             }
             else{
-                
-                /*if(dc.checkCredentials()==0)
-                {
-                    Alert warning = new Alert(Alert.AlertType.WARNING);
-                    warning.setTitle("Warning"); 
-                    warning.setContentText("Username or Password is Incorrect"); 
-                    warning.show();
+                try {
+                    u.setUserId(ls.username_tf.getText());
+                    u.setPassword(ls.passwd_pf.getText());
+                    dc.setUserData(u);
+                    int flag=dc.checkCredentials();
+                    if(flag==0)
+                    {
+                        Alert warning = new Alert(Alert.AlertType.WARNING);
+                        warning.setTitle("Warning");
+                        warning.setContentText("Username or Password is Incorrect");
+                        warning.show();
+                    }
+                    else if(flag==-1)
+                    {
+                        Alert warning = new Alert(Alert.AlertType.WARNING);
+                        warning.setTitle("Warning");
+                        warning.setContentText("Account does not exists");
+                        warning.show();
+                    }
+                    else if(flag==1)
+                    {
+                        primaryStage.setScene(scene);
+                        page_1.setVisible(true);
+                        sign_in_btn.setVisible(false);
+                        sign_in_btn.setDisable(true);
+                        
+                        sign_out_btn.setVisible(true);
+                        sign_out_btn.setDisable(false);
+                        
+                        hello_user_lbl.setText("Hello "+dc.getUserData().getFirstName()+"!");
+                        hello_user_lbl.setVisible(true);
+                        hello_user_lbl.setDisable(false);
+                        
+                        ls.username_tf.clear();
+                        ls.passwd_pf.clear();
+                        ls.stackpane.setVisible(false);
+                        ls.stackpane.setDisable(true);
+                        ls.sign_in_pane.setDisable(true);
+                        ls.sign_in_pane.setVisible(false); 
+                    }
+                } catch (SQLException ex) {
+                    Logger.getLogger(Window.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                else if(dc.checkCredentials()==-1)
-                {
-                    Alert warning = new Alert(Alert.AlertType.WARNING);
-                    warning.setTitle("Warning"); 
-                    warning.setContentText("Account does not exists"); 
-                    warning.show();
-                }
-                else if(dc.checkCredentials()==1)
-                {
-                    primaryStage.setScene(scene);
-                    page_1.setVisible(true);
-                    sign_in_btn.setVisible(false);
-                    sign_in_btn.setDisable(true);
-                
-                    sign_out_btn.setVisible(true); 
-                    sign_out_btn.setDisable(false);
-                    
-                    hello_user_lbl.setVisible(true); 
-                    hello_user_lbl.setDisable(false);
-        
-                    ls.username_tf.clear();
-                    ls.passwd_pf.clear();
-                    ls.stackpane.setVisible(false); 
-                    ls.stackpane.setDisable(true); 
-                    ls.sign_in_pane.setDisable(true); 
-                    ls.sign_in_pane.setVisible(false); 
-                }*/
             }
         });
         
