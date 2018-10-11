@@ -137,12 +137,14 @@ public class Window extends Application {
     public Image logo;
     public GridPane page_1;
     public Label hello_user_lbl;
-    private Traveller t = new Traveller(); 
+    
+    private Traveller t = new Traveller();
+    private Flights fs = new Flights();
+    private User u =new User();
     
     @Override
     public void start(Stage primaryStage) {
         
-        User u =new User();
         
         DriverClass dc = new DriverClass();
         
@@ -386,13 +388,25 @@ public class Window extends Application {
         //search button ActionEvent
         search_btn.setOnAction(e->{
             
-            AllDetails db = new AllDetails();
+            fs.trip = getFlightDetails().getTrip();
+            fs.src = getFlightDetails().getFromCity();
+            fs.dest = getFlightDetails().getToCity();
+            fs.adults = getFlightDetails().getAdults();
+            fs.childs = getFlightDetails().getChilds();
+            fs.infants = getFlightDetails().getInfants();
+            
+            fs.start(primaryStage); 
+            primaryStage.setScene(fs.fSearchScene);  
+            page_1.setVisible(false);
+             
+            
+            /*AllDetails db = new AllDetails();
             db.adults = getFlightDetails().getAdults();
             db.childs = getFlightDetails().getChilds();
             db.infants = getFlightDetails().getInfants();
             db.start(primaryStage); 
             primaryStage.setScene(db.s);
-            page_1.setVisible(false);
+            page_1.setVisible(false);*/
             
         });
         
