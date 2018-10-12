@@ -1,13 +1,17 @@
 
 package window.java;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  *
  * @author HP
  */
 public class FlightData
 {
-    public String Flight_Number,Airlines,Source,Destination,Departure_Time,Arrival_Time,Fare;
+    public String Flight_Number,Airlines,Source,Destination,Departure_Time,Arrival_Time,Fare, duration;
     
       public void setFlight_Number(String Flight_Number)
     {
@@ -68,5 +72,23 @@ public class FlightData
     public String getFare()
     {
         return Fare;
+    }
+    
+    public String getDuration() throws ParseException
+    {
+        String time1 =getArrival_Time();
+        String time2 =getDeparture_Time();
+
+        SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+        Date date1 = format.parse(time1);
+        Date date2 = format.parse(time2);
+        long difference = date2.getTime() - date1.getTime();
+    
+    
+        String hours= Long.toString(difference/(1000*60*60));
+        String mins=Long.toString((difference/(1000*60))%60);
+    
+        return(hours+"h "+mins+"m");
+    
     }
 }    
