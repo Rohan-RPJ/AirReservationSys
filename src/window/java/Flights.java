@@ -219,7 +219,7 @@ public class Flights extends Application{
             sp1[i].getChildren().addAll(r1[i], center_gp1[i]); 
             v1.getChildren().add(sp1[i]); 
             
-            /*if(trip=="Round Trip")
+            /*if(trip.equals("Round Trip"))
             {
                 //setting primary properties required for gridPane
             center_gp2[i] = new GridPane();
@@ -335,10 +335,17 @@ public class Flights extends Application{
         //rootPane2.setVvalue(20);
         rootPane2.setContent(v2);
         
-        hb.getChildren().addAll(rootPane1, rootPane2);
-        hb.setAlignment(Pos.CENTER); 
+        if(trip.equals("Round Trip"))
+        {
+            hb.getChildren().addAll(rootPane1, rootPane2);
+            hb.setAlignment(Pos.CENTER); 
+        }
+        else
+        {
+            hb.getChildren().addAll(rootPane1);
+            hb.setAlignment(Pos.CENTER); 
+        }
         hb.setStyle("-fx-background-color: #999999");
-        
         bp.setCenter(hb);
         
         //End of center of Bottom Pane
