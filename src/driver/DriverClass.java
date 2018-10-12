@@ -58,7 +58,7 @@ public class DriverClass {
             String user = prop.getProperty("user");
             String password= prop.getProperty("password");
             String dburl= prop.getProperty("dburl");
-            
+            dburl+="?autoReconnect=true&useSSL=false";
             con= DriverManager.getConnection(dburl, user, password);
             
              System.out.println("Creating statement...");

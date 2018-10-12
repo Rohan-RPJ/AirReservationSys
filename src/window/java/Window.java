@@ -39,91 +39,6 @@ import javafx.stage.Stage;
  * @author Rohan
  */
 
-class Traveller{
-    //all the fields
-    private String trip, fromCity, toCity, classType, departDate, returnDate;
-    private String adults, childs, infants;
-    public int adult, child, infant;
-    //Setter methods for all the fields
-
-    public void setTrip(String trip)
-    {
-        this.trip=trip;
-    }
-    public void setFromCity(String fromCity)
-    {
-        this.fromCity=fromCity;
-    }
-    public void setToCity(String toCity)
-    {
-        this.toCity=toCity;
-    }
-    public void setClassType(String classType)
-    {
-        this.classType=classType;
-    }
-    public void setDepartDate(String departDate)
-    {
-        this.departDate=departDate;
-    }
-    public void setReturnDate(String returnDate)
-    {
-        this.returnDate=returnDate;
-    }
-    public void setAdults(String adults)
-    {
-        this.adults=adults;
-    }
-    public void setChilds(String childs)
-    {
-        this.childs=childs;
-    }
-    public void setInfants(String infants)
-    {
-        this.infants=infants;
-    }
-    
-    //getter functions 
-    public String getTrip()
-    {
-         return trip;
-    }
-    public String getFromCity()
-    {
-        return fromCity;
-    }
-    public String getToCity()
-    {
-        return toCity;
-    }
-
-    public String getClassType()
-    {
-        return classType;
-    }
-
-    public String getDepartDate()
-    {
-        return departDate;
-    }
-    public String getReturnDate()
-    {
-        return returnDate;
-    }
-    public String getAdults()
-    {
-        return adults;
-    }
-    public String getChilds()
-    {
-        return childs;
-    }
-    public String getInfants()
-    {
-        return infants;
-    }
-} 
-
 public class Window extends Application {
     
     //Decalration of fields
@@ -389,11 +304,19 @@ public class Window extends Application {
         //search button ActionEvent
         search_btn.setOnAction(e->{
             
-            if(trip_tg.getSelectedToggle()==null || from_city_list.getValue()==null || to_city_list.getValue()==null || class_list.getValue()==null)
+            /*if(trip_tg.getSelectedToggle()==null || from_city_list.getValue()==null || to_city_list.getValue()==null || class_list.getValue()==null)
             {System.out.println("toogle");
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Incomplete Details"); 
                 alert.setContentText("Please fill all the required  Fields");
+                alert.show();
+            }
+            else if((adult_no.getValue().equals("0") && child_no.getValue().equals("0") && infant_no.getValue().equals("0")) ||
+                    (adult_no.getValue() == null && child_no.getValue() == null && infant_no.getValue() == null))
+            {System.out.println("no. of trav");
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Incomplete Details"); 
+                alert.setContentText("Please fill all the required Fields");
                 alert.show();
             }
             else if(trip.getText().equals("One Way Trip"))  
@@ -423,15 +346,8 @@ public class Window extends Application {
                 error.setContentText("Choose a different Source or Destination");
                 error.show();
             }
-            else if(adult_no.getValue().equals("0") && child_no.getValue().equals("0") && infant_no.getValue().equals("0"))
-            {System.out.println("no. of trav");
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Incomplete Details"); 
-                alert.setContentText("Please fill all the required Fields");
-                alert.show();
-            }
             else
-            {System.out.println("search");
+            {System.out.println("search");*/
                 fs.trip = getFlightDetails().getTrip();
                 fs.src = getFlightDetails().getFromCity();
                 fs.dest = getFlightDetails().getToCity();
@@ -451,7 +367,7 @@ public class Window extends Application {
             db.start(primaryStage); 
             primaryStage.setScene(db.s);
             page_1.setVisible(false);*/
-            }
+            //}
         });
         
         sign_out_btn = new Button("Sign Out");
