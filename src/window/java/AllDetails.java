@@ -143,7 +143,6 @@ public class AllDetails extends Application{
         
         //padding of gridpane in scene
         center_gp.setPadding(new Insets(20,20,20,20));
-        //center_gp.setStyle("-fx-background-color: #cccccc;"); 
         
         //gp.centerShapeProperty();
         //center_gp.setGridLinesVisible(true);

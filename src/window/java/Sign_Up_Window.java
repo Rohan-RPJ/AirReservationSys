@@ -423,12 +423,12 @@ public class Sign_Up_Window extends Application{
                 warning.setContentText("Name field should contain only characters");
                 warning.show();
             }
-            /*else if(!(email_tf.getText().length()>2 && user_id_tf.getText().length()<11 && Pattern.matches("[a-zA-Z0-9_]+", user_id_tf.getText())))
+            else if(!(email_tf.getText().length()>2) ||  !Pattern.matches("[a-zA-Z0-9_@]+", user_id_tf.getText()))
             {
-                Alert warning = new Alert(Alert.AlertType.WARNING,"Re-Enter User-Id");
-                warning.setContentText("User Id should contain 3 to 10 characters and only letter, number and underscores are allowed");
+                Alert warning = new Alert(Alert.AlertType.WARNING,"Warning");
+                warning.setContentText("Invalid Email-Id");
                 warning.show();
-            }*/
+            }
             else if(!(mobile_no_tf.getText().length()==10) || !Pattern.matches("[0-9]{10}",mobile_no_tf.getText()))
             {
                 Alert error =  new Alert(Alert.AlertType.ERROR);

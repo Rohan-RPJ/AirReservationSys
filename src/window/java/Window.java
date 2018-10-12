@@ -284,6 +284,7 @@ public class Window extends Application {
         }); 
         
         //
+        RadioButton trip = (RadioButton)trip_tg.getSelectedToggle();
         sign_up_btn = new Button("Sign up");
         page_1.add(sign_up_btn, 2, 26);
         GridPane.setHalignment(sign_up_btn, HPos.RIGHT); 
@@ -303,16 +304,59 @@ public class Window extends Application {
         //search button ActionEvent
         search_btn.setOnAction(e->{
             
-            fs.trip = getFlightDetails().getTrip();
-            fs.src = getFlightDetails().getFromCity();
-            fs.dest = getFlightDetails().getToCity();
-            fs.adults = getFlightDetails().getAdults();
-            fs.childs = getFlightDetails().getChilds();
-            fs.infants = getFlightDetails().getInfants();
-            
-            fs.start(primaryStage); 
-            primaryStage.setScene(fs.fSearchScene);  
-            page_1.setVisible(false);
+            if(trip_tg.getSelectedToggle()==null || from_city_list.getValue()==null || to_city_list.getValue()==null || class_list.getValue()==null)
+            {System.out.println("toogle");
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Incomplete Details"); 
+                alert.setContentText("Please fill all the required  Fields");
+                alert.show();
+            }
+            else if(trip.getText().equals("One Way Trip"))  
+            {System.out.println("oe way trip");
+                if(depart_date.getValue()==null)
+                {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Incomplete Details"); 
+                    alert.setContentText("Please fill all the required Fields");
+                    alert.show();
+                }
+            }
+            else if(trip.getText().equals("Round Trip"))
+            {System.out.println("round trip");
+                if(depart_date.getValue()==null || return_date.getValue()==null)
+                {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Incomplete Details"); 
+                    alert.setContentText("Please fill all the required Fields");
+                    alert.show();
+                }
+            }
+            else if(from_city_list.getValue().equals(to_city_list.getValue()))
+            {System.out.println("city");
+                Alert error = new Alert(Alert.AlertType.ERROR);
+                error.setTitle("Error"); 
+                error.setContentText("Choose a different Source or Destination");
+                error.show();
+            }
+            else if(adult_no.getValue().equals("0") && child_no.getValue().equals("0") && infant_no.getValue().equals("0"))
+            {System.out.println("no. of trav");
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Incomplete Details"); 
+                alert.setContentText("Please fill all the required Fields");
+                alert.show();
+            }
+            else
+            {System.out.println("search");
+                fs.trip = getFlightDetails().getTrip();
+                fs.src = getFlightDetails().getFromCity();
+                fs.dest = getFlightDetails().getToCity();
+                fs.adults = getFlightDetails().getAdults();
+                fs.childs = getFlightDetails().getChilds();
+                fs.infants = getFlightDetails().getInfants();
+                
+                fs.start(primaryStage); 
+                primaryStage.setScene(fs.fSearchScene);  
+                page_1.setVisible(false);
              
             
             /*AllDetails db = new AllDetails();
@@ -322,7 +366,7 @@ public class Window extends Application {
             db.start(primaryStage); 
             primaryStage.setScene(db.s);
             page_1.setVisible(false);*/
-            
+            }
         });
         
         sign_out_btn = new Button("Sign Out");
@@ -463,8 +507,11 @@ public class Window extends Application {
 
         t.setDepartDate(depart_date.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
     
-        t.setReturnDate(return_date.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-    
+        if(trip.getText().equals("Round Trip")) 
+        {
+            t.setReturnDate(return_date.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        }
+        
         t.setAdults(adult_no.getValue().toString());
     
         t.setChilds(child_no.getValue().toString());
