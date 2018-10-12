@@ -436,7 +436,7 @@ public class Sign_Up_Window extends Application{
                 error.setContentText("Invalid mobile number");
                 error.show();
             }
-            else if(!(pin_tf.getText().length()==6) || !Pattern.matches("[0-9]{10}",pin_tf.getText()))
+            else if(!(pin_tf.getText().length()==6) || !Pattern.matches("[0-9]{6}",pin_tf.getText()))
             {
                 Alert error =  new Alert(Alert.AlertType.ERROR);
                 error.setTitle("Invalid Pincode"); 
