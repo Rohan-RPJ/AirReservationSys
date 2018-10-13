@@ -130,7 +130,7 @@ public class DriverFlight {
 	
                     int i=0;
 
-                    while(rs.next())
+                    do
                     {
                         fd=new FlightData();
                         fd.setFlight_Number(rs.getString("Flight_Number"));
@@ -151,7 +151,7 @@ public class DriverFlight {
                         
                         fd.setFare(Integer.toString(cost));
                         al.add(fd);
-                    }
+                    }while(rs.next());
                     
                     return al;
                 }
@@ -175,7 +175,7 @@ public class DriverFlight {
 	
                     int i=0;
 
-                    while(rs.next())
+                    do
                     {
                         fd=new FlightData();
                         fd.setFlight_Number(rs.getString("Flight_Number"));
@@ -196,7 +196,8 @@ public class DriverFlight {
                         
                         fd.setFare(Integer.toString(cost));
                         al.add(fd);
-                    }
+                    }while(rs.next());
+                    
                     
                     return al;
                 }
