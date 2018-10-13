@@ -62,7 +62,10 @@ public class AllDetails extends Application{
         //top_gp.centerShapeProperty();
         //top_gp.setGridLinesVisible(true); 
         
-        //**Top of Border Pane**//
+        
+        //****  Top of Border Pane  ****//
+        
+        
         Rectangle detail_bg = new Rectangle();
         //detail_bg.getStyleClass().add("");
         top_gp.add(detail_bg,0,0,4,2);

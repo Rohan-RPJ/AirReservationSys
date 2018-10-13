@@ -6,6 +6,7 @@
 package window.java;
 
 import driver.DriverClass;
+import driver.DriverFlight;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -52,7 +53,7 @@ public class Window extends Application {
     public Image logo;
     public GridPane page_1;
     public Label hello_user_lbl;
-    
+    private DriverFlight df = new DriverFlight();
     private Traveller t = new Traveller();
     private Flights fs = new Flights();
     private User u =new User();
@@ -344,6 +345,22 @@ public class Window extends Application {
                 fs.adults = getFlightDetails().getAdults();
                 fs.childs = getFlightDetails().getChilds();
                 fs.infants = getFlightDetails().getInfants();
+                df.setTravellerData(getFlightDetails());
+                
+                try {
+                    fs.setFlightData(df.getFlightRecords());
+                } catch (SQLException ex) {
+                    Logger.getLogger(Window.class.getName()).log(Level.SEVERE, null, ex);
+                }                
+                
+                if(((RadioButton)trip_tg.getSelectedToggle()).getText().equals("Round Trip"))
+                {
+                    try {
+                        fs.setRoundFlightData(df.getRoundFlightRecord());
+                    } catch (SQLException ex) {
+                        Logger.getLogger(Window.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
                 
                 fs.start(primaryStage); 
                 primaryStage.setScene(fs.fSearchScene);  

@@ -5,6 +5,7 @@
  */
 package window.java;
 
+import java.util.ArrayList;
 import javafx.application.Application;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -38,8 +39,20 @@ public class Flights extends Application{
     public Label trip_lbl,src_dest_lbl,adult_lbl,child_lbl,infant_lbl,
             tot_adult,tot_child,tot_infant;
     public String trip, src, dest,adults,childs,infants;
-    Button next_btn;
+    public ArrayList<FlightData> al = new ArrayList<>();
+    public ArrayList<FlightData> alr = new ArrayList<>();
+    
+    public Button next_btn;
     public int i;
+    public void setFlightData(ArrayList<FlightData> al)
+    {
+        this.al=al;
+    }
+    
+    public void setRoundFlightData(ArrayList<FlightData> al)
+    {
+        this.alr=al;
+    }
     @Override
     public void start(Stage primaryStage)
     {
@@ -141,7 +154,7 @@ public class Flights extends Application{
         try{
         //int tot_fligts = Integer.parseInt(); 
         
-        for(; i<4; i++)
+        for(; i<al.size(); i++)
         {
             
             //setting primary properties required for gridPane
@@ -189,45 +202,45 @@ public class Flights extends Application{
             GridPane.setValignment(flight_name1[i], VPos.CENTER);
             center_gp1[i].add(flight_name1[i], 1, 0);
             
-            flightNo1[i] = new Label("no");
+            flightNo1[i] = new Label(al.get(i).getFlight_Number()); 
             flightNo1[i].setStyle("-fx-font-size: 15px;");
             GridPane.setHalignment(flightNo1[i], HPos.LEFT); 
             GridPane.setValignment(flightNo1[i], VPos.BOTTOM);
             center_gp1[i].add(flightNo1[i], 1, 0);
             
-            time_src1[i] = new Label("17:10");
+            time_src1[i] = new Label(al.get(i).getDeparture_Time());
             time_src1[i].setStyle("-fx-font-size: 30px;-fx-font-weight: bold;");
             GridPane.setHalignment(time_src1[i], HPos.CENTER); 
             center_gp1[i].add(time_src1[i], 4, 0);
             
-            time_dest1[i] = new Label("19:25");
+            time_dest1[i] = new Label(al.get(i).getArrival_Time());
             time_dest1[i].setStyle("-fx-font-size: 30px;-fx-font-weight: bold;");
             GridPane.setHalignment(time_dest1[i], HPos.CENTER); 
             center_gp1[i].add(time_dest1[i], 7, 0);
             
-            source1[i] = new Label(src);
+            source1[i] = new Label(al.get(i).getSourceCity());
             source1[i].setStyle("-fx-font-size: 20px;"); 
             GridPane.setHalignment(source1[i], HPos.CENTER); 
             center_gp1[i].add(source1[i], 4, 1);
             
-            destination1[i] = new Label(dest);
+            destination1[i] = new Label(al.get(i).getDestinationCity());
             destination1[i].setStyle("-fx-font-size: 20px;"); 
             GridPane.setHalignment(destination1[i], HPos.CENTER); 
             center_gp1[i].add(destination1[i], 7, 1);
             
             //total time required
-            tot_time_req1[i] = new Label("2h 15m");
+            tot_time_req1[i] = new Label(al.get(i).getDuration());
             tot_time_req1[i].setStyle("-fx-font-size: 30px;-fx-font-weight: bold;");
             GridPane.setHalignment(tot_time_req1[i], HPos.CENTER); 
             center_gp1[i].add(tot_time_req1[i], 1, 5, 3, 1);
             
             //fare
-            fare1[i] = new Label("Rs. 4061");
+            fare1[i] = new Label(al.get(i).getFare());
             fare1[i].setStyle("-fx-font-size: 30px;-fx-font-weight: bold;-fx-text-fill:red"); 
             GridPane.setHalignment(fare1[i], HPos.CENTER); 
             center_gp1[i].add(fare1[i], 6, 5, 2, 1);
             
-            book_btn1[i] =new RadioButton("Book"+i);
+            book_btn1[i] =new RadioButton("Book");
             book_btn1[i].setToggleGroup(oneWayTrip_tg);
             //book_btn1[i].setStyle("-fx-font-size: 15px; -fx-background-color: #cccccc"); 
             center_gp1[i].add(book_btn1[i], 8, 7, 2, 1);            
@@ -285,45 +298,45 @@ public class Flights extends Application{
                 GridPane.setValignment(flight_name2[i], VPos.CENTER);
                 center_gp2[i].add(flight_name2[i], 1, 0);
             
-                flightNo2[i] = new Label("no");
+                flightNo2[i] = new Label(alr.get(i).getFlight_Number());
                 flightNo2[i].setStyle("-fx-font-size: 15px;");
                 GridPane.setHalignment(flightNo2[i], HPos.LEFT); 
                 GridPane.setValignment(flightNo2[i], VPos.BOTTOM);
                 center_gp2[i].add(flightNo2[i], 1, 0);
                 
-                time_dest2[i] = new Label("19:25");
-                time_dest2[i].setStyle("-fx-font-size: 30px;-fx-font-weight: bold;");
-                GridPane.setHalignment(time_dest2[i], HPos.CENTER); 
-                center_gp2[i].add(time_dest2[i], 4, 0);
-                
-                time_src2[i] = new Label("17:10");
+                time_src2[i] = new Label(alr.get(i).getDeparture_Time());
                 time_src2[i].setStyle("-fx-font-size: 30px;-fx-font-weight: bold;");
                 GridPane.setHalignment(time_src2[i], HPos.CENTER); 
-                center_gp2[i].add(time_src2[i], 7, 0);
+                center_gp2[i].add(time_src2[i], 4, 0);
+                
+                time_dest2[i] = new Label(al.get(i).getArrival_Time());
+                time_dest2[i].setStyle("-fx-font-size: 30px;-fx-font-weight: bold;");
+                GridPane.setHalignment(time_dest2[i], HPos.CENTER); 
+                center_gp2[i].add(time_dest2[i], 7, 0);
             
-                destination2[i] = new Label(dest);
-                destination2[i].setStyle("-fx-font-size: 20px;"); 
-                GridPane.setHalignment(destination2[i], HPos.CENTER); 
-                center_gp2[i].add(destination2[i], 4, 1);
-            
-                source2[i] = new Label(src);
+                source2[i] = new Label(alr.get(i).getSourceCity());
                 source2[i].setStyle("-fx-font-size: 20px;"); 
                 GridPane.setHalignment(source2[i], HPos.CENTER); 
-                center_gp2[i].add(source2[i], 7, 1);
-            
+                center_gp2[i].add(source2[i], 4, 1);
+                
+                destination2[i] = new Label(alr.get(i).getDestinationCity());
+                destination2[i].setStyle("-fx-font-size: 20px;"); 
+                GridPane.setHalignment(destination2[i], HPos.CENTER); 
+                center_gp2[i].add(destination2[i], 7, 1);
+                
                 //total time required
-                tot_time_req2[i] = new Label("2h 15m");
+                tot_time_req2[i] = new Label(alr.get(i).getDuration());
                 tot_time_req2[i].setStyle("-fx-font-size: 30px;-fx-font-weight: bold;");
                 GridPane.setHalignment(tot_time_req2[i], HPos.CENTER); 
                 center_gp2[i].add(tot_time_req2[i], 1, 5, 3, 1);
             
                 //fare
-                fare2[i] = new Label("Rs. 4061");
+                fare2[i] = new Label(alr.get(i).getFare());
                 fare2[i].setStyle("-fx-font-size: 30px;-fx-font-weight: bold;-fx-text-fill:red"); 
                 GridPane.setHalignment(fare2[i], HPos.CENTER); 
                 center_gp2[i].add(fare2[i], 6, 5, 2, 1);
             
-                book_btn2[i] =new RadioButton("Book"+i);
+                book_btn2[i] =new RadioButton("Book");
                 book_btn2[i].setToggleGroup(roundTrip_tg);
                 //book_btn2[i].setStyle("-fx-font-size: 15px; -fx-background-color: #cccccc"); 
                 center_gp2[i].add(book_btn2[i], 8, 7, 2, 1);            
