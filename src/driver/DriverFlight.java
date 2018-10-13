@@ -76,7 +76,7 @@ public class DriverFlight {
              System.out.println("Creating statement...");
                 st = con.createStatement();
                 
-               
+               sql="SELECT * from flight";
                 rs = st.executeQuery(sql);
                 
                 while(rs.next())
@@ -138,7 +138,7 @@ public class DriverFlight {
                         fd.setSourceCity(rs.getString("Source"));
                         fd.setDestinationCity(rs.getString("Destination"));
                         fd.setDeparture_Time(rs.getString("Departure_Time"));
-                        int cost=Integer.parseInt(rs.getString("Fare"));
+                        int cost=Integer.parseInt(rs.getString("Fare").replaceAll(",", ""));
                         
                         if(t.getClassType().equals("Buisness"))
                         {
@@ -183,7 +183,7 @@ public class DriverFlight {
                         fd.setSourceCity(rs.getString("Source"));
                         fd.setDestinationCity(rs.getString("Destination"));
                         fd.setDeparture_Time(rs.getString("Departure_Time"));
-                        int cost=Integer.parseInt(rs.getString("Fare"));
+                        int cost=Integer.parseInt(rs.getString("Fare").replaceAll(",", ""));
                         
                         if(t.getClassType().equals("Buisness"))
                         {
