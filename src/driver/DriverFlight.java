@@ -60,6 +60,7 @@ public class DriverFlight {
             if(is!=null)
             {//prop.load(new FileInputStream("userdb.properties"));
             prop.load(is);
+                System.out.println("DriverFLight");
                 System.out.println("User id"+prop.getProperty("user"));
                 System.out.println("Password "+prop.getProperty("password"));
                 System.out.println("url "+prop.getProperty("dburl"));
