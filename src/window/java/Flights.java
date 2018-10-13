@@ -154,7 +154,7 @@ public class Flights extends Application{
         try{
         //int tot_fligts = Integer.parseInt(); 
         
-        for(; i<4; i++)
+        for(; i<al.size(); i++)
         {
             
             //setting primary properties required for gridPane
