@@ -11,6 +11,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.*;
+import java.util.*;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,13 +30,18 @@ public class DriverFlight {
     private Statement st;
     private ResultSet rs;
     private Traveller t= new Traveller();
-    private FlightData fd[];
+    private FlightData fd;
+    
+    private ArrayList<FlightData> al=new ArrayList<FlightData>();
+    String sql;
+    
    public DriverFlight(){
         con =null;
         st= null;
         
        
-        try{
+        try
+        {
             
             //registering the driver
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -68,9 +74,8 @@ public class DriverFlight {
             
              System.out.println("Creating statement...");
                 st = con.createStatement();
-                String sql;
-                //sample query
-                sql = "SELECT * FROM flight";
+                
+               
                 rs = st.executeQuery(sql);
                 
                 while(rs.next())
@@ -112,6 +117,94 @@ public class DriverFlight {
     
     }//end of constructor
     
+   public ArrayList getFlightRecords() throws SQLException //to get flight details for One way trip
+    {
+		sql="SELECT * FROM flight WHERE Source='"+t.getFromCity()+"' AND Destination='"+t.getToCity()+"'";
+                
+                rs=st.executeQuery(sql);
+                
+                if(rs.next())
+                {
+                    rs.first();
+	
+                    int i=0;
+
+                    while(rs.next())
+                    {
+                        fd=new FlightData();
+                        fd.setFlight_Number(rs.getString("Flight_Number"));
+                        fd.setAirlines(rs.getString("Airlines"));
+                        fd.setSourceCity(rs.getString("Source"));
+                        fd.setDestinationCity(rs.getString("Destination"));
+                        fd.setDeparture_Time(rs.getString("Departure_Time"));
+                        int cost=Integer.parseInt(rs.getString("Fare"));
+                        
+                        if(t.getClassType().equals("Buisness"))
+                        {
+                            cost=(int)((float)cost*1.5);
+                        }
+                        else if(t.getClassType().equals("First"))
+                        {
+                            cost=(int)((float)cost*2.0);
+                        }
+                        
+                        fd.setFare(Integer.toString(cost));
+                        al.add(fd);
+                    }
+                    
+                    return al;
+                }
+                else
+                {
+                    System.out.println("No Record found");
+                    return null;
+                }
+    }
+
+	public ArrayList getRoundFlightRecord() throws SQLException //to get flight records for round trip
+	{
+		sql="SELECT * FROM flight WHERE Source='"+t.getToCity()+"' AND Destination='"+t.getFromCity()+"'";
+                
+                
+                rs=st.executeQuery(sql);
+                
+                if(rs.next())
+                {
+                    rs.first();
+	
+                    int i=0;
+
+                    while(rs.next())
+                    {
+                        fd=new FlightData();
+                        fd.setFlight_Number(rs.getString("Flight_Number"));
+                        fd.setAirlines(rs.getString("Airlines"));
+                        fd.setSourceCity(rs.getString("Source"));
+                        fd.setDestinationCity(rs.getString("Destination"));
+                        fd.setDeparture_Time(rs.getString("Departure_Time"));
+                        int cost=Integer.parseInt(rs.getString("Fare"));
+                        
+                        if(t.getClassType().equals("Buisness"))
+                        {
+                            cost=(int)((float)cost*1.5);
+                        }
+                        else if(t.getClassType().equals("First"))
+                        {
+                            cost=(int)((float)cost*2.0);
+                        }
+                        
+                        fd.setFare(Integer.toString(cost));
+                        al.add(fd);
+                    }
+                    
+                    return al;
+                }
+                else
+                {
+                    System.out.println("No Record found");
+                    return null;
+                }
+	}
     public void close()
     {
        try{
@@ -123,13 +216,14 @@ public class DriverFlight {
         try {   if(st!=null)
                 rs.close();}catch(SQLException e){}
     }
+
    
     public void setTravellerData(Traveller t)
     {
         this.t=t;
     }
-    
-    public FlightData[] getRecords()
+}    
+    /*public FlightData[] getRecords()
     {
         rs
     }
@@ -151,4 +245,4 @@ while(rs.next())
 {
     fd[i]
 }
-}
+}*/
