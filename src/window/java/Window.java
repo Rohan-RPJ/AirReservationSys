@@ -8,6 +8,7 @@ package window.java;
 import driver.DriverClass;
 import driver.DriverFlight;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.logging.Level;
@@ -345,6 +346,8 @@ public class Window extends Application {
                 fs.adults = getFlightDetails().getAdults();
                 fs.childs = getFlightDetails().getChilds();
                 fs.infants = getFlightDetails().getInfants();
+                fs.depart_date = getFlightDetails().getDepartDate();
+                fs.return_date = getFlightDetails().getReturnDate();
                 df.setTravellerData(getFlightDetails());
                 
                 try {
@@ -362,7 +365,11 @@ public class Window extends Application {
                     }
                 }
                 
-                fs.start(primaryStage); 
+                try { 
+                    fs.start(primaryStage);
+                } catch (ParseException ex) {
+                    Logger.getLogger(Window.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 primaryStage.setScene(fs.fSearchScene);  
                 page_1.setVisible(false);
                 page_1.setDisable(true);

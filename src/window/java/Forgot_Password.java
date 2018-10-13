@@ -32,6 +32,8 @@ import javafx.stage.Stage;
  */
 public class Forgot_Password extends Application {
     
+    public Button exit_btn, change_pw_btn;
+    
     @Override
     public void start(Stage new_passwd_page){
     
@@ -139,7 +141,7 @@ public class Forgot_Password extends Application {
  
     
     //
-    Button change_pw_btn = new Button("Change Password");
+    change_pw_btn = new Button("Change Password");
     new_passwd_pane.add(change_pw_btn,0,13);
     change_pw_btn.setOnAction(new EventHandler<ActionEvent>(){
         
@@ -198,6 +200,7 @@ public class Forgot_Password extends Application {
                         {
                             new_passwd_pf.setText("");    
                             confirm_passwd_pf.setText(""); 
+                            
                         }
                          
                     }
@@ -222,7 +225,7 @@ public class Forgot_Password extends Application {
     });
     
     //exit forgot password page
-    Button exit_btn = new Button("Exit");
+    exit_btn = new Button("Exit");
     new_passwd_pane.add(exit_btn, 3, 13);
     exit_btn.setOnAction(e -> {
         new_passwd_page.close();

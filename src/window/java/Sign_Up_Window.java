@@ -12,8 +12,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.regex.Pattern;
 import javafx.application.Application;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -32,14 +30,12 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import javafx.stage.Stage; 
-import window.java.User;
 
 /**
  *
@@ -57,8 +53,10 @@ public class Sign_Up_Window extends Application{
     public ToggleGroup gender_tg;
     public DatePicker dob_dp;
     public ComboBox occ_cb,country_cb,nationality_cb,city_cb;
+    public Button exit_btn, submit_btn;
     private User u = new User();
     private DriverClass dc;
+    private Login_scene ls = new Login_scene();
     
     @Override
     public void start(Stage sign_up_page) {
@@ -345,8 +343,9 @@ public class Sign_Up_Window extends Application{
     sign_up_pane.add(city_cb,1,46,3,1);
 
     //
-    Button submit_btn = new Button("Submit Registration");
+    submit_btn = new Button("Submit Registration");
     sign_up_pane.add(submit_btn,0,50);
+    
     submit_btn.setOnAction(new EventHandler<ActionEvent>(){
         
         private boolean allFilled()
@@ -519,7 +518,9 @@ public class Sign_Up_Window extends Application{
                             registered.setTitle("Registered Successfully");
                             registered.setContentText("Thankyou for Registration"); 
                             registered.show();
+                            
                             }
+                            
                       
                         }
                         else if(confirmation.getResult()==ButtonType.NO)
@@ -555,7 +556,7 @@ public class Sign_Up_Window extends Application{
     });*/
     
     //exit forgot password page
-    Button exit_btn = new Button("Exit");
+    exit_btn = new Button("Exit");
     sign_up_pane.add(exit_btn, 1, 50);
     exit_btn.setOnAction(e -> {
         sign_up_page.close();

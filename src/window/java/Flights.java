@@ -13,6 +13,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
@@ -39,12 +40,12 @@ public class Flights extends Application{
     public GridPane top_gp;
     public Label trip_lbl,src_dest_lbl,adult_lbl,child_lbl,infant_lbl,
             tot_adult,tot_child,tot_infant;
-    public String trip, src, dest,adults,childs,infants;
+    public String trip, depart_date, return_date, src, dest,adults,childs,infants;
     public ArrayList<FlightData> al = new ArrayList<>();
     public ArrayList<FlightData> alr = new ArrayList<>();
     
     public Button next_btn;
-    public int i;
+    public int i, selectedFlightIndex;
     public void setFlightData(ArrayList<FlightData> al)
     {
         this.al=al;
@@ -286,7 +287,6 @@ public class Flights extends Application{
                 logo2[i] = new Image(Window.class.getResourceAsStream("air-logo.png"));
                 logo_img_view2[i] = new ImageView(logo2[i]);
                 
-           
                 //setting size of image logo
                 logo_img_view2[i].setFitHeight(65);
                 logo_img_view2[i].setFitWidth(65);
@@ -428,10 +428,58 @@ public class Flights extends Application{
             db.adults = adults;
             db.childs = childs;
             db.infants = infants;
-            db.start(primaryStage); 
-            primaryStage.setScene(db.s);
-            bp.setVisible(false);
-            bp.setDisable(true);
+            db.trip = trip;
+            db.src = src;
+            db.dest = dest;
+            if(oneWayTrip_tg.getSelectedToggle() == null)
+            {
+                Alert bookInfo = new Alert(Alert.AlertType.INFORMATION);
+                bookInfo.setTitle("Information"); 
+                bookInfo.setContentText("Choose a departure flight");
+                bookInfo.show();
+            }
+            else
+            {
+                db.depart_date = depart_date;
+                selectedFlightIndex = oneWayTrip_tg.getToggles().indexOf(oneWayTrip_tg.getSelectedToggle());
+                db.flightNo1 = al.get(selectedFlightIndex).Flight_Number;
+                db.depart_time1 = al.get(selectedFlightIndex).Departure_Time;
+                db.arrive_time1 = al.get(selectedFlightIndex).Arrival_Time;
+                db.fare1 = al.get(selectedFlightIndex).Fare;
+                
+            }
+            if(trip.equals("Round Trip"))
+            {
+                if(roundTrip_tg.getSelectedToggle() == null)
+                {
+                    Alert bookInfo = new Alert(Alert.AlertType.INFORMATION);
+                    bookInfo.setTitle("Information"); 
+                    bookInfo.setContentText("Choose an arrival flight");
+                    bookInfo.show();
+                }
+                else
+                {
+                    db.return_date = return_date;
+                    selectedFlightIndex = roundTrip_tg.getToggles().indexOf(roundTrip_tg.getSelectedToggle());
+                    db.flightNo2 = alr.get(selectedFlightIndex).Flight_Number;
+                    db.depart_time2 = alr.get(selectedFlightIndex).Departure_Time;
+                    db.arrive_time2 = alr.get(selectedFlightIndex).Arrival_Time;
+                    db.fare2 = alr.get(selectedFlightIndex).Fare;
+                    db.start(primaryStage); 
+                    primaryStage.setScene(db.s);
+                    db.borderPane.setCenter(db.rootPane1);
+                    bp.setVisible(false);
+                    bp.setDisable(true);
+                }
+            }   
+            else
+            {
+                db.start(primaryStage); 
+                primaryStage.setScene(db.s);
+                db.borderPane.setCenter(db.rootPane1);
+                bp.setVisible(false);
+                bp.setDisable(true);
+            }
             
         });
        

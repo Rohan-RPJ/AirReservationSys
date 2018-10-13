@@ -39,7 +39,7 @@ public class Login_scene extends Application{
     public TextField username_tf;
     public PasswordField passwd_pf;
     
-    
+    private Forgot_Password fp = new Forgot_Password();
     @Override
     public void start(Stage primaryStage)
     {
@@ -128,7 +128,20 @@ public class Login_scene extends Application{
                 Stage new_passwd_page = new Stage();
                 Forgot_Password fp = new Forgot_Password();
                 fp.start(new_passwd_page); 
+                fp.exit_btn.setOnMousePressed(m->{
                 
+                    if(!username_tf.getText().isEmpty())
+                        username_tf.clear();
+                    if(!passwd_pf.getText().isEmpty())
+                        passwd_pf.clear();
+                });
+                fp.change_pw_btn.setOnMousePressed(m->{
+                    
+                    if(!username_tf.getText().isEmpty())
+                        username_tf.clear();
+                    if(!passwd_pf.getText().isEmpty())
+                        passwd_pf.clear();
+                });
             }      
         }); 
         
@@ -143,6 +156,22 @@ public class Login_scene extends Application{
            Stage sign_up_page = new Stage();
            Sign_Up_Window spw = new Sign_Up_Window();
            spw.start(sign_up_page); 
+            spw.exit_btn.setOnMousePressed(m->{
+                
+                if(!username_tf.getText().isEmpty())
+                    username_tf.clear();
+                if(!passwd_pf.getText().isEmpty())
+                    passwd_pf.clear();
+            });
+            spw.submit_btn.setOnMousePressed(m->{
+                
+                if(!username_tf.getText().isEmpty())
+                    username_tf.clear();
+                if(!passwd_pf.getText().isEmpty())
+                    passwd_pf.clear();
+                
+            });
+            
         });
         
         close_btn = new Button("Close");
