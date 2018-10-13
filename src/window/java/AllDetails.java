@@ -40,14 +40,6 @@ public class AllDetails extends Application{
     @Override
     public void start(Stage primaryStage)
     {
-        
-        //** Details Scene **//
-        
-        //End of Details Scene **//
-        
-        
-        //** Traveller Info Scene **//
-        
         Window w = new Window();
         Traveller t = new Traveller();
         
@@ -112,10 +104,7 @@ public class AllDetails extends Application{
         
         Button back_btn = new Button("Back");
         back_btn.setPrefSize(300, 40);
-        /*back_btn.setStyle("-fx-background-radius: 50em;-fx-font-weight: bold;\n" +
-                        "-fx-text-fill: #ffffff;\n" +
-                        "-fx-background-color:linear-gradient(#0731c0,#076dc0);\n" +
-                        "-fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );"); */
+        
          
         
         Button next_btn = new Button("Next");
@@ -132,24 +121,45 @@ public class AllDetails extends Application{
         
         
         
-        //**Center of Border Pane**//
-        GridPane center_gp = new GridPane();
+        //****  Center of Border Pane  ****//
+        
+        //** Details Scene **//
+        
+        GridPane details_gp = new GridPane();
+        details_gp.setGridLinesVisible(true);
+        details_gp.setHgap(15);
+        details_gp.setVgap(15);
+        details_gp.setAlignment(Pos.TOP_LEFT); 
+        details_gp.setPadding(new Insets(10, 10, 10, 10));
+        
+        //
+        Label flightDetail_lbl = new Label("Flight Detail");
+        flightDetail_lbl.setId("text"); 
+        details_gp.add(flightDetail_lbl, 0, 0); 
+        
+        
+        
+        //End of Details Scene **//
+        
+        //** Traveller Info Scene **//
+        
+        GridPane travInfo_gp = new GridPane();
        
-        center_gp.setAlignment(Pos.TOP_LEFT); 
+        travInfo_gp.setAlignment(Pos.TOP_LEFT); 
         
         //setting gaps between rows and columns of grid 
-        center_gp.setHgap(10);
-        center_gp.setVgap(10);
+        travInfo_gp.setHgap(10);
+        travInfo_gp.setVgap(10);
         
         //padding of gridpane in scene
-        center_gp.setPadding(new Insets(20,20,20,20));
+        travInfo_gp.setPadding(new Insets(20,20,20,20));
         
         //gp.centerShapeProperty();
         //center_gp.setGridLinesVisible(true);
         
         Label pass_detail_lbl = new Label("Passenger Details");
         pass_detail_lbl.setStyle("-fx-font-size: 30px");
-        center_gp.add(pass_detail_lbl, 0, 0, 2, 1);
+        travInfo_gp.add(pass_detail_lbl, 0, 0, 2, 1);
       
       //  Line line = new Line(0, 0, , startY);
             
@@ -165,15 +175,15 @@ public class AllDetails extends Application{
         {
             adult_lbl[j-1] = new Label(j+".Adult");
             adult_lbl[j-1].setId("text"); 
-            center_gp.add(adult_lbl[j-1],0, i+3);
+            travInfo_gp.add(adult_lbl[j-1],0, i+3);
             
             f_m_name[j-1] = new TextField();
             f_m_name[j-1].setPromptText("First & Middle Name"); 
-            center_gp.add(f_m_name[j-1], 1, i+3);
+            travInfo_gp.add(f_m_name[j-1], 1, i+3);
             
             l_name[j-1] = new TextField();
             l_name[j-1].setPromptText("Last Name"); 
-            center_gp.add(l_name[j-1], 2, i+3, 2, 1);
+            travInfo_gp.add(l_name[j-1], 2, i+3, 2, 1);
         }
         }catch(Exception ex) {
             System.out.println(ex);
@@ -190,15 +200,15 @@ public class AllDetails extends Application{
         {
             child_lbl[j-1] = new Label(j+".Child");
             child_lbl[j-1].setId("text"); 
-            center_gp.add(child_lbl[j-1],0, i+3);
+            travInfo_gp.add(child_lbl[j-1],0, i+3);
             
             f_m_name[j-1] = new TextField();
             f_m_name[j-1].setPromptText("First & Middle Name"); 
-            center_gp.add(f_m_name[j-1], 1, i+3);
+            travInfo_gp.add(f_m_name[j-1], 1, i+3);
             
             l_name[j-1] = new TextField();
             l_name[j-1].setPromptText("Last Name"); 
-            center_gp.add(l_name[j-1], 2, i+3, 2, 1);
+            travInfo_gp.add(l_name[j-1], 2, i+3, 2, 1);
             
         }
         }catch(NumberFormatException ex){
@@ -216,15 +226,15 @@ public class AllDetails extends Application{
         {
             infant_lbl[j-1] = new Label(j+".Infant");
             infant_lbl[j-1].setId("text"); 
-            center_gp.add(infant_lbl[j-1],0, i+3);
+            travInfo_gp.add(infant_lbl[j-1],0, i+3);
             
             f_m_name[j-1] = new TextField();
             f_m_name[j-1].setPromptText("First & Middle Name"); 
-            center_gp.add(f_m_name[j-1], 1, i+3);
+            travInfo_gp.add(f_m_name[j-1], 1, i+3);
             
             l_name[j-1] = new TextField();
             l_name[j-1].setPromptText("Last Name"); 
-            center_gp.add(l_name[j-1], 2, i+3, 2, 1);
+            travInfo_gp.add(l_name[j-1], 2, i+3, 2, 1);
             
         }
         }catch(NumberFormatException ex){
@@ -235,67 +245,67 @@ public class AllDetails extends Application{
         
         Label con_info_lbl = new Label("Contact Information");
         con_info_lbl.setStyle("-fx-font-size: 30px");
-        center_gp.add(con_info_lbl, 0, i+4, 2, 1);
+        travInfo_gp.add(con_info_lbl, 0, i+4, 2, 1);
         i++;
         
         Text f_name_txt = new Text("First Name:");
         f_name_txt.setId("text"); 
-        center_gp.add(f_name_txt, 0, i+6);
+        travInfo_gp.add(f_name_txt, 0, i+6);
         
         f_name_tf = new TextField();
         f_name_tf.setPromptText("First Name"); 
-        center_gp.add(f_name_tf, 1, i+6);
+        travInfo_gp.add(f_name_tf, 1, i+6);
         
         Text l_name_txt = new Text("Last Name:");
         l_name_txt.setId("text"); 
-        center_gp.add(l_name_txt, 2, i+6);
+        travInfo_gp.add(l_name_txt, 2, i+6);
         
         l_name_tf = new TextField();
         l_name_tf.setPromptText("Last Name"); 
-        center_gp.add(l_name_tf, 3, i+6);
+        travInfo_gp.add(l_name_tf, 3, i+6);
         i++;
         
         Text add_txt = new Text("Address:");
         add_txt.setId("text"); 
-        center_gp.add(add_txt, 0, i+6);
+        travInfo_gp.add(add_txt, 0, i+6);
         
         add_tf = new TextField();
         add_tf.setPromptText("Address"); 
-        center_gp.add(add_tf, 1, i+6);
+        travInfo_gp.add(add_tf, 1, i+6);
         
         Text email_txt = new Text("Email:");
         email_txt.setId("text"); 
-        center_gp.add(email_txt, 2, i+6);
+        travInfo_gp.add(email_txt, 2, i+6);
         
         email_tf = new TextField();
         email_tf.setPromptText("Email"); 
-        center_gp.add(email_tf, 3, i+6);
+        travInfo_gp.add(email_tf, 3, i+6);
         i++;
         
         Text country_txt = new Text("Country:");
         country_txt.setId("text"); 
-        center_gp.add(country_txt, 0, i+6);
+        travInfo_gp.add(country_txt, 0, i+6);
         
         country_tf = new TextField();
         country_tf.setPromptText("Country"); 
-        center_gp.add(country_tf, 1, i+6);
+        travInfo_gp.add(country_tf, 1, i+6);
         
         Text pin_txt = new Text("Pincode:");
         pin_txt.setId("text"); 
-        center_gp.add(pin_txt, 2, i+6);
+        travInfo_gp.add(pin_txt, 2, i+6);
         
         pin_tf = new TextField();
         pin_tf.setPromptText("Pincode"); 
-        center_gp.add(pin_tf, 3, i+6);
+        travInfo_gp.add(pin_tf, 3, i+6);
         i++;
               
         Text mob_no_txt = new Text("Mobile no:");
         mob_no_txt.setId("text"); 
-        center_gp.add(mob_no_txt, 0, i+6);
+        travInfo_gp.add(mob_no_txt, 0, i+6);
         
         mob_no_tf = new TextField();
         mob_no_tf.setPromptText("Mobile no"); 
-        center_gp.add(mob_no_tf, 1, i+6);
+        travInfo_gp.add(mob_no_tf, 1, i+6);
         i++;
         
         final int n = j;
@@ -362,7 +372,7 @@ public class AllDetails extends Application{
         //rootPane.setVmax(2);
         //rootPane.setHmax(2);
         //rootPane.setVvalue(20);
-        rootPane.setContent(center_gp);  
+        rootPane.setContent(travInfo_gp);  
         
         borderPane.setCenter(rootPane); 
         //End of Center of BorderPane
@@ -376,6 +386,8 @@ public class AllDetails extends Application{
         //** Preview Scene **//
         
         //** End of Preview Scene **//
+        
+        //****  End of Center Pane  ****//
     }
     
     public static void main(String args[])

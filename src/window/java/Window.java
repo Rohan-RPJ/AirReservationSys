@@ -46,7 +46,7 @@ public class Window extends Application {
     public ToggleGroup trip_tg;
     public ComboBox from_city_list,to_city_list,class_list;
     public DatePicker depart_date,return_date;
-    public Spinner adult_no,child_no,infant_no;
+    public Spinner<Integer> adult_no,child_no,infant_no;
     public Button search_btn, sign_in_btn, sign_up_btn, sign_out_btn;
     public Scene scene;
     public Image logo;
@@ -237,28 +237,25 @@ public class Window extends Application {
         Text adult_txt = new Text("Adult(above 15 yrs) :");
         page_1.add(adult_txt,0,16);
         
-        adult_no = new Spinner();
+        adult_no = new Spinner<Integer>();
         //value_factory for adult i.e. setting range of values for no. of adults
-        SpinnerValueFactory adult_range = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,4,0);
-        adult_no.setValueFactory(adult_range); 
+        adult_no.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0,4,0));
         page_1.add(adult_no, 0, 17);
         
         Text child_txt = new Text("Child(2-15 yrs) :");
         page_1.add(child_txt,1,16);
         
-        child_no = new Spinner();
+        child_no = new Spinner<Integer>();
         //value_factory for child i.e. setting range of values for no. of child
-        SpinnerValueFactory child_range = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,4,0);
-        child_no.setValueFactory(child_range);
+        child_no.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0,4,0));
         page_1.add(child_no, 1, 17);
         
         Text infant_txt = new Text("Infant(Under 2 yrs) :");
         page_1.add(infant_txt,2,16);
         
-        infant_no = new Spinner();
+        infant_no = new Spinner<Integer>();
         //value_factory for infant i.e. setting range of values for no. of infants
-        SpinnerValueFactory infant_range = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,4,0);
-        infant_no.setValueFactory(infant_range);
+        infant_no.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0,4,0));
         page_1.add(infant_no, 2, 17);
 
         //background for login scene
@@ -304,50 +301,43 @@ public class Window extends Application {
         //search button ActionEvent
         search_btn.setOnAction(e->{
             
-            /*if(trip_tg.getSelectedToggle()==null || from_city_list.getValue()==null || to_city_list.getValue()==null || class_list.getValue()==null)
+            if(trip_tg.getSelectedToggle()==null || from_city_list.getValue()==null || to_city_list.getValue()==null || class_list.getValue()==null)
             {System.out.println("toogle");
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Incomplete Details"); 
                 alert.setContentText("Please fill all the required  Fields");
                 alert.show();
             }
-            else if((adult_no.getValue().equals("0") && child_no.getValue().equals("0") && infant_no.getValue().equals("0")) ||
-                    (adult_no.getValue() == null && child_no.getValue() == null && infant_no.getValue() == null))
+            else if(adult_no.getValue()==0 && child_no.getValue()==0 && infant_no.getValue()==0)
             {System.out.println("no. of trav");
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Incomplete Details"); 
                 alert.setContentText("Please fill all the required Fields");
                 alert.show();
             }
-            else if(trip.getText().equals("One Way Trip"))  
-            {System.out.println("oe way trip");
-                if(depart_date.getValue()==null)
-                {
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Incomplete Details"); 
-                    alert.setContentText("Please fill all the required Fields");
-                    alert.show();
-                }
+            else if(((RadioButton)trip_tg.getSelectedToggle()).getText().equals("One Way Trip") && depart_date.getValue()==null) 
+            {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Incomplete Details"); 
+                alert.setContentText("Please fill all the required Fields");
+                alert.show();
             }
-            else if(trip.getText().equals("Round Trip"))
-            {System.out.println("round trip");
-                if(depart_date.getValue()==null || return_date.getValue()==null)
-                {
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Incomplete Details"); 
-                    alert.setContentText("Please fill all the required Fields");
-                    alert.show();
-                }
+            else if(((RadioButton)trip_tg.getSelectedToggle()).getText().equals("Round Trip") && (depart_date.getValue()==null || return_date.getValue()==null))
+            {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Incomplete Details"); 
+                alert.setContentText("Please fill all the required Fields");
+                alert.show();
             }
             else if(from_city_list.getValue().equals(to_city_list.getValue()))
-            {System.out.println("city");
+            {
                 Alert error = new Alert(Alert.AlertType.ERROR);
                 error.setTitle("Error"); 
                 error.setContentText("Choose a different Source or Destination");
                 error.show();
             }
             else
-            {System.out.println("search");*/
+            {
                 fs.trip = getFlightDetails().getTrip();
                 fs.src = getFlightDetails().getFromCity();
                 fs.dest = getFlightDetails().getToCity();
@@ -358,16 +348,9 @@ public class Window extends Application {
                 fs.start(primaryStage); 
                 primaryStage.setScene(fs.fSearchScene);  
                 page_1.setVisible(false);
-             
-            
-            /*AllDetails db = new AllDetails();
-            db.adults = getFlightDetails().getAdults();
-            db.childs = getFlightDetails().getChilds();
-            db.infants = getFlightDetails().getInfants();
-            db.start(primaryStage); 
-            primaryStage.setScene(db.s);
-            page_1.setVisible(false);*/
-            //}
+                page_1.setDisable(true);
+                
+            }
         });
         
         sign_out_btn = new Button("Sign Out");
@@ -508,7 +491,7 @@ public class Window extends Application {
 
         t.setDepartDate(depart_date.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
     
-        if(trip.getText().equals("Round Trip")) 
+        if(((RadioButton)trip_tg.getSelectedToggle()).getText().equals("Round Trip")) 
         {
             t.setReturnDate(return_date.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
         }
