@@ -5,6 +5,7 @@
  */
 package window.java;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import javafx.application.Application;
 import javafx.geometry.HPos;
@@ -49,12 +50,12 @@ public class Flights extends Application{
         this.al=al;
     }
     
-    public void setRoundFlightData(ArrayList<FlightData> al)
+    public void setRoundFlightData(ArrayList<FlightData> alr)
     {
-        this.alr=al;
+        this.alr=alr;
     }
     @Override
-    public void start(Stage primaryStage)
+    public void start(Stage primaryStage) throws ParseException
     {
       
         Window w = new Window();
@@ -151,11 +152,11 @@ public class Flights extends Application{
         
         i=0;
         //Passenger Details of no. of adults selected 
-        try{
+        //try{
         //int tot_fligts = Integer.parseInt(); 
         
         for(; i<al.size(); i++)
-        {
+        {System.out.println("one way trip size"+al.size());
             
             //setting primary properties required for gridPane
             center_gp1[i] = new GridPane();
@@ -235,7 +236,7 @@ public class Flights extends Application{
             center_gp1[i].add(tot_time_req1[i], 1, 5, 3, 1);
             
             //fare
-            fare1[i] = new Label(al.get(i).getFare());
+            fare1[i] = new Label("Rs."+al.get(i).getFare());
             fare1[i].setStyle("-fx-font-size: 30px;-fx-font-weight: bold;-fx-text-fill:red"); 
             GridPane.setHalignment(fare1[i], HPos.CENTER); 
             center_gp1[i].add(fare1[i], 6, 5, 2, 1);
@@ -252,7 +253,10 @@ public class Flights extends Application{
             sp1[i].getChildren().addAll(r1[i], center_gp1[i]); 
             v1.getChildren().add(sp1[i]); 
             
-            if(trip.equals("Round Trip"))
+        }
+        if(trip.equals("Round Trip"))
+        {System.out.println("Round trip size"+alr.size());
+            for(i=0;i<alr.size();i++)
             {
                 //setting primary properties required for gridPane
                 center_gp2[i] = new GridPane();
@@ -309,7 +313,7 @@ public class Flights extends Application{
                 GridPane.setHalignment(time_src2[i], HPos.CENTER); 
                 center_gp2[i].add(time_src2[i], 4, 0);
                 
-                time_dest2[i] = new Label(al.get(i).getArrival_Time());
+                time_dest2[i] = new Label(alr.get(i).getArrival_Time());
                 time_dest2[i].setStyle("-fx-font-size: 30px;-fx-font-weight: bold;");
                 GridPane.setHalignment(time_dest2[i], HPos.CENTER); 
                 center_gp2[i].add(time_dest2[i], 7, 0);
@@ -324,14 +328,14 @@ public class Flights extends Application{
                 GridPane.setHalignment(destination2[i], HPos.CENTER); 
                 center_gp2[i].add(destination2[i], 7, 1);
                 
-                //total time required
+                //total time requworjired
                 tot_time_req2[i] = new Label(alr.get(i).getDuration());
                 tot_time_req2[i].setStyle("-fx-font-size: 30px;-fx-font-weight: bold;");
                 GridPane.setHalignment(tot_time_req2[i], HPos.CENTER); 
                 center_gp2[i].add(tot_time_req2[i], 1, 5, 3, 1);
             
                 //fare
-                fare2[i] = new Label(alr.get(i).getFare());
+                fare2[i] = new Label("Rs."+alr.get(i).getFare());
                 fare2[i].setStyle("-fx-font-size: 30px;-fx-font-weight: bold;-fx-text-fill:red"); 
                 GridPane.setHalignment(fare2[i], HPos.CENTER); 
                 center_gp2[i].add(fare2[i], 6, 5, 2, 1);
@@ -350,12 +354,11 @@ public class Flights extends Application{
                 v2.getChildren().add(sp2[i]);
             
             }
-            
         }
-        }catch(Exception ex) {
+        /*}catch(Exception ex) {
             System.out.println(ex);
         }
-        
+        */
         v1.setStyle("-fx-background-color: #cccccc"); 
         v2.setStyle("-fx-background-color: #cccccc"); 
         

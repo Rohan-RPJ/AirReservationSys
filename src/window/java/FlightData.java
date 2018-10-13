@@ -82,7 +82,7 @@ public class FlightData
         SimpleDateFormat format = new SimpleDateFormat("HH:mm");
         Date date1 = format.parse(time1);
         Date date2 = format.parse(time2);
-        long difference = date2.getTime() - date1.getTime();
+        long difference = Math.abs(date2.getTime() - date1.getTime());
     
     
         String hours= Long.toString(difference/(1000*60*60));
