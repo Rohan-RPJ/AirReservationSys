@@ -6,7 +6,10 @@
 package driver;
 
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import window.java.FlightData;
 import window.java.Traveller;
 
@@ -31,6 +34,27 @@ public class TestFlight {
         {
             System.out.println("Record "+i);
             System.out.println("Flight Number"+al.get(i).getFlight_Number());
+            System.out.println("Arriavl time"+al.get(i).getArrival_Time());
+            System.out.println("Depart time"+al.get(i).getDeparture_Time());
+            try {
+                System.out.println("Durstion"+al.get(i).getDuration());
+            } catch (ParseException ex) {
+                Logger.getLogger(TestFlight.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+        al=df.getFlightRecords();
+        for(int i=0;i<al.size();i++)
+        {
+            System.out.println("Record "+i);
+            System.out.println("Flight Number"+al.get(i).getFlight_Number());
+            System.out.println("Arriavl time"+al.get(i).getArrival_Time());
+            System.out.println("Depart time"+al.get(i).getDeparture_Time());
+            try {
+                System.out.println("Durstion"+al.get(i).getDuration());
+            } catch (ParseException ex) {
+                Logger.getLogger(TestFlight.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         
         System.out.println("Driver object created");

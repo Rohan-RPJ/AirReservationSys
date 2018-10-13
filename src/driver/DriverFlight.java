@@ -122,6 +122,7 @@ public class DriverFlight {
     {
 		sql="SELECT * FROM flight WHERE Source='"+t.getFromCity()+"' AND Destination='"+t.getToCity()+"'";
                 
+                al = new ArrayList<>();
                 rs=st.executeQuery(sql);
                 
                 if(rs.next())
@@ -138,6 +139,7 @@ public class DriverFlight {
                         fd.setSourceCity(rs.getString("Source"));
                         fd.setDestinationCity(rs.getString("Destination"));
                         fd.setDeparture_Time(rs.getString("Departure_Time"));
+                        fd.setArrival_Time(rs.getString("Arrival_Time"));
                         int cost=Integer.parseInt(rs.getString("Fare").replaceAll(",", ""));
                         
                         if(t.getClassType().equals("Buisness"))
@@ -166,7 +168,7 @@ public class DriverFlight {
 	{
 		sql="SELECT * FROM flight WHERE Source='"+t.getToCity()+"' AND Destination='"+t.getFromCity()+"'";
                 
-                
+                al = new ArrayList<>();
                 rs=st.executeQuery(sql);
                 
                 if(rs.next())
@@ -183,6 +185,7 @@ public class DriverFlight {
                         fd.setSourceCity(rs.getString("Source"));
                         fd.setDestinationCity(rs.getString("Destination"));
                         fd.setDeparture_Time(rs.getString("Departure_Time"));
+                        fd.setArrival_Time(rs.getString("Arrival_Time"));
                         int cost=Integer.parseInt(rs.getString("Fare").replaceAll(",", ""));
                         
                         if(t.getClassType().equals("Buisness"))
