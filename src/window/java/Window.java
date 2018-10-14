@@ -58,6 +58,7 @@ public class Window extends Application {
     private Traveller t = new Traveller();
     private Flights fs = new Flights();
     private User u =new User();
+    private AllDetails ad = new AllDetails();
     
     @Override
     public void start(Stage primaryStage) {
@@ -66,7 +67,6 @@ public class Window extends Application {
         DriverClass dc = new DriverClass();
         
         Login_scene ls = new Login_scene();
-        ls.start(primaryStage);
         
         //setting full screen 
         //primaryStage.setFullScreen(true); 
@@ -239,7 +239,7 @@ public class Window extends Application {
         Text adult_txt = new Text("Adult(above 15 yrs) :");
         page_1.add(adult_txt,0,16);
         
-        adult_no = new Spinner<Integer>();
+        adult_no = new Spinner<>();
         //value_factory for adult i.e. setting range of values for no. of adults
         adult_no.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0,4,0));
         page_1.add(adult_no, 0, 17);
@@ -247,7 +247,7 @@ public class Window extends Application {
         Text child_txt = new Text("Child(2-15 yrs) :");
         page_1.add(child_txt,1,16);
         
-        child_no = new Spinner<Integer>();
+        child_no = new Spinner<>();
         //value_factory for child i.e. setting range of values for no. of child
         child_no.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0,4,0));
         page_1.add(child_no, 1, 17);
@@ -255,32 +255,80 @@ public class Window extends Application {
         Text infant_txt = new Text("Infant(Under 2 yrs) :");
         page_1.add(infant_txt,2,16);
         
-        infant_no = new Spinner<Integer>();
+        infant_no = new Spinner<>();
         //value_factory for infant i.e. setting range of values for no. of infants
         infant_no.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0,4,0));
         page_1.add(infant_no, 2, 17);
 
-        //background for login scene
-        Image bg = new Image(Window.class.getResourceAsStream("plane.jpg")); 
-        ImageView bg_view = new ImageView(bg);
-        ls.stackpane.getChildren().addAll(bg_view,ls.sign_in_pane);
             
         //signIn button actionevent
         sign_in_btn = new Button("Sign in");
         page_1.add(sign_in_btn, 0,26);
+        
         sign_in_btn.setOnAction(e ->{
             
-            
-            primaryStage.setScene(ls.login_scene); 
-            page_1.setVisible(false);
-            ls.sign_in_pane.setVisible(true); 
-            ls.sign_in_pane.setDisable(false); 
-            ls.stackpane.setVisible(true); 
-            ls.stackpane.setDisable(false); 
-            ls.username_tf.clear();
-            ls.passwd_pf.clear();
-            
-        }); 
+            Stage loginStage = new Stage();
+            ls.start(loginStage);
+            //primaryStage.close();
+            //SignIn button of login scene 
+            ls.signin_btn.setOnAction(f -> {
+              
+                if(ls.username_tf.getText().isEmpty() || ls.passwd_pf.getText().isEmpty())
+                {
+                    Alert warning = new Alert(Alert.AlertType.WARNING);
+                    warning.setTitle("Warning"); 
+                    warning.setContentText("Both fields are mandatory"); 
+                    warning.show();
+                }
+                else{
+                    try {
+                        u.setUserId(ls.username_tf.getText());
+                        u.setPassword(ls.passwd_pf.getText());
+                        dc.setUserData(u);
+                        int flag=dc.checkCredentials();
+                        switch (flag) {
+                            case 0:
+                                {
+                                    Alert warning = new Alert(Alert.AlertType.WARNING);
+                                    warning.setTitle("Warning");
+                                    warning.setContentText("Username or Password is Incorrect");
+                                    warning.show();
+                                    break;
+                                }
+                            case -1:
+                                {
+                                    Alert warning = new Alert(Alert.AlertType.WARNING);
+                                    warning.setTitle("Warning");
+                                    warning.setContentText("Account does not exists");
+                                    warning.show();
+                                    break;
+                                }
+                            case 1:
+                            {
+                                
+                                primaryStage.show();
+                                page_1.setVisible(true);
+                                sign_in_btn.setVisible(false);
+                                sign_in_btn.setDisable(true);
+                                sign_out_btn.setVisible(true);
+                                sign_out_btn.setDisable(false);
+                                hello_user_lbl.setText("Hello "+dc.getUserData().getFirstName()+"!");
+                                hello_user_lbl.setVisible(true);
+                                hello_user_lbl.setDisable(false);
+                                
+                                loginStage.close();
+                                break;  
+                            }
+                            default:
+                                break;
+                        }
+                    } catch (SQLException ex) {
+                        Logger.getLogger(Window.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                
+            });
+        });
         
         //
         RadioButton trip = (RadioButton)trip_tg.getSelectedToggle();
@@ -399,65 +447,6 @@ public class Window extends Application {
         hello_user_lbl.setVisible(false); 
         hello_user_lbl.setDisable(true); 
 
-        
-        //SignIn button of login scene 
-        ls.signin_btn.setOnAction(e -> {
-              
-            
-            if(ls.username_tf.getText().isEmpty() || ls.passwd_pf.getText().isEmpty())
-            {
-                Alert warning = new Alert(Alert.AlertType.WARNING);
-                warning.setTitle("Warning"); 
-                warning.setContentText("Both fields are mandatory"); 
-                warning.show();
-            }
-            else{
-                try {
-                    u.setUserId(ls.username_tf.getText());
-                    u.setPassword(ls.passwd_pf.getText());
-                    dc.setUserData(u);
-                    int flag=dc.checkCredentials();
-                    if(flag==0)
-                    {
-                        Alert warning = new Alert(Alert.AlertType.WARNING);
-                        warning.setTitle("Warning");
-                        warning.setContentText("Username or Password is Incorrect");
-                        warning.show();
-                    }
-                    else if(flag==-1)
-                    {
-                        Alert warning = new Alert(Alert.AlertType.WARNING);
-                        warning.setTitle("Warning");
-                        warning.setContentText("Account does not exists");
-                        warning.show();
-                    }
-                    else if(flag==1)
-                    {
-                        primaryStage.setScene(scene);
-                        page_1.setVisible(true);
-                        sign_in_btn.setVisible(false);
-                        sign_in_btn.setDisable(true);
-                        
-                        sign_out_btn.setVisible(true);
-                        sign_out_btn.setDisable(false);
-                        
-                        hello_user_lbl.setText("Hello "+dc.getUserData().getFirstName()+"!");
-                        hello_user_lbl.setVisible(true);
-                        hello_user_lbl.setDisable(false);
-                        
-                        ls.username_tf.clear();
-                        ls.passwd_pf.clear();
-                        ls.stackpane.setVisible(false);
-                        ls.stackpane.setDisable(true);
-                        ls.sign_in_pane.setDisable(true);
-                        ls.sign_in_pane.setVisible(false); 
-                    }
-                } catch (SQLException ex) {
-                    Logger.getLogger(Window.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-        
         
         ScrollPane rootPane = new ScrollPane();
         rootPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);

@@ -5,17 +5,21 @@
  */
 package window.java;
 
+import driver.DriverClass;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
-import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -39,9 +43,12 @@ public class Login_scene extends Application{
     public TextField username_tf;
     public PasswordField passwd_pf;
     
+    private User u =new User();
+    private DriverClass dc = new DriverClass();
+    
     private Forgot_Password fp = new Forgot_Password();
     @Override
-    public void start(Stage primaryStage)
+    public void start(Stage loginStage)
     {
         //Window class Object
         Window w = new Window();
@@ -111,7 +118,64 @@ public class Login_scene extends Application{
         GridPane.setHalignment(signin_btn, HPos.CENTER); 
         sign_in_pane.add(signin_btn, 4, 17, 2, 2); 
         
-        
+        /*//SignIn button of login scene 
+            signin_btn.setOnAction(f -> {
+              
+                if(username_tf.getText().isEmpty() || passwd_pf.getText().isEmpty())
+                {
+                    Alert warning = new Alert(Alert.AlertType.WARNING);
+                    warning.setTitle("Warning"); 
+                    warning.setContentText("Both fields are mandatory"); 
+                    warning.show();
+                }
+                else{
+                    try {
+                        u.setUserId(username_tf.getText());
+                        u.setPassword(passwd_pf.getText());
+                        dc.setUserData(u);
+                        int flag=dc.checkCredentials();
+                        switch (flag) {
+                            case 0:
+                                {
+                                    Alert warning = new Alert(Alert.AlertType.WARNING);
+                                    warning.setTitle("Warning");
+                                    warning.setContentText("Username or Password is Incorrect");
+                                    warning.show();
+                                    break;
+                                }
+                            case -1:
+                                {
+                                    Alert warning = new Alert(Alert.AlertType.WARNING);
+                                    warning.setTitle("Warning");
+                                    warning.setContentText("Account does not exists");
+                                    warning.show();
+                                    break;
+                                }
+                            case 1:
+                            {
+                                Stage primaryStage = new Stage();
+                                w.start(primaryStage);
+                                w.page_1.setVisible(true);
+                                w.sign_in_btn.setVisible(false);
+                                w.sign_in_btn.setDisable(true);
+                                w.sign_out_btn.setVisible(true);
+                                w.sign_out_btn.setDisable(false);
+                                w.hello_user_lbl.setText("Hello "+dc.getUserData().getFirstName()+"!");
+                                w.hello_user_lbl.setVisible(true);
+                                w.hello_user_lbl.setDisable(false);
+                                
+                                loginStage.close();
+                                break;  
+                            }
+                            default:
+                                break;
+                        }
+                    } catch (SQLException ex) {
+                        Logger.getLogger(Window.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                
+            });*/
         
         //forgot_password? 
         Hyperlink forgot_pw = new Hyperlink("(forgot password ?)");
@@ -181,13 +245,34 @@ public class Login_scene extends Application{
         
         //Close button ActionEvent
         close_btn.setOnAction((ActionEvent e) -> {
-            w.start(primaryStage); 
-            primaryStage.setScene(w.scene);
-            w.page_1.setVisible(true);
+            
+            loginStage.close();
+            
         });
         
+        //background for login scene
+        Image bg = new Image(Window.class.getResourceAsStream("plane.jpg")); 
+        ImageView bg_view = new ImageView(bg);
+        stackpane.getChildren().addAll(bg_view,sign_in_pane);
+             
+        username_tf.clear();
+        passwd_pf.clear();
         //
         login_scene.getStylesheets().add(Window.class.getResource("LoginScene.css").toExternalForm());
+        loginStage.setScene(login_scene);
+        
+        //setting primaryStage to the size of screen of pc
+        Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
+        //MinX and MinY are upper left corner of primaryStage
+        loginStage.setX(primaryScreenBounds.getMinX());
+        loginStage.setY(primaryScreenBounds.getMinY());
+        //setting width of stage to width of screen
+        loginStage.setWidth(primaryScreenBounds.getWidth());
+        //setting height of stage to height of screen
+        loginStage.setHeight(primaryScreenBounds.getHeight());
+        
+        loginStage.show();
+        
     }
     
     public static void main(String args[])
