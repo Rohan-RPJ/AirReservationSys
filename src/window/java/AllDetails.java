@@ -851,6 +851,8 @@ public class AllDetails extends Application{
         
         if(trip.equals("One Way Trip"))
         {
+            int price= Integer.parseInt(fare1)*(adult+child);
+            fare1=Integer.toString(price);
             Label tot_fare = new Label("Rs. "+fare1);
             tot_fare.setStyle("-fx-font-size: 23px;\n" +"-fx-fill:#181818;-fx-font-weight: bold;\n" +
                     "-fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );");
@@ -858,7 +860,7 @@ public class AllDetails extends Application{
         }
         else
         {
-            fare = Integer.parseInt(fare1) + Integer.parseInt(fare2);
+            fare = (Integer.parseInt(fare1) + Integer.parseInt(fare2))*(adult+child);
             Label tot_fare = new Label("Rs. "+fare.toString());
             tot_fare.setStyle("-fx-font-size: 23px;\n" +"-fx-fill:#181818;-fx-font-weight: bold;\n" +
                     "-fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );");
