@@ -431,26 +431,41 @@ public class Flights extends Application{
             db.trip = trip;
             db.src = src;
             db.dest = dest;
-            if(oneWayTrip_tg.getSelectedToggle() == null)
+            if(trip.equals("One Way Trip"))
             {
-                Alert bookInfo = new Alert(Alert.AlertType.INFORMATION);
-                bookInfo.setTitle("Information"); 
-                bookInfo.setContentText("Choose a departure flight");
-                bookInfo.show();
-            }
-            else
-            {
-                db.depart_date = depart_date;
-                selectedFlightIndex = oneWayTrip_tg.getToggles().indexOf(oneWayTrip_tg.getSelectedToggle());
-                db.flightNo1 = al.get(selectedFlightIndex).Flight_Number;
-                db.depart_time1 = al.get(selectedFlightIndex).Departure_Time;
-                db.arrive_time1 = al.get(selectedFlightIndex).Arrival_Time;
-                db.fare1 = al.get(selectedFlightIndex).Fare;
-                
+                if(oneWayTrip_tg.getSelectedToggle() == null)
+                {
+                    Alert bookInfo = new Alert(Alert.AlertType.INFORMATION);
+                    bookInfo.setTitle("Information"); 
+                    bookInfo.setContentText("Choose a departure flight");
+                    bookInfo.show();
+                }
+                else
+                {
+                    
+                    db.depart_date = depart_date;
+                    selectedFlightIndex = oneWayTrip_tg.getToggles().indexOf(oneWayTrip_tg.getSelectedToggle());
+                    db.flightNo1 = al.get(selectedFlightIndex).Flight_Number;
+                    db.depart_time1 = al.get(selectedFlightIndex).Departure_Time;
+                    db.arrive_time1 = al.get(selectedFlightIndex).Arrival_Time;
+                    db.fare1 = al.get(selectedFlightIndex).Fare;
+                    
+                    Stage allDetailsStage = new Stage();
+                    db.start(allDetailsStage); 
+                    db.borderPane.setCenter(db.rootPane1);
+                    
+                }
             }
             if(trip.equals("Round Trip"))
             {
-                if(roundTrip_tg.getSelectedToggle() == null)
+                if(oneWayTrip_tg.getSelectedToggle() == null)
+                {
+                    Alert bookInfo = new Alert(Alert.AlertType.INFORMATION);
+                    bookInfo.setTitle("Information"); 
+                    bookInfo.setContentText("Choose a departure flight");
+                    bookInfo.show();
+                }
+                else if(roundTrip_tg.getSelectedToggle() == null)
                 {
                     Alert bookInfo = new Alert(Alert.AlertType.INFORMATION);
                     bookInfo.setTitle("Information"); 
@@ -459,6 +474,12 @@ public class Flights extends Application{
                 }
                 else
                 {
+                    db.depart_date = depart_date;
+                    selectedFlightIndex = oneWayTrip_tg.getToggles().indexOf(oneWayTrip_tg.getSelectedToggle());
+                    db.flightNo1 = al.get(selectedFlightIndex).Flight_Number;
+                    db.depart_time1 = al.get(selectedFlightIndex).Departure_Time;
+                    db.arrive_time1 = al.get(selectedFlightIndex).Arrival_Time;
+                    db.fare1 = al.get(selectedFlightIndex).Fare;
                     db.return_date = return_date;
                     selectedFlightIndex = roundTrip_tg.getToggles().indexOf(roundTrip_tg.getSelectedToggle());
                     db.flightNo2 = alr.get(selectedFlightIndex).Flight_Number;
@@ -472,14 +493,6 @@ public class Flights extends Application{
                     bp.setDisable(true);
                 }
             }   
-            else
-            {
-                db.start(primaryStage); 
-                primaryStage.setScene(db.s);
-                db.borderPane.setCenter(db.rootPane1);
-                bp.setVisible(false);
-                bp.setDisable(true);
-            }
             
         });
        

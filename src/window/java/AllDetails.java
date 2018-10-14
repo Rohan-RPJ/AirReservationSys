@@ -5,8 +5,17 @@
  */
 package window.java;
 
+import driver.DriverClass;
+import driver.DriverFlight;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import javafx.application.Application;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
@@ -18,12 +27,15 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -34,22 +46,28 @@ import javafx.stage.Stage;
  */
 public class AllDetails extends Application{
     
-    
+    public Integer fare;
     public String trip, src, dest, depart_date, return_date, adults, childs, infants, flightNo1, flightNo2, 
             depart_time1, arrive_time1, depart_time2, arrive_time2, fare1, fare2;    
     public TextField f_m_name[], l_name[], f_name_tf, l_name_tf, email_tf, 
             add_tf, pin_tf, country_tf, mob_no_tf;
+    public Button next_btn, back_btn;
     public Scene s;
     public int i, j;
     public GridPane details_gp, travInfo_gp, preview_gp;
     public BorderPane borderPane;
     public ScrollPane rootPane1, rootPane2, rootPane3;
-    private Login_scene ls = new Login_scene(); 
+    
     @Override
     public void start(Stage primaryStage)
     {
         Window w = new Window();
         Traveller t = new Traveller();
+        User u = new User();
+        DriverClass dc = new DriverClass();
+        Login_scene ls = new Login_scene(); 
+        Flights fs = new Flights();
+        DriverFlight df = new DriverFlight();
         
         borderPane = new BorderPane();
         
@@ -113,14 +131,39 @@ public class AllDetails extends Application{
         //**Bottom of Border Pane**//
         HBox hb = new HBox();
         
-        Button back_btn = new Button("Back");
+        back_btn = new Button("Back");
         back_btn.setPrefSize(300, 40);
         
+        back_btn.setOnAction(e->{
+            
+            if(borderPane.getCenter()==rootPane1)
+            {
+                fs.trip = trip;
+                fs.src = src;
+                fs.dest = dest;
+                fs.adults = adults;
+                fs.childs = childs;
+                fs.infants = infants;
+                fs.depart_date = depart_date;
+                fs.return_date = return_date;
+               
+                try { 
+                    fs.start(primaryStage);
+                } catch (ParseException ex) {
+                    Logger.getLogger(Window.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                primaryStage.setScene(fs.fSearchScene);  
+                borderPane.setVisible(false);
+                borderPane.setDisable(true);
+                
+            }
+                
+            
+        });
          
         
-        Button next_btn = new Button("Next");
+        next_btn = new Button("Next");
         next_btn.setPrefSize(300, 40); 
-        next_btn.setStyle("-fx-background-radius: 50em;"); 
         
         next_btn.setOnAction(new EventHandler<ActionEvent>(){
             
@@ -146,11 +189,62 @@ public class AllDetails extends Application{
             
             @Override
             public void handle(ActionEvent e)
-            {System.out.println(borderPane.getCenter());
+            {
+            
                 if(borderPane.getCenter()==rootPane1)
                 {
-                    ls.start(primaryStage);
-                    borderPane.setCenter(rootPane2); 
+                    System.out.println(borderPane.getCenter());
+                    
+                    Stage loginStage = new Stage();
+                    ls.start(loginStage);
+                    ls.signin_btn.setOnAction(m->{
+                        if(ls.username_tf.getText().isEmpty() || ls.passwd_pf.getText().isEmpty())
+                        {
+                            Alert warning = new Alert(Alert.AlertType.WARNING);
+                            warning.setTitle("Warning"); 
+                            warning.setContentText("Both fields are mandatory"); 
+                            warning.show();
+                        }
+                        else{
+                        try {
+                                u.setUserId(ls.username_tf.getText());
+                                u.setPassword(ls.passwd_pf.getText());
+                                dc.setUserData(u);
+                                int flag=dc.checkCredentials();
+                                switch (flag) {
+                                    case 0:
+                                        {
+                                            Alert warning = new Alert(Alert.AlertType.WARNING);
+                                            warning.setTitle("Warning");
+                                            warning.setContentText("Username or Password is Incorrect");
+                                            warning.show();
+                                            break;
+                                        }
+                                    case -1:
+                                        {
+                                            Alert warning = new Alert(Alert.AlertType.WARNING);
+                                            warning.setTitle("Warning");
+                                            warning.setContentText("Account does not exists");
+                                            warning.show();
+                                            break;
+                                        }
+                                    case 1:
+                                    {
+                                
+                                        primaryStage.show();
+                                        borderPane.setCenter(rootPane2);
+                                        loginStage.close();
+                                        break;  
+                                    }
+                                    default:
+                                     break;
+                                }     
+                            } catch (SQLException ex) {
+                                Logger.getLogger(Window.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
+                  
+                    });
                 }
                 else if(borderPane.getCenter()==rootPane2)
                 {
@@ -198,17 +292,19 @@ public class AllDetails extends Application{
         //** Details Scene **//
         
         details_gp = new GridPane();
-        //details_gp.setGridLinesVisible(true);
         details_gp.setHgap(15);
         details_gp.setVgap(15);
         details_gp.setAlignment(Pos.CENTER); 
         details_gp.setPadding(new Insets(10, 10, 10, 10));
         
+        //setting gridlines visible
+        //details_gp.setGridLinesVisible(true);
+        
         //
         Label flightDetail_lbl = new Label("Flight Detail");
-        flightDetail_lbl.setStyle("-fx-font-size: 27px;\n" +"-fx-fill:#181818;-fx-font-weight: bold;\n"+
+        flightDetail_lbl.setStyle("-fx-font-size: 30px;\n" +"-fx-fill:#181818;-fx-font-weight: bold;\n"+
                 "-fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );");
-        details_gp.add(flightDetail_lbl, 0, 0); 
+        details_gp.add(flightDetail_lbl, 0, 0, 4, 1); 
         
         Label srcDest_lbl = new Label(src+" to "+dest);
         srcDest_lbl.setStyle("-fx-font-size: 23px;\n" +"-fx-fill:#181818;-fx-font-weight: bold;\n" +
@@ -218,14 +314,14 @@ public class AllDetails extends Application{
         Label departDate_lbl = new Label(depart_date);
         departDate_lbl.setStyle("-fx-font-size: 23px;\n" +"-fx-fill:#181818;-fx-font-weight: bold;\n" +
                 "-fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );");
-        details_gp.add(departDate_lbl, 2, 2, 2, 1); 
+        details_gp.add(departDate_lbl, 2, 2, 3, 1); 
         
         Image logo = new Image(Window.class.getResourceAsStream("air-logo.png"));
         ImageView logoView = new ImageView(logo);
                 
         //setting size of image logo
-        logoView.setFitHeight(70);
-        logoView.setFitWidth(70);
+        logoView.setFitHeight(80);
+        logoView.setFitWidth(80);
         GridPane.setHalignment(logoView, HPos.CENTER);
         GridPane.setValignment(logoView, VPos.CENTER);
         //adding logo image 
@@ -233,39 +329,51 @@ public class AllDetails extends Application{
         
         //Adding flight name 
         Label flightName_lbl = new Label("AeroSwing");
-        flightName_lbl.setStyle("-fx-font-size: 15px;");
+        flightName_lbl.setStyle("-fx-font-size: 15px;-fx-font-weight: bold;");
         GridPane.setHalignment(flightName_lbl, HPos.CENTER); 
         GridPane.setValignment(flightName_lbl, VPos.TOP);
         details_gp.add(flightName_lbl, 0, 4);
             
         Label flightNo_lbl = new Label(flightNo1);
-        flightNo_lbl.setStyle("-fx-font-size: 15px;");
+        flightNo_lbl.setStyle("-fx-font-size: 15px;-fx-font-weight: bold;");
         GridPane.setHalignment(flightNo_lbl, HPos.CENTER); 
         GridPane.setValignment(flightNo_lbl, VPos.TOP);
         details_gp.add(flightNo_lbl, 0, 5);
         
         Label depart_lbl = new Label("Depart");
-        depart_lbl.setStyle("-fx-font-size: 20px;");
+        depart_lbl.setStyle("-fx-font-size: 20px;-fx-font-weight: bold;");
+        GridPane.setHalignment(depart_lbl, HPos.CENTER); 
+        GridPane.setValignment(depart_lbl, VPos.CENTER);
         details_gp.add(depart_lbl, 1, 3);
         
         Label arrive_lbl = new Label("Arrive");
-        arrive_lbl.setStyle("-fx-font-size: 20px;");
+        arrive_lbl.setStyle("-fx-font-size: 20px;-fx-font-weight: bold;");
+        GridPane.setHalignment(arrive_lbl, HPos.CENTER); 
+        GridPane.setValignment(arrive_lbl, VPos.CENTER);
         details_gp.add(arrive_lbl, 3, 3);
         
         Label src_lbl = new Label(src);
-        src_lbl.setStyle("-fx-font-size: 18px");
+        src_lbl.setStyle("-fx-font-size: 18px;-fx-font-weight: bold;");
+        GridPane.setHalignment(src_lbl, HPos.CENTER); 
+        GridPane.setValignment(src_lbl, VPos.CENTER);
         details_gp.add(src_lbl, 1, 4);
         
         Label dest_lbl = new Label(dest);
-        dest_lbl.setStyle("-fx-font-size: 18px");
+        dest_lbl.setStyle("-fx-font-size: 18px;-fx-font-weight: bold;");
+        GridPane.setHalignment(dest_lbl, HPos.CENTER); 
+        GridPane.setValignment(dest_lbl, VPos.CENTER);
         details_gp.add(dest_lbl, 3, 4);
         
         Label deparTime1_lbl = new Label(depart_time1);
-        deparTime1_lbl.setStyle("-fx-font-size: 18px");
+        deparTime1_lbl.setStyle("-fx-font-size: 18px;-fx-font-weight: bold;");
+        GridPane.setHalignment(deparTime1_lbl, HPos.CENTER); 
+        GridPane.setValignment(deparTime1_lbl, VPos.CENTER);
         details_gp.add(deparTime1_lbl, 1, 5);
         
         Label arriveTime1_lbl = new Label(arrive_time1);
-        arriveTime1_lbl.setStyle("-fx-font-size: 18px");
+        arriveTime1_lbl.setStyle("-fx-font-size: 18px;-fx-font-weight: bold;");
+        GridPane.setHalignment(arriveTime1_lbl, HPos.CENTER); 
+        GridPane.setValignment(arriveTime1_lbl, VPos.CENTER);
         details_gp.add(arriveTime1_lbl, 3, 5);
         
         Label passengers_lbl = new Label("Passengers");
@@ -311,71 +419,96 @@ public class AllDetails extends Application{
                 "-fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );");
         details_gp.add(tot_fare_lbl, 0, 13);
         
-        Label tot_fare = new Label("Rs."+fare1);
-        tot_fare.setStyle("-fx-font-size: 23px;\n" +"-fx-fill:#181818;-fx-font-weight: bold;\n" +
-                "-fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );");
-        details_gp.add(tot_fare, 1, 13);
+        if(trip.equals("One Way Trip"))
+        {
+            Label tot_fare = new Label("Rs. "+fare1);
+            tot_fare.setStyle("-fx-font-size: 23px;\n" +"-fx-fill:#181818;-fx-font-weight: bold;\n" +
+                    "-fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );");
+            details_gp.add(tot_fare, 1, 13);
+        }
+        else
+        {
+            fare = Integer.parseInt(fare1) + Integer.parseInt(fare2);
+            Label tot_fare = new Label("Rs. "+fare.toString());
+            tot_fare.setStyle("-fx-font-size: 23px;\n" +"-fx-fill:#181818;-fx-font-weight: bold;\n" +
+                    "-fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );");
+            details_gp.add(tot_fare, 1, 13);
+        }
         
+        
+        //if trip is round trip
         if(trip.equals("Round Trip"))
         {
             
             Label srcDest_lbl_r = new Label(dest+" to "+src);
             srcDest_lbl_r.setStyle("-fx-font-size: 23px;\n" +"-fx-fill:#181818;-fx-font-weight: bold;\n" +
                     "-fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );");
-            details_gp.add(srcDest_lbl_r, 5, 2, 2, 1); 
+            details_gp.add(srcDest_lbl_r, 7, 2, 2, 1); 
         
             Label returnDate_lbl = new Label(return_date);
-            /*returnDate_lbl.setStyle("-fx-font-size: 23px;-fx-fill:#181818;-fx-font-weight: bold;\n" +
-                    "-fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );");*/
-            details_gp.add(returnDate_lbl, 7, 2, 2, 1); 
+            returnDate_lbl.setStyle("-fx-font-size: 23px;-fx-fill:#181818;-fx-font-weight: bold;\n" +
+                    "-fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );");
+            details_gp.add(returnDate_lbl, 9, 2, 2, 1); 
         
             Image logo_r = new Image(Window.class.getResourceAsStream("air-logo.png"));
             ImageView logoView_r = new ImageView(logo_r);
                 
             //setting size of image logo
-            logoView_r.setFitHeight(70);
-            logoView_r.setFitWidth(70);
+            logoView_r.setFitHeight(80);
+            logoView_r.setFitWidth(80);
             GridPane.setHalignment(logoView_r, HPos.CENTER);
             GridPane.setValignment(logoView_r, VPos.CENTER);
             //adding logo image 
-            details_gp.add(logoView_r, 5, 3);
+            details_gp.add(logoView_r, 7, 3);
         
             //Adding flight name 
             Label flightName_lbl_r = new Label("AeroSwing");
-            flightName_lbl_r.setStyle("-fx-font-size: 15px;");
+            flightName_lbl_r.setStyle("-fx-font-size: 15px;-fx-font-weight: bold;");
             GridPane.setHalignment(flightName_lbl_r, HPos.CENTER); 
             GridPane.setValignment(flightName_lbl_r, VPos.TOP);
-            details_gp.add(flightName_lbl_r, 5, 4);
+            details_gp.add(flightName_lbl_r, 7, 4);
             
             Label flightNo_lbl_r = new Label(flightNo2);
-            flightNo_lbl_r.setStyle("-fx-font-size: 15px;");
+            flightNo_lbl_r.setStyle("-fx-font-size: 15px;-fx-font-weight: bold;");
             GridPane.setHalignment(flightNo_lbl_r, HPos.CENTER); 
             GridPane.setValignment(flightNo_lbl_r, VPos.TOP);
-            details_gp.add(flightNo_lbl_r, 5, 5);
+            details_gp.add(flightNo_lbl_r, 7, 5);
         
             Label depart_lbl_r = new Label("Depart");
-            depart_lbl_r.setStyle("-fx-font-size: 20px;");
-            details_gp.add(depart_lbl_r, 6, 3);
+            depart_lbl_r.setStyle("-fx-font-size: 20px;-fx-font-weight: bold;");
+            GridPane.setHalignment(depart_lbl_r, HPos.CENTER); 
+            GridPane.setValignment(depart_lbl_r, VPos.CENTER);
+            details_gp.add(depart_lbl_r, 8, 3);
         
             Label arrive_lbl_r = new Label("Arrive");
-            arrive_lbl_r.setStyle("-fx-font-size: 20px;");
-            details_gp.add(arrive_lbl_r, 8, 3);
+            arrive_lbl_r.setStyle("-fx-font-size: 20px;-fx-font-weight: bold;");
+            GridPane.setHalignment(arrive_lbl_r, HPos.CENTER); 
+            GridPane.setValignment(arrive_lbl_r, VPos.CENTER);
+            details_gp.add(arrive_lbl_r, 10, 3);
         
             Label src_lbl_r = new Label(src);
-            src_lbl_r.setStyle("-fx-font-size: 18px");
-            details_gp.add(src_lbl_r, 6, 4);
+            src_lbl_r.setStyle("-fx-font-size: 18px;-fx-font-weight: bold;");
+            GridPane.setHalignment(src_lbl_r, HPos.CENTER); 
+            GridPane.setValignment(src_lbl_r, VPos.CENTER);
+            details_gp.add(src_lbl_r, 8, 4);
         
             Label dest_lbl_r = new Label(dest);
-            dest_lbl_r.setStyle("-fx-font-size: 18px");
-            details_gp.add(dest_lbl_r, 8, 4);
+            dest_lbl_r.setStyle("-fx-font-size: 18px;-fx-font-weight: bold;");
+            GridPane.setHalignment(dest_lbl_r, HPos.CENTER); 
+            GridPane.setValignment(dest_lbl_r, VPos.CENTER);
+            details_gp.add(dest_lbl_r, 10, 4);
         
             Label deparTime1_lbl_r = new Label(depart_time2);
-            deparTime1_lbl_r.setStyle("-fx-font-size: 18px");
-            details_gp.add(deparTime1_lbl_r, 6, 5);
+            deparTime1_lbl_r.setStyle("-fx-font-size: 18px;-fx-font-weight: bold;");
+            GridPane.setHalignment(deparTime1_lbl_r, HPos.CENTER); 
+            GridPane.setValignment(deparTime1_lbl_r, VPos.CENTER);
+            details_gp.add(deparTime1_lbl_r, 8, 5);
         
             Label arriveTime1_lbl_r = new Label(arrive_time2);
-            arriveTime1_lbl_r.setStyle("-fx-font-size: 18px");
-            details_gp.add(arriveTime1_lbl_r, 8, 5);
+            arriveTime1_lbl_r.setStyle("-fx-font-size: 18px;-fx-font-weight: bold;");
+            GridPane.setHalignment(arriveTime1_lbl_r, HPos.CENTER); 
+            GridPane.setValignment(arriveTime1_lbl_r, VPos.CENTER);
+            details_gp.add(arriveTime1_lbl_r, 10, 5);
         
         }
         
@@ -390,6 +523,8 @@ public class AllDetails extends Application{
         rootPane1.setContent(details_gp);  
         
         //End of Details Scene **//
+        
+        
         
         //** Traveller Info Scene **//
         
@@ -579,6 +714,239 @@ public class AllDetails extends Application{
         
         
         //** Preview Scene **//
+        preview_gp = new GridPane();
+        preview_gp.setHgap(15);
+        preview_gp.setVgap(15);
+        preview_gp.setAlignment(Pos.CENTER); 
+        preview_gp.setPadding(new Insets(10, 10, 10, 10));
+        
+        //setting gridlines visible
+        //preview_gp.setGridLinesVisible(true);
+        
+        //
+        Label f_Detail_lbl = new Label("Flight Detail");
+        f_Detail_lbl.setStyle("-fx-font-size: 30px;\n" +"-fx-fill:#181818;-fx-font-weight: bold;\n"+
+                "-fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );");
+        preview_gp.add(f_Detail_lbl, 0, 0, 4, 1); 
+        
+        Label src_Dest_lbl = new Label(src+" to "+dest);
+        src_Dest_lbl.setStyle("-fx-font-size: 23px;\n" +"-fx-fill:#181818;-fx-font-weight: bold;\n" +
+                "-fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );");
+        preview_gp.add(src_Dest_lbl, 0, 2, 2, 1); 
+        
+        Label depart_Date_lbl = new Label(depart_date);
+        depart_Date_lbl.setStyle("-fx-font-size: 23px;\n" +"-fx-fill:#181818;-fx-font-weight: bold;\n" +
+                "-fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );");
+        preview_gp.add(depart_Date_lbl, 2, 2, 3, 1); 
+        
+        //Image logo_img = new Image(Window.class.getResourceAsStream("air-logo.png"));
+        ImageView logo_img = new ImageView(logo);
+                
+        //setting size of image logo
+        logo_img.setFitHeight(80);
+        logo_img.setFitWidth(80);
+        GridPane.setHalignment(logo_img, HPos.CENTER);
+        GridPane.setValignment(logo_img, VPos.CENTER);
+        //adding logo image 
+        preview_gp.add(logo_img, 0, 3);
+        
+        //Adding flight name 
+        Label flight_Name_lbl = new Label("AeroSwing");
+        flight_Name_lbl.setStyle("-fx-font-size: 15px;-fx-font-weight: bold;");
+        GridPane.setHalignment(flight_Name_lbl, HPos.CENTER); 
+        GridPane.setValignment(flight_Name_lbl, VPos.TOP);
+        preview_gp.add(flight_Name_lbl, 0, 4);
+            
+        Label flight_No_lbl = new Label(flightNo1);
+        flight_No_lbl.setStyle("-fx-font-size: 15px;-fx-font-weight: bold;");
+        GridPane.setHalignment(flight_No_lbl, HPos.CENTER); 
+        GridPane.setValignment(flight_No_lbl, VPos.TOP);
+        preview_gp.add(flightNo_lbl, 0, 5);
+        
+        Label departlbl = new Label("Depart");
+        departlbl.setStyle("-fx-font-size: 20px;-fx-font-weight: bold;");
+        GridPane.setHalignment(departlbl, HPos.CENTER); 
+        GridPane.setValignment(departlbl, VPos.CENTER);
+        preview_gp.add(depart_lbl, 1, 3);
+        
+        Label arrivelbl = new Label("Arrive");
+        arrivelbl.setStyle("-fx-font-size: 20px;-fx-font-weight: bold;");
+        GridPane.setHalignment(arrivelbl, HPos.CENTER); 
+        GridPane.setValignment(arrivelbl, VPos.CENTER);
+        preview_gp.add(arrive_lbl, 3, 3);
+        
+        Label srclbl = new Label(src);
+        srclbl.setStyle("-fx-font-size: 18px;-fx-font-weight: bold;");
+        GridPane.setHalignment(srclbl, HPos.CENTER); 
+        GridPane.setValignment(srclbl, VPos.CENTER);
+        preview_gp.add(srclbl, 1, 4);
+        
+        Label destlbl = new Label(dest);
+        destlbl.setStyle("-fx-font-size: 18px;-fx-font-weight: bold;");
+        GridPane.setHalignment(destlbl, HPos.CENTER); 
+        GridPane.setValignment(destlbl, VPos.CENTER);
+        preview_gp.add(destlbl, 3, 4);
+        
+        Label departTime1_lbl = new Label(depart_time1);
+        deparTime1_lbl.setStyle("-fx-font-size: 18px;-fx-font-weight: bold;");
+        GridPane.setHalignment(departTime1_lbl, HPos.CENTER); 
+        GridPane.setValignment(departTime1_lbl, VPos.CENTER);
+        preview_gp.add(departTime1_lbl, 1, 5);
+        
+        Label arrive_Time1_lbl = new Label(arrive_time1);
+        arrive_Time1_lbl.setStyle("-fx-font-size: 18px;-fx-font-weight: bold;");
+        GridPane.setHalignment(arrive_Time1_lbl, HPos.CENTER); 
+        GridPane.setValignment(arrive_Time1_lbl, VPos.CENTER);
+        preview_gp.add(arrive_Time1_lbl, 3, 5);
+        
+        Label passengerslbl = new Label("Passengers");
+        passengerslbl.setId("text");
+        preview_gp.add(passengerslbl, 0, 7);
+        
+        Label adlults_lbl = new Label("Adult:");
+        adlults_lbl.setStyle("-fx-font-size: 23px;\n" +"-fx-fill:#181818;-fx-font-weight: bold;\n" +
+                "-fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );");
+        preview_gp.add(adlults_lbl, 0, 8);
+        
+        Label childs_lbl = new Label("Child:");
+        childs_lbl.setStyle("-fx-font-size: 23px;\n" +"-fx-fill:#181818;-fx-font-weight: bold;\n" +
+                "-fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );");
+        preview_gp.add(childs_lbl, 0, 9);
+        
+        Label infants_lbl = new Label("Infant:");
+        infants_lbl.setStyle("-fx-font-size: 23px;\n" +"-fx-fill:#181818;-fx-font-weight: bold;\n" +
+                "-fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );");
+        preview_gp.add(infants_lbl, 0, 10);
+        
+        Label total_adults = new Label(adults);
+        total_adults.setStyle("-fx-font-size: 23px;\n" +"-fx-fill:#181818;-fx-font-weight: bold;\n" +
+                "-fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );");
+        preview_gp.add(total_adults, 1, 8);
+        
+        Label total_childs = new Label(childs);
+        total_childs.setStyle("-fx-font-size: 23px;\n" +"-fx-fill:#181818;-fx-font-weight: bold;\n" +
+                "-fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );");
+        preview_gp.add(total_childs, 1, 9);
+        
+        Label total_infants = new Label(infants);
+        total_infants.setStyle("-fx-font-size: 23px;\n" +"-fx-fill:#181818;-fx-font-weight: bold;\n" +
+                "-fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );");
+        preview_gp.add(total_infants, 1, 10);
+        
+        Label farelbl = new Label("Fare");
+        farelbl.setId("text");
+        preview_gp.add(farelbl, 0, 12);
+        
+        Label total_fare_lbl = new Label("Total Fare:");
+        total_fare_lbl.setStyle("-fx-font-size: 23px;\n" +"-fx-fill:#181818;-fx-font-weight: bold;\n" +
+                "-fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );");
+        preview_gp.add(total_fare_lbl, 0, 13);
+        
+        if(trip.equals("One Way Trip"))
+        {
+            Label tot_fare = new Label("Rs. "+fare1);
+            tot_fare.setStyle("-fx-font-size: 23px;\n" +"-fx-fill:#181818;-fx-font-weight: bold;\n" +
+                    "-fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );");
+            preview_gp.add(tot_fare, 1, 13);
+        }
+        else
+        {
+            fare = Integer.parseInt(fare1) + Integer.parseInt(fare2);
+            Label tot_fare = new Label("Rs. "+fare.toString());
+            tot_fare.setStyle("-fx-font-size: 23px;\n" +"-fx-fill:#181818;-fx-font-weight: bold;\n" +
+                    "-fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );");
+            preview_gp.add(tot_fare, 1, 13);
+        }
+        
+        
+        //if trip is round trip
+        if(trip.equals("Round Trip"))
+        {
+            
+            Label srcDest_lbl_r = new Label(dest+" to "+src);
+            srcDest_lbl_r.setStyle("-fx-font-size: 23px;\n" +"-fx-fill:#181818;-fx-font-weight: bold;\n" +
+                    "-fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );");
+            preview_gp.add(srcDest_lbl_r, 7, 2, 2, 1); 
+        
+            Label returnDate_lbl = new Label(return_date);
+            returnDate_lbl.setStyle("-fx-font-size: 23px;-fx-fill:#181818;-fx-font-weight: bold;\n" +
+                    "-fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );");
+            preview_gp.add(returnDate_lbl, 9, 2, 2, 1); 
+        
+            Image logo_r = new Image(Window.class.getResourceAsStream("air-logo.png"));
+            ImageView logoView_r = new ImageView(logo_r);
+                
+            //setting size of image logo
+            logoView_r.setFitHeight(80);
+            logoView_r.setFitWidth(80);
+            GridPane.setHalignment(logoView_r, HPos.CENTER);
+            GridPane.setValignment(logoView_r, VPos.CENTER);
+            //adding logo image 
+            preview_gp.add(logoView_r, 7, 3);
+        
+            //Adding flight name 
+            Label flightName_lbl_r = new Label("AeroSwing");
+            flightName_lbl_r.setStyle("-fx-font-size: 15px;-fx-font-weight: bold;");
+            GridPane.setHalignment(flightName_lbl_r, HPos.CENTER); 
+            GridPane.setValignment(flightName_lbl_r, VPos.TOP);
+            preview_gp.add(flightName_lbl_r, 7, 4);
+            
+            Label flightNo_lbl_r = new Label(flightNo2);
+            flightNo_lbl_r.setStyle("-fx-font-size: 15px;-fx-font-weight: bold;");
+            GridPane.setHalignment(flightNo_lbl_r, HPos.CENTER); 
+            GridPane.setValignment(flightNo_lbl_r, VPos.TOP);
+            preview_gp.add(flightNo_lbl_r, 7, 5);
+        
+            Label depart_lbl_r = new Label("Depart");
+            depart_lbl_r.setStyle("-fx-font-size: 20px;-fx-font-weight: bold;");
+            GridPane.setHalignment(depart_lbl_r, HPos.CENTER); 
+            GridPane.setValignment(depart_lbl_r, VPos.CENTER);
+            preview_gp.add(depart_lbl_r, 8, 3);
+        
+            Label arrive_lbl_r = new Label("Arrive");
+            arrive_lbl_r.setStyle("-fx-font-size: 20px;-fx-font-weight: bold;");
+            GridPane.setHalignment(arrive_lbl_r, HPos.CENTER); 
+            GridPane.setValignment(arrive_lbl_r, VPos.CENTER);
+            preview_gp.add(arrive_lbl_r, 10, 3);
+        
+            Label src_lbl_r = new Label(src);
+            src_lbl_r.setStyle("-fx-font-size: 18px;-fx-font-weight: bold;");
+            GridPane.setHalignment(src_lbl_r, HPos.CENTER); 
+            GridPane.setValignment(src_lbl_r, VPos.CENTER);
+            preview_gp.add(src_lbl_r, 8, 4);
+        
+            Label dest_lbl_r = new Label(dest);
+            dest_lbl_r.setStyle("-fx-font-size: 18px;-fx-font-weight: bold;");
+            GridPane.setHalignment(dest_lbl_r, HPos.CENTER); 
+            GridPane.setValignment(dest_lbl_r, VPos.CENTER);
+            preview_gp.add(dest_lbl_r, 10, 4);
+        
+            Label deparTime1_lbl_r = new Label(depart_time2);
+            deparTime1_lbl_r.setStyle("-fx-font-size: 18px;-fx-font-weight: bold;");
+            GridPane.setHalignment(deparTime1_lbl_r, HPos.CENTER); 
+            GridPane.setValignment(deparTime1_lbl_r, VPos.CENTER);
+            preview_gp.add(deparTime1_lbl_r, 8, 5);
+        
+            Label arriveTime1_lbl_r = new Label(arrive_time2);
+            arriveTime1_lbl_r.setStyle("-fx-font-size: 18px;-fx-font-weight: bold;");
+            GridPane.setHalignment(arriveTime1_lbl_r, HPos.CENTER); 
+            GridPane.setValignment(arriveTime1_lbl_r, VPos.CENTER);
+            preview_gp.add(arriveTime1_lbl_r, 10, 5);
+        
+        }
+        
+        
+        
+        
+        rootPane3 = new ScrollPane();
+        rootPane3.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        rootPane3.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS); 
+        rootPane3.setFitToHeight(true);
+        rootPane3.setFitToWidth(true); 
+        //rootPane.setVmax(2);
+        //rootPane.setHmax(2);
+        //rootPane.setVvalue(20);
+        rootPane3.setContent(preview_gp); 
         
         //** End of Preview Scene **//
         
@@ -589,5 +957,4 @@ public class AllDetails extends Application{
     {
         launch(args);
     }
-    
 }
