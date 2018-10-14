@@ -1,0 +1,36 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Oct 11, 2018, 11:18:13 PM
+    Author     : rohan
+*/
+
+.button
+{
+    -fx-font-size: 15px; 
+    -fx-background-color: #cccccc
+}
+
+.button:hover{
+    -fx-background-color: linear-gradient(#999999,#cccccc);
+    -fx-opacity: 1.0;
+}
+
+#btn{
+    -fx-font-size: 18px;
+    -fx-font-family: "Consolas";
+    -fx-font-weight: bold;
+    -fx-text-fill: #ffffff;
+    -fx-background-color:linear-gradient(#0731c0,#076dc0);
+    -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );
+    -fx-background-radius: 50em;
+    -fx-opacity: 0.9;
+}
+
+#btn:hover{
+    -fx-background-color:linear-gradient(#076dc0,#0731c0);
+    -fx-opacity: 1.0;
+}

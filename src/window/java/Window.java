@@ -5,8 +5,14 @@
  */
 package window.java;
 
+import driver.DriverClass;
+import driver.DriverFlight;
+import java.sql.SQLException;
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -35,91 +41,6 @@ import javafx.stage.Stage;
  * @author Rohan
  */
 
-class Traveller{
-    //all the fields
-    private String trip, fromCity, toCity, classType, departDate, returnDate;
-    private String adults, childs, infants;
-    public int adult, child, infant;
-    //Setter methods for all the fields
-
-    public void setTrip(String trip)
-    {
-        this.trip=trip;
-    }
-    public void setFromCity(String fromCity)
-    {
-        this.fromCity=fromCity;
-    }
-    public void setToCity(String toCity)
-    {
-        this.toCity=toCity;
-    }
-    public void setClassType(String classType)
-    {
-        this.classType=classType;
-    }
-    public void setDepartDate(String departDate)
-    {
-        this.departDate=departDate;
-    }
-    public void setReturnDate(String returnDate)
-    {
-        this.returnDate=returnDate;
-    }
-    public void setAdults(String adults)
-    {
-        this.adults=adults;
-    }
-    public void setChilds(String childs)
-    {
-        this.childs=childs;
-    }
-    public void setInfants(String infants)
-    {
-        this.infants=infants;
-    }
-    
-    //getter functions 
-    public String getTrip()
-    {
-         return trip;
-    }
-    public String getFromCity()
-    {
-        return fromCity;
-    }
-    public String getToCity()
-    {
-        return toCity;
-    }
-
-    public String getClassType()
-    {
-        return classType;
-    }
-
-    public String getDepartDate()
-    {
-        return departDate;
-    }
-    public String getReturnDate()
-    {
-        return returnDate;
-    }
-    public String getAdults()
-    {
-        return adults;
-    }
-    public String getChilds()
-    {
-        return childs;
-    }
-    public String getInfants()
-    {
-        return infants;
-    }
-} 
-
 public class Window extends Application {
     
     //Decalration of fields
@@ -127,16 +48,22 @@ public class Window extends Application {
     public ToggleGroup trip_tg;
     public ComboBox from_city_list,to_city_list,class_list;
     public DatePicker depart_date,return_date;
-    public Spinner adult_no,child_no,infant_no;
+    public Spinner<Integer> adult_no,child_no,infant_no;
     public Button search_btn, sign_in_btn, sign_up_btn, sign_out_btn;
     public Scene scene;
     public Image logo;
     public GridPane page_1;
     public Label hello_user_lbl;
-    private Traveller t = new Traveller(); 
+    private DriverFlight df = new DriverFlight();
+    private Traveller t = new Traveller();
+    private Flights fs = new Flights();
+    private User u =new User();
     
     @Override
     public void start(Stage primaryStage) {
+        
+        
+        DriverClass dc = new DriverClass();
         
         Login_scene ls = new Login_scene();
         ls.start(primaryStage);
@@ -312,28 +239,25 @@ public class Window extends Application {
         Text adult_txt = new Text("Adult(above 15 yrs) :");
         page_1.add(adult_txt,0,16);
         
-        adult_no = new Spinner();
+        adult_no = new Spinner<Integer>();
         //value_factory for adult i.e. setting range of values for no. of adults
-        SpinnerValueFactory adult_range = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,4,0);
-        adult_no.setValueFactory(adult_range); 
+        adult_no.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0,4,0));
         page_1.add(adult_no, 0, 17);
         
         Text child_txt = new Text("Child(2-15 yrs) :");
         page_1.add(child_txt,1,16);
         
-        child_no = new Spinner();
+        child_no = new Spinner<Integer>();
         //value_factory for child i.e. setting range of values for no. of child
-        SpinnerValueFactory child_range = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,4,0);
-        child_no.setValueFactory(child_range);
+        child_no.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0,4,0));
         page_1.add(child_no, 1, 17);
         
         Text infant_txt = new Text("Infant(Under 2 yrs) :");
         page_1.add(infant_txt,2,16);
         
-        infant_no = new Spinner();
+        infant_no = new Spinner<Integer>();
         //value_factory for infant i.e. setting range of values for no. of infants
-        SpinnerValueFactory infant_range = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,4,0);
-        infant_no.setValueFactory(infant_range);
+        infant_no.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0,4,0));
         page_1.add(infant_no, 2, 17);
 
         //background for login scene
@@ -359,6 +283,7 @@ public class Window extends Application {
         }); 
         
         //
+        RadioButton trip = (RadioButton)trip_tg.getSelectedToggle();
         sign_up_btn = new Button("Sign up");
         page_1.add(sign_up_btn, 2, 26);
         GridPane.setHalignment(sign_up_btn, HPos.RIGHT); 
@@ -378,14 +303,78 @@ public class Window extends Application {
         //search button ActionEvent
         search_btn.setOnAction(e->{
             
-            AllDetails db = new AllDetails();
-            db.adults = getFlightDetails().getAdults();
-            db.childs = getFlightDetails().getChilds();
-            db.infants = getFlightDetails().getInfants();
-            db.start(primaryStage); 
-            primaryStage.setScene(db.s);
-            page_1.setVisible(false);
-            
+            if(trip_tg.getSelectedToggle()==null || from_city_list.getValue()==null || to_city_list.getValue()==null || class_list.getValue()==null)
+            {System.out.println("toogle");
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Incomplete Details"); 
+                alert.setContentText("Please fill all the required  Fields");
+                alert.show();
+            }
+            else if(adult_no.getValue()==0 && child_no.getValue()==0 && infant_no.getValue()==0)
+            {System.out.println("no. of trav");
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Incomplete Details"); 
+                alert.setContentText("Please fill all the required Fields");
+                alert.show();
+            }
+            else if(((RadioButton)trip_tg.getSelectedToggle()).getText().equals("One Way Trip") && depart_date.getValue()==null) 
+            {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Incomplete Details"); 
+                alert.setContentText("Please fill all the required Fields");
+                alert.show();
+            }
+            else if(((RadioButton)trip_tg.getSelectedToggle()).getText().equals("Round Trip") && (depart_date.getValue()==null || return_date.getValue()==null))
+            {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Incomplete Details"); 
+                alert.setContentText("Please fill all the required Fields");
+                alert.show();
+            }
+            else if(from_city_list.getValue().equals(to_city_list.getValue()))
+            {
+                Alert error = new Alert(Alert.AlertType.ERROR);
+                error.setTitle("Error"); 
+                error.setContentText("Choose a different Source or Destination");
+                error.show();
+            }
+            else
+            {
+                fs.trip = getFlightDetails().getTrip();
+                fs.src = getFlightDetails().getFromCity();
+                fs.dest = getFlightDetails().getToCity();
+                fs.adults = getFlightDetails().getAdults();
+                fs.childs = getFlightDetails().getChilds();
+                fs.infants = getFlightDetails().getInfants();
+                fs.depart_date = getFlightDetails().getDepartDate();
+                fs.return_date = getFlightDetails().getReturnDate();
+                df.setTravellerData(getFlightDetails());
+                
+                try {
+                    fs.setFlightData(df.getFlightRecords());
+                } catch (SQLException ex) {
+                    Logger.getLogger(Window.class.getName()).log(Level.SEVERE, null, ex);
+                }                
+                
+                if(((RadioButton)trip_tg.getSelectedToggle()).getText().equals("Round Trip"))
+                {
+                    try {
+                        fs.setRoundFlightData(df.getRoundFlightRecord());
+                    } catch (SQLException ex) {
+                        Logger.getLogger(Window.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                
+                try { 
+                    fs.start(primaryStage);
+                } catch (ParseException ex) {
+                    Logger.getLogger(Window.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                primaryStage.setScene(fs.fSearchScene);  
+                page_1.setVisible(false);
+                page_1.setDisable(true);
+                
+            }
         });
         
         sign_out_btn = new Button("Sign Out");
@@ -404,8 +393,8 @@ public class Window extends Application {
         sign_out_btn.setVisible(false); 
         sign_out_btn.setDisable(true); 
         
-        hello_user_lbl = new Label("Hello "/*+s.getf_name()*/+"!");
-        hello_user_lbl.setStyle("-fx-font-size: 40px; -fx-text-fill: green");
+        hello_user_lbl = new Label();
+        hello_user_lbl.setStyle("-fx-font-size: 25px; -fx-text-fill: green");
         page_1.add(hello_user_lbl, 0, 27);
         hello_user_lbl.setVisible(false); 
         hello_user_lbl.setDisable(true); 
@@ -413,9 +402,8 @@ public class Window extends Application {
         
         //SignIn button of login scene 
         ls.signin_btn.setOnAction(e -> {
+              
             
-            //DriverClass dc = new DriverClass();
-            //User u =new User();
             if(ls.username_tf.getText().isEmpty() || ls.passwd_pf.getText().isEmpty())
             {
                 Alert warning = new Alert(Alert.AlertType.WARNING);
@@ -424,24 +412,49 @@ public class Window extends Application {
                 warning.show();
             }
             else{
-                
-                primaryStage.setScene(scene);
-                page_1.setVisible(true);
-                sign_in_btn.setVisible(false);
-                sign_in_btn.setDisable(true);
-                
-                sign_out_btn.setVisible(true); 
-                sign_out_btn.setDisable(false);
-                
-                hello_user_lbl.setVisible(true); 
-                hello_user_lbl.setDisable(false);
-        
-                ls.username_tf.clear();
-                ls.passwd_pf.clear();
-                ls.stackpane.setVisible(false); 
-                ls.stackpane.setDisable(true); 
-                ls.sign_in_pane.setDisable(true); 
-                ls.sign_in_pane.setVisible(false); 
+                try {
+                    u.setUserId(ls.username_tf.getText());
+                    u.setPassword(ls.passwd_pf.getText());
+                    dc.setUserData(u);
+                    int flag=dc.checkCredentials();
+                    if(flag==0)
+                    {
+                        Alert warning = new Alert(Alert.AlertType.WARNING);
+                        warning.setTitle("Warning");
+                        warning.setContentText("Username or Password is Incorrect");
+                        warning.show();
+                    }
+                    else if(flag==-1)
+                    {
+                        Alert warning = new Alert(Alert.AlertType.WARNING);
+                        warning.setTitle("Warning");
+                        warning.setContentText("Account does not exists");
+                        warning.show();
+                    }
+                    else if(flag==1)
+                    {
+                        primaryStage.setScene(scene);
+                        page_1.setVisible(true);
+                        sign_in_btn.setVisible(false);
+                        sign_in_btn.setDisable(true);
+                        
+                        sign_out_btn.setVisible(true);
+                        sign_out_btn.setDisable(false);
+                        
+                        hello_user_lbl.setText("Hello "+dc.getUserData().getFirstName()+"!");
+                        hello_user_lbl.setVisible(true);
+                        hello_user_lbl.setDisable(false);
+                        
+                        ls.username_tf.clear();
+                        ls.passwd_pf.clear();
+                        ls.stackpane.setVisible(false);
+                        ls.stackpane.setDisable(true);
+                        ls.sign_in_pane.setDisable(true);
+                        ls.sign_in_pane.setVisible(false); 
+                    }
+                } catch (SQLException ex) {
+                    Logger.getLogger(Window.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
         
@@ -502,8 +515,11 @@ public class Window extends Application {
 
         t.setDepartDate(depart_date.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
     
-        t.setReturnDate(return_date.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-    
+        if(((RadioButton)trip_tg.getSelectedToggle()).getText().equals("Round Trip")) 
+        {
+            t.setReturnDate(return_date.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        }
+        
         t.setAdults(adult_no.getValue().toString());
     
         t.setChilds(child_no.getValue().toString());
