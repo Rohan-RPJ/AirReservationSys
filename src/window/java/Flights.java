@@ -7,10 +7,13 @@ package window.java;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
 import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -27,6 +30,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 /**
@@ -46,6 +50,9 @@ public class Flights extends Application{
     
     public Button next_btn;
     public int i, selectedFlightIndex;
+    
+    private AllDetails db = new AllDetails();
+    
     public void setFlightData(ArrayList<FlightData> al)
     {
         this.al=al;
@@ -408,12 +415,7 @@ public class Flights extends Application{
         
         back_btn.setOnAction(e->{
             
-           w.start(primaryStage); 
-           primaryStage.setScene(w.scene); 
-           bp.setVisible(false);
-           bp.setDisable(true); 
-           w.page_1.setVisible(true);
-           w.page_1.setDisable(false); 
+           primaryStage.close();
            
         });
         
@@ -424,7 +426,6 @@ public class Flights extends Application{
         //setOnAction for next_btn 
         next_btn.setOnAction(e->{
             
-            AllDetails db = new AllDetails();
             db.adults = adults;
             db.childs = childs;
             db.infants = infants;
@@ -486,15 +487,18 @@ public class Flights extends Application{
                     db.depart_time2 = alr.get(selectedFlightIndex).Departure_Time;
                     db.arrive_time2 = alr.get(selectedFlightIndex).Arrival_Time;
                     db.fare2 = alr.get(selectedFlightIndex).Fare;
-                    db.start(primaryStage); 
-                    primaryStage.setScene(db.s);
+                    
+                    Stage allDetailsStage = new Stage();
+                    db.start(allDetailsStage); 
                     db.borderPane.setCenter(db.rootPane1);
-                    bp.setVisible(false);
-                    bp.setDisable(true);
+          
+       
                 }
             }   
             
         });
+            
+        
        
         hbox.getChildren().addAll(back_btn, next_btn);
         hbox.setSpacing(100); 
@@ -507,5 +511,18 @@ public class Flights extends Application{
         
         fSearchScene = new Scene(bp, 1000, 600);
         fSearchScene.getStylesheets().add(Flights.class.getResource("Flights.css").toExternalForm());
+        primaryStage.setScene(fSearchScene); 
+        
+        //setting primaryStage to the size of screen of pc
+        Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
+        //MinX and MinY are upper left corner of primaryStage
+        primaryStage.setX(primaryScreenBounds.getMinX());
+        primaryStage.setY(primaryScreenBounds.getMinY());
+        //setting width of stage to width of screen
+        primaryStage.setWidth(primaryScreenBounds.getWidth());
+        //setting height of stage to height of screen
+        primaryStage.setHeight(primaryScreenBounds.getHeight());
+        
+        primaryStage.show();
     }
 }

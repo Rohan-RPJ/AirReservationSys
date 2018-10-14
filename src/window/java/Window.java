@@ -413,14 +413,12 @@ public class Window extends Application {
                     }
                 }
                 
-                try { 
-                    fs.start(primaryStage);
+                Stage flightSearchStage = new Stage();
+                try {
+                    fs.start(flightSearchStage);
                 } catch (ParseException ex) {
                     Logger.getLogger(Window.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                primaryStage.setScene(fs.fSearchScene);  
-                page_1.setVisible(false);
-                page_1.setDisable(true);
                 
             }
         });

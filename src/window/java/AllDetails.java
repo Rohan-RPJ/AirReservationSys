@@ -8,11 +8,11 @@ package window.java;
 import driver.DriverClass;
 import driver.DriverFlight;
 import java.sql.SQLException;
-import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import javafx.application.Application;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -21,6 +21,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
 import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -30,6 +31,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
@@ -38,6 +40,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 /**
@@ -51,12 +54,13 @@ public class AllDetails extends Application{
             depart_time1, arrive_time1, depart_time2, arrive_time2, fare1, fare2;    
     public TextField f_m_name[], l_name[], f_name_tf, l_name_tf, email_tf, 
             add_tf, pin_tf, country_tf, mob_no_tf;
-    public Button next_btn, back_btn;
-    public Scene s;
+    public Button next_btn, back_btn, book_btn;
+    public Scene allDetailsScene;
     public int i, j;
     public GridPane details_gp, travInfo_gp, preview_gp;
     public BorderPane borderPane;
     public ScrollPane rootPane1, rootPane2, rootPane3;
+    
     
     @Override
     public void start(Stage primaryStage)
@@ -68,6 +72,14 @@ public class AllDetails extends Application{
         Login_scene ls = new Login_scene(); 
         Flights fs = new Flights();
         DriverFlight df = new DriverFlight();
+        int adult = Integer.parseInt(adults); 
+        int child = Integer.parseInt(childs);
+        int infant = Integer.parseInt(infants); 
+        f_m_name = new TextField[adult+child+infant];
+        l_name = new TextField[adult+child+infant];
+        
+        TableView<Passenger> table = new TableView<>();
+        ObservableList<Passenger> detail = FXCollections.observableArrayList();
         
         borderPane = new BorderPane();
         
@@ -133,35 +145,24 @@ public class AllDetails extends Application{
         
         back_btn = new Button("Back");
         back_btn.setPrefSize(300, 40);
-        
+        //back button of alldetails
         back_btn.setOnAction(e->{
             
             if(borderPane.getCenter()==rootPane1)
             {
-                fs.trip = trip;
-                fs.src = src;
-                fs.dest = dest;
-                fs.adults = adults;
-                fs.childs = childs;
-                fs.infants = infants;
-                fs.depart_date = depart_date;
-                fs.return_date = return_date;
-               
-                try { 
-                    fs.start(primaryStage);
-                } catch (ParseException ex) {
-                    Logger.getLogger(Window.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                primaryStage.setScene(fs.fSearchScene);  
-                borderPane.setVisible(false);
-                borderPane.setDisable(true);
-                
+                primaryStage.close();
             }
-                
-            
+            else if(borderPane.getCenter()==rootPane2)
+            {
+                borderPane.setCenter(rootPane1);
+            }
+            else if(borderPane.getCenter()==rootPane3)
+            {
+                borderPane.setCenter(rootPane2);
+            }
+             
         });
-         
-        
+                
         next_btn = new Button("Next");
         next_btn.setPrefSize(300, 40); 
         
@@ -169,7 +170,7 @@ public class AllDetails extends Application{
             
             final int n = j;
             private boolean allFilled()
-            {
+             {                             
                 for(int k=0; k<n; k++)
                 {
                      if(f_m_name[k].getText().isEmpty() || l_name[k].getText().isEmpty())
@@ -271,9 +272,22 @@ public class AllDetails extends Application{
                     }    
                     else 
                     {
+                        for(i=0;i<adult;i++)
+                        {
+                            detail.addAll(FXCollections.observableArrayList(new Passenger(i+1, f_m_name[i].getText(), "Adult")));
+                        }
+                        for(j=0;j<child;j++,i++)
+                        {
+                            detail.addAll(FXCollections.observableArrayList(new Passenger(i+1, f_m_name[i].getText(), "Child")));
+                        }
+                        for(j=0;j<infant;j++,i++)
+                        {
+                           detail.addAll(FXCollections.observableArrayList(new Passenger(i+1, f_m_name[i].getText(), "Infant")));
+                        }
                         borderPane.setCenter(rootPane3); 
-                    }        
+                    } 
                 }
+                
             }
         });
         
@@ -552,24 +566,22 @@ public class AllDetails extends Application{
         j=1;
         //Passenger Details of no. of adults selected 
         try{
-        int adult = Integer.parseInt(adults); 
+        
         Label adult_lbl[] = new Label[adult];
         
-        f_m_name = new TextField[adult];
-        l_name = new TextField[adult];
         for(; j<=adult; i++,j++)
         {
             adult_lbl[j-1] = new Label(j+".Adult");
             adult_lbl[j-1].setId("text"); 
             travInfo_gp.add(adult_lbl[j-1],0, i+3);
             
-            f_m_name[j-1] = new TextField();
-            f_m_name[j-1].setPromptText("First & Middle Name"); 
-            travInfo_gp.add(f_m_name[j-1], 1, i+3);
+            f_m_name[i] = new TextField();
+            f_m_name[i].setPromptText("First & Middle Name"); 
+            travInfo_gp.add(f_m_name[i], 1, i+3);
             
-            l_name[j-1] = new TextField();
-            l_name[j-1].setPromptText("Last Name"); 
-            travInfo_gp.add(l_name[j-1], 2, i+3, 2, 1);
+            l_name[i] = new TextField();
+            l_name[i].setPromptText("Last Name"); 
+            travInfo_gp.add(l_name[i], 2, i+3, 2, 1);
         }
         }catch(Exception ex) {
             System.out.println(ex);
@@ -578,23 +590,22 @@ public class AllDetails extends Application{
         //Passenger Details of no. of childs selected
         try{
         j=1;
-        int child = Integer.parseInt(childs); 
+         
         Label child_lbl[] = new Label[child];
-        f_m_name = new TextField[child];
-        l_name = new TextField[child];
+        
         for(; j<=child; i++,j++)
         {
             child_lbl[j-1] = new Label(j+".Child");
             child_lbl[j-1].setId("text"); 
             travInfo_gp.add(child_lbl[j-1],0, i+3);
             
-            f_m_name[j-1] = new TextField();
-            f_m_name[j-1].setPromptText("First & Middle Name"); 
-            travInfo_gp.add(f_m_name[j-1], 1, i+3);
+            f_m_name[i] = new TextField();
+            f_m_name[i].setPromptText("First & Middle Name"); 
+            travInfo_gp.add(f_m_name[i], 1, i+3);
             
-            l_name[j-1] = new TextField();
-            l_name[j-1].setPromptText("Last Name"); 
-            travInfo_gp.add(l_name[j-1], 2, i+3, 2, 1);
+            l_name[i] = new TextField();
+            l_name[i].setPromptText("Last Name"); 
+            travInfo_gp.add(l_name[i], 2, i+3, 2, 1);
             
         }
         }catch(NumberFormatException ex){
@@ -604,29 +615,27 @@ public class AllDetails extends Application{
         //Passenger Details of no. of infants selected
         try{
         j=1;
-        int infant = Integer.parseInt(infants); 
+        
         Label infant_lbl[] = new Label[infant];
-        f_m_name = new TextField[infant];
-        l_name = new TextField[infant];
+        
         for(; j<=infant; i++,j++)
         {
             infant_lbl[j-1] = new Label(j+".Infant");
             infant_lbl[j-1].setId("text"); 
             travInfo_gp.add(infant_lbl[j-1],0, i+3);
             
-            f_m_name[j-1] = new TextField();
-            f_m_name[j-1].setPromptText("First & Middle Name"); 
-            travInfo_gp.add(f_m_name[j-1], 1, i+3);
+            f_m_name[i] = new TextField();
+            f_m_name[i].setPromptText("First & Middle Name"); 
+            travInfo_gp.add(f_m_name[i], 1, i+3);
             
-            l_name[j-1] = new TextField();
-            l_name[j-1].setPromptText("Last Name"); 
-            travInfo_gp.add(l_name[j-1], 2, i+3, 2, 1);
+            l_name[i] = new TextField();
+            l_name[i].setPromptText("Last Name"); 
+            travInfo_gp.add(l_name[i], 2, i+3, 2, 1);
             
         }
         }catch(NumberFormatException ex){
             System.out.println(ex);
         }
-        
         j=i-1;//j = no. of textfields 
         
         Label con_info_lbl = new Label("Contact Information");
@@ -707,8 +716,6 @@ public class AllDetails extends Application{
          
         //End of Center of BorderPane
         
-        s = new Scene(borderPane, 1000, 600);
-        s.getStylesheets().add(Window.class.getResource("LoginScene.css").toExternalForm());
         
         //** End of Traveller Info Scene **//
         
@@ -936,7 +943,38 @@ public class AllDetails extends Application{
         }
         
         
+        TableColumn srNoCol = new TableColumn("Sr.No");
+        srNoCol.setMinWidth(100);
+        srNoCol.setCellValueFactory(new PropertyValueFactory<>("srNo"));
+ 
+        TableColumn nameCol = new TableColumn("Name");
+        nameCol.setMinWidth(100);
+        nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+ 
+        TableColumn typeCol = new TableColumn("Type");
+        typeCol.setMinWidth(200);
+        typeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
+ 
+        table.setItems(detail);
+        table.getColumns().addAll(srNoCol, nameCol, typeCol);
+ 
+        Label passengerDetail_lbl = new Label("Passenger Details");
+        passengerDetail_lbl.setId("text");
         
+        VBox vbox = new VBox();
+        vbox.setSpacing(10);
+        vbox.setPadding(new Insets(10, 0, 0, 10));
+        vbox.getChildren().addAll(passengerDetail_lbl, table);
+        
+        HBox hbox = new HBox();
+        hbox.setSpacing(10);
+        hbox.setPadding(new Insets(10, 0, 0, 10));
+        hbox.getChildren().addAll(preview_gp, vbox);
+        
+        book_btn = new Button("Next");
+        book_btn.setPrefSize(300, 40);
+        
+        //book_btn
         
         rootPane3 = new ScrollPane();
         rootPane3.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
@@ -946,15 +984,72 @@ public class AllDetails extends Application{
         //rootPane.setVmax(2);
         //rootPane.setHmax(2);
         //rootPane.setVvalue(20);
-        rootPane3.setContent(preview_gp); 
+        rootPane3.setContent(hbox);
+        //rootPane3.setContent(preview_gp); 
         
         //** End of Preview Scene **//
         
         //****  End of Center Pane  ****//
+        
+        allDetailsScene = new Scene(borderPane, 1000, 600);
+        allDetailsScene.getStylesheets().add(Window.class.getResource("LoginScene.css").toExternalForm());
+        primaryStage.setScene(allDetailsScene);
+        
+        //setting primaryStage to the size of screen of pc
+        Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
+        //MinX and MinY are upper left corner of primaryStage
+        primaryStage.setX(primaryScreenBounds.getMinX());
+        primaryStage.setY(primaryScreenBounds.getMinY());
+        //setting width of stage to width of screen
+        primaryStage.setWidth(primaryScreenBounds.getWidth());
+        //setting height of stage to height of screen
+        primaryStage.setHeight(primaryScreenBounds.getHeight());
+        primaryStage.show();
+        
     }
     
     public static void main(String args[])
     {
         launch(args);
     }
+    
+    public static class Passenger {
+ 
+        private final SimpleIntegerProperty srNo;
+        private final SimpleStringProperty name;
+        private final SimpleStringProperty type;
+ 
+        private Passenger(int srNo, String name, String type) {
+            this.srNo = new SimpleIntegerProperty(srNo);
+            this.name = new SimpleStringProperty(name);
+            this.type = new SimpleStringProperty(type);
+        }
+ 
+        public Integer getSrNo()
+        {
+            return srNo.get();
+        }
+        
+        public void setSrNo(Integer Sr_no){
+            srNo.set(Sr_no);
+        }
+        
+        public String getName() {
+            return name.get();
+        }
+ 
+        public void setFirstName(String Name) {
+            name.set(Name);
+        }
+ 
+        public String getType() {
+            return type.get();
+        }
+ 
+        public void setLastName(String Type) {
+            type.set(Type);
+        }
+        
+    }
+
 }
