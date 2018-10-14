@@ -7,17 +7,19 @@ package window.java;
 
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.geometry.VPos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.DialogEvent;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ScrollPane;
@@ -47,7 +49,9 @@ public class Flights extends Application{
     public String trip, depart_date, return_date, src, dest,adults,childs,infants;
     public ArrayList<FlightData> al = new ArrayList<>();
     public ArrayList<FlightData> alr = new ArrayList<>();
-    
+    public Stage allDetailsStage;
+    public ToggleGroup oneWayTrip_tg = new ToggleGroup();
+    public ToggleGroup roundTrip_tg = new ToggleGroup(); 
     public Button next_btn;
     public int i, selectedFlightIndex;
     
@@ -71,10 +75,13 @@ public class Flights extends Application{
         
         bp = new BorderPane();
         
-        //**** Top of Border Pane ****//
+        
+        //****  Top of Border Pane  ****//
+        
+        
         top_gp = new GridPane();
         
-        top_gp.setGridLinesVisible(true); 
+        //top_gp.setGridLinesVisible(true); 
         bp.setTop(top_gp); 
         top_gp.setAlignment(Pos.CENTER); 
         
@@ -86,36 +93,42 @@ public class Flights extends Application{
         top_gp.setPadding(new Insets(20,20,20,20));
         
         trip_lbl = new Label(trip);
-        trip_lbl.setStyle("-fx-font_weight:bold;-fx-font-size:30px"); 
-        top_gp.add(trip_lbl, 0, 0, 6, 1);
+        trip_lbl.setStyle("-fx-font_weight:bold;-fx-font-size:30px;-fx-font-family:Calibri;"); 
+        top_gp.add(trip_lbl, 0, 0, 8, 1);
         
         src_dest_lbl = new Label(src+" to "+dest);
-        src_dest_lbl.setStyle("-fx-font-size:15px"); 
-        top_gp.add(src_dest_lbl, 0, 2, 6, 1);
+        src_dest_lbl.setStyle("-fx-font-size:25px;-fx-font_weight:bold"); 
+        top_gp.add(src_dest_lbl, 0, 1, 8, 1);
         
         //
-        adult_lbl = new Label("Adult");
-        child_lbl = new Label("Child");
-        infant_lbl =new Label("Infant");
+        adult_lbl = new Label("Adult:");
+        adult_lbl.setStyle("-fx-font-size:20px;-fx-font_weight:bold"); 
+        top_gp.add(adult_lbl, 0, 2);
         
-        top_gp.add(adult_lbl, 3, 3);
-        top_gp.add(child_lbl, 5, 3);
-        top_gp.add(infant_lbl, 7, 3);
+        child_lbl = new Label("Child:");
+        child_lbl.setStyle("-fx-font-size:20px;-fx-font_weight:bold;"); 
+        top_gp.add(child_lbl, 2, 2);
+        
+        infant_lbl =new Label("Infant:");
+        infant_lbl.setStyle("-fx-font-size:20px;-fx-font_weight:bold;"); 
+        top_gp.add(infant_lbl, 4, 2);
         //
         
         //
         tot_adult = new Label(adults);
+        tot_adult.setStyle("-fx-font-size:20px;-fx-font_weight:bold"); 
         GridPane.setHalignment(tot_adult, HPos.CENTER);
+        top_gp.add(tot_adult, 1, 2);
         
         tot_child = new Label(childs);
+        tot_child.setStyle("-fx-font-size:20px;-fx-font_weight:bold"); 
         GridPane.setHalignment(tot_child, HPos.CENTER);
+        top_gp.add(tot_child, 3, 2);
         
         tot_infant = new Label(infants);
+        tot_infant.setStyle("-fx-font-size:20px;-fx-font_weight:bold"); 
         GridPane.setHalignment(tot_infant, HPos.CENTER);
-        
-        top_gp.add(tot_adult, 4, 3);
-        top_gp.add(tot_child, 6, 3);
-        top_gp.add(tot_infant, 8, 3);
+        top_gp.add(tot_infant, 5, 2);
         
         top_gp.setStyle("-fx-background-color: #999999;");
         //End of top of  borderPane 
@@ -139,7 +152,7 @@ public class Flights extends Application{
         Label[] tot_time_req1 = new Label[4];
         Label[] fare1 = new Label[4];
         RadioButton[] book_btn1 = new RadioButton[4];
-        ToggleGroup oneWayTrip_tg = new ToggleGroup();
+        
        
         GridPane[] center_gp2 = new GridPane[4];
         VBox v2 = new VBox(30);
@@ -156,7 +169,7 @@ public class Flights extends Application{
         Label[] tot_time_req2 = new Label[4];
         Label[] fare2 = new Label[4];
         RadioButton[] book_btn2 = new RadioButton[4];
-        ToggleGroup roundTrip_tg = new ToggleGroup();    
+           
         
         i=0;
         //Passenger Details of no. of adults selected 
@@ -174,7 +187,7 @@ public class Flights extends Application{
             r1[i] = new Rectangle();
             r1[i].setWidth(530); 
             r1[i].setHeight(230);
-            r1[i].setStyle("-fx-fill:white;-fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 ); ");
+            r1[i].setStyle("-fx-fill:#cbf79b;-fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 ); ");
             
             
             //center_gp[i].setStyle("-fx-background-color: white");
@@ -251,7 +264,7 @@ public class Flights extends Application{
             
             book_btn1[i] =new RadioButton("Book");
             book_btn1[i].setToggleGroup(oneWayTrip_tg);
-            //book_btn1[i].setStyle("-fx-font-size: 15px; -fx-background-color: #cccccc"); 
+            book_btn1[i].setStyle("-fx-font_weight:bold;-fx-font-size:15px;-fx-font-family:Calibri;"); 
             center_gp1[i].add(book_btn1[i], 8, 7, 2, 1);            
             
             book_btn1[i].setOnAction(e->{
@@ -274,7 +287,7 @@ public class Flights extends Application{
                 r2[i] = new Rectangle();
                 r2[i].setWidth(530); 
                 r2[i].setHeight(230);
-                   r2[i].setStyle("-fx-fill:white;-fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 ); ");
+                   r2[i].setStyle("-fx-fill:#cbf79b;-fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 ); ");
             
                    
                 //center_gp[i].setStyle("-fx-background-color: white");
@@ -349,7 +362,7 @@ public class Flights extends Application{
             
                 book_btn2[i] =new RadioButton("Book");
                 book_btn2[i].setToggleGroup(roundTrip_tg);
-                //book_btn2[i].setStyle("-fx-font-size: 15px; -fx-background-color: #cccccc"); 
+                book_btn2[i].setStyle("-fx-font_weight:bold;-fx-font-size:15px;-fx-font-family:Calibri;"); 
                 center_gp2[i].add(book_btn2[i], 8, 7, 2, 1);            
             
                 book_btn2[i].setOnAction(e->{
@@ -366,8 +379,8 @@ public class Flights extends Application{
             System.out.println(ex);
         }
         */
-        v1.setStyle("-fx-background-color: #cccccc"); 
-        v2.setStyle("-fx-background-color: #cccccc"); 
+        v1.setStyle("-fx-background-color: #96eeaa");
+        v2.setStyle("-fx-background-color: #96eeaa"); 
         
         ScrollPane rootPane1 = new ScrollPane();
         rootPane1.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
@@ -399,11 +412,11 @@ public class Flights extends Application{
         }
         
         hb.setAlignment(Pos.CENTER); 
-        hb.setStyle("-fx-background-color: #999999");
+        hb.setStyle("-fx-background-color: white;");
         
         bp.setCenter(hb);
         
-        //End of center of Bottom Pane
+        //End of center of Border Pane
         
         
         //****  Bottom of Border Pane  ****//
@@ -451,10 +464,64 @@ public class Flights extends Application{
                     db.arrive_time1 = al.get(selectedFlightIndex).Arrival_Time;
                     db.fare1 = al.get(selectedFlightIndex).Fare;
                     
-                    Stage allDetailsStage = new Stage();
+                    allDetailsStage = new Stage();
                     db.start(allDetailsStage); 
                     db.borderPane.setCenter(db.rootPane1);
                     
+                    db.book_btn.setOnAction(f->{
+                        
+                    Alert confirm_book = new Alert(Alert.AlertType.CONFIRMATION, "Confirmation", ButtonType.YES, ButtonType.NO);
+                    confirm_book.setTitle("CONFIRMATION");
+                    confirm_book.setContentText("Confirm Booking ?");
+                    confirm_book.show();
+            
+                    confirm_book.setOnCloseRequest(new EventHandler<DialogEvent>(){
+                    @Override
+                    public void handle(DialogEvent event) {
+                        if(confirm_book.getResult()==ButtonType.YES)
+                        {
+                           
+                            Alert booked = new Alert(Alert.AlertType.INFORMATION, "INFORMATION");
+                            booked.setTitle("INFORMATION");
+                            booked.setContentText("Booked Flight Successfully");
+                            booked.show();
+                            
+                            booked.setOnCloseRequest(new EventHandler<DialogEvent>(){
+                            @Override
+                            public void handle(DialogEvent event) {
+                            if(booked.getResult()==ButtonType.OK)
+                            {
+                                Alert newSearch = new Alert(Alert.AlertType.INFORMATION, "INFORMATION", ButtonType.YES, ButtonType.NO);
+                                newSearch.setTitle("INFORMATION");
+                                newSearch.setContentText("Search for Flights ?");
+                                newSearch.show();
+                                
+                                newSearch.setOnCloseRequest(new EventHandler<DialogEvent>(){
+                                    @Override
+                                    public void handle(DialogEvent event) {
+                                    if(newSearch.getResult()==ButtonType.YES)
+                                    {
+                                        allDetailsStage.close();
+                                    }   
+                                    else
+                                    {
+                                        primaryStage.close();
+                                        allDetailsStage.close();
+                                        Stage stage = new Stage();
+                                        w.start(stage);
+                                    }
+                                    }
+                                });
+                            }
+                            }
+                            });
+                        }
+                    }
+            });
+         
+        });
+        
+
                 }
             }
             if(trip.equals("Round Trip"))
@@ -491,8 +558,57 @@ public class Flights extends Application{
                     Stage allDetailsStage = new Stage();
                     db.start(allDetailsStage); 
                     db.borderPane.setCenter(db.rootPane1);
-          
-       
+                    
+                    db.book_btn.setOnAction(f->{
+                        
+                    Alert confirm_book = new Alert(Alert.AlertType.CONFIRMATION, "Confirmation", ButtonType.YES, ButtonType.NO);
+                    confirm_book.setTitle("CONFIRMATION");
+                    confirm_book.setContentText("Confirm Booking ?");
+                    confirm_book.show();
+            
+                    confirm_book.setOnCloseRequest(new EventHandler<DialogEvent>(){
+                    @Override
+                    public void handle(DialogEvent event) {
+                        if(confirm_book.getResult()==ButtonType.YES)
+                        {
+                           
+                            Alert booked = new Alert(Alert.AlertType.INFORMATION, "INFORMATION");
+                            booked.setTitle("INFORMATION");
+                            booked.setContentText("Booked Flight Successfully");
+                            booked.show();
+                            
+                            booked.setOnCloseRequest(new EventHandler<DialogEvent>(){
+                            @Override
+                            public void handle(DialogEvent event) {
+                            if(booked.getResult()==ButtonType.OK)
+                            {
+                                Alert newSearch = new Alert(Alert.AlertType.INFORMATION, "INFORMATION", ButtonType.YES, ButtonType.NO);
+                                newSearch.setTitle("INFORMATION");
+                                newSearch.setContentText("Search for Flights ?");
+                                newSearch.show();
+                                
+                                newSearch.setOnCloseRequest(new EventHandler<DialogEvent>(){
+                                    @Override
+                                    public void handle(DialogEvent event) {
+                                    if(newSearch.getResult()==ButtonType.YES)
+                                    {
+                                        allDetailsStage.close();
+                                    }   
+                                    else
+                                    {
+                                        primaryStage.close();
+                                        Stage stage = new Stage();
+                                        w.start(stage);
+                                    }
+                                    }
+                                });
+                            }
+                            }
+                            });
+                        }
+                    }
+            });
+        });
                 }
             }   
             

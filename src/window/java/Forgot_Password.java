@@ -33,7 +33,8 @@ import javafx.stage.Stage;
 public class Forgot_Password extends Application {
     
     public Button exit_btn, change_pw_btn;
-    
+    public Scene new_passwd_scene;
+            
     @Override
     public void start(Stage new_passwd_page){
     
@@ -231,7 +232,7 @@ public class Forgot_Password extends Application {
         new_passwd_page.close();
     });
     
-    Scene new_passwd_scene = new Scene(new_passwd_pane,450,350);
+    new_passwd_scene = new Scene(new_passwd_pane,450,350);
             
     new_passwd_scene.getStylesheets().add(Forgot_Password.class.getResource("Forgot_Password.css").toExternalForm());
     new_passwd_page.setScene(new_passwd_scene);

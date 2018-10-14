@@ -54,6 +54,8 @@ public class Sign_Up_Window extends Application{
     public DatePicker dob_dp;
     public ComboBox occ_cb,country_cb,nationality_cb,city_cb;
     public Button exit_btn, submit_btn;
+    public Scene sign_up_scene;
+    
     private User u = new User();
     private DriverClass dc;
     private Login_scene ls = new Login_scene();
@@ -574,7 +576,7 @@ public class Sign_Up_Window extends Application{
     rootPane.setContent(sign_up_pane);   
     
     //
-    Scene sign_up_scene = new Scene(rootPane,1000,600);
+    sign_up_scene = new Scene(rootPane,1000,600);
             
     sign_up_scene.getStylesheets().add(Sign_Up_Window.class.getResource("Sign_Up.css").toExternalForm());
     sign_up_page.setScene(sign_up_scene);
