@@ -120,8 +120,10 @@ public class DriverFlight {
     
    public ArrayList getFlightRecords() throws SQLException //to get flight details for One way trip
     {
-		sql="SELECT * FROM flight WHERE Source='"+t.getFromCity()+"' AND Destination='"+t.getToCity()+"'";
+		System.out.println("Inside getFlightRecords");
                 
+                sql="SELECT * FROM flight WHERE Source='"+t.getFromCity()+"' AND Destination='"+t.getToCity()+"'";
+                System.out.println("Sent sql is :"+sql);
                 al = new ArrayList<>();
                 rs=st.executeQuery(sql);
                 
@@ -142,7 +144,7 @@ public class DriverFlight {
                         fd.setArrival_Time(rs.getString("Arrival_Time"));
                         int cost=Integer.parseInt(rs.getString("Fare").replaceAll(",", ""));
                         
-                        if(t.getClassType().equals("Buisness"))
+                        if(t.getClassType().equals("Business"))
                         {
                             cost=(int)((float)cost*1.5);
                         }
@@ -166,8 +168,9 @@ public class DriverFlight {
 
 	public ArrayList getRoundFlightRecord() throws SQLException //to get flight records for round trip
 	{
+                System.out.println("Inside getRoundFlightRecord");
 		sql="SELECT * FROM flight WHERE Source='"+t.getToCity()+"' AND Destination='"+t.getFromCity()+"'";
-                
+                System.out.println("sent sql is:"+sql);
                 al = new ArrayList<>();
                 rs=st.executeQuery(sql);
                 
@@ -225,7 +228,14 @@ public class DriverFlight {
    
     public void setTravellerData(Traveller t)
     {
+        System.out.println("Inside setTravellerData");
         this.t=t;
+    }
+    
+    public Traveller getTravellerData()
+    {
+       System.out.println("Inside getTravellerData");
+        return t; 
     }
 }    
     /*public FlightData[] getRecords()
