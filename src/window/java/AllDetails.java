@@ -54,7 +54,7 @@ public class AllDetails extends Application{
             depart_time1, arrive_time1, depart_time2, arrive_time2, fare1, fare2;    
     public TextField f_m_name[], l_name[], f_name_tf, l_name_tf, email_tf, 
             add_tf, pin_tf, country_tf, mob_no_tf;
-    public Button next_btn, back_btn, book;
+    public Button next_btn, back_btn, book_btn;
     public Scene allDetailsScene;
     public int i, j;
     public GridPane details_gp, travInfo_gp, preview_gp;
@@ -77,6 +77,9 @@ public class AllDetails extends Application{
         int infant = Integer.parseInt(infants); 
         f_m_name = new TextField[adult+child+infant];
         l_name = new TextField[adult+child+infant];
+        
+        TableView<Passenger> table = new TableView<>();
+        ObservableList<Passenger> detail = FXCollections.observableArrayList();
         
         borderPane = new BorderPane();
         
@@ -269,6 +272,18 @@ public class AllDetails extends Application{
                     }    
                     else 
                     {
+                        for(i=0;i<adult;i++)
+                        {
+                            detail.addAll(FXCollections.observableArrayList(new Passenger(i+1, f_m_name[i].getText(), "Adult")));
+                        }
+                        for(j=0;j<child;j++,i++)
+                        {
+                            detail.addAll(FXCollections.observableArrayList(new Passenger(i+1, f_m_name[i].getText(), "Child")));
+                        }
+                        for(j=0;j<infant;j++,i++)
+                        {
+                           detail.addAll(FXCollections.observableArrayList(new Passenger(i+1, f_m_name[i].getText(), "Infant")));
+                        }
                         borderPane.setCenter(rootPane3); 
                     } 
                 }
@@ -927,21 +942,6 @@ public class AllDetails extends Application{
         
         }
         
-        TableView<Passenger> table = new TableView<>();
-        ObservableList<Passenger> detail = FXCollections.observableArrayList();
-        
-        for(i=0;i<adult;i++)
-        {
-            detail.addAll(FXCollections.observableArrayList(new Passenger(i+1, f_m_name[i].getText(), "Adult")));
-        }
-        for(j=0;j<child;j++,i++)
-        {
-            detail.addAll(FXCollections.observableArrayList(new Passenger(i+1, f_m_name[i].getText(), "Child")));
-        }
-        for(j=0;j<infant;j++,i++)
-        {
-            detail.addAll(FXCollections.observableArrayList(new Passenger(i+1, f_m_name[i].getText(), "Infant")));
-        }
         
         TableColumn srNoCol = new TableColumn("Sr.No");
         srNoCol.setMinWidth(100);
@@ -958,10 +958,23 @@ public class AllDetails extends Application{
         table.setItems(detail);
         table.getColumns().addAll(srNoCol, nameCol, typeCol);
  
+        Label passengerDetail_lbl = new Label("Passenger Details");
+        passengerDetail_lbl.setId("text");
+        
         VBox vbox = new VBox();
         vbox.setSpacing(10);
         vbox.setPadding(new Insets(10, 0, 0, 10));
-        vbox.getChildren().addAll(table, preview_gp);
+        vbox.getChildren().addAll(passengerDetail_lbl, table);
+        
+        HBox hbox = new HBox();
+        hbox.setSpacing(10);
+        hbox.setPadding(new Insets(10, 0, 0, 10));
+        hbox.getChildren().addAll(preview_gp, vbox);
+        
+        book_btn = new Button("Next");
+        book_btn.setPrefSize(300, 40);
+        
+        //book_btn
         
         rootPane3 = new ScrollPane();
         rootPane3.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
@@ -971,7 +984,7 @@ public class AllDetails extends Application{
         //rootPane.setVmax(2);
         //rootPane.setHmax(2);
         //rootPane.setVvalue(20);
-        rootPane3.setContent(table);
+        rootPane3.setContent(hbox);
         //rootPane3.setContent(preview_gp); 
         
         //** End of Preview Scene **//
