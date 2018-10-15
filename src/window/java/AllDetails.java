@@ -23,9 +23,12 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.geometry.VPos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.DialogEvent;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
@@ -60,17 +63,20 @@ public class AllDetails extends Application{
     public GridPane details_gp, travInfo_gp, preview_gp;
     public BorderPane borderPane;
     public ScrollPane rootPane1, rootPane2, rootPane3;
-    
+    public Alert confirm_book, booked;
     
     @Override
     public void start(Stage primaryStage)
     {
         Window w = new Window();
+        Flights fs = new Flights();
+        Login_scene ls = new Login_scene(); 
+        Sign_Up_Window spw = new Sign_Up_Window();
+        Forgot_Password fp = new Forgot_Password();
+        
         Traveller t = new Traveller();
         User u = new User();
         DriverClass dc = new DriverClass();
-        Login_scene ls = new Login_scene(); 
-        Flights fs = new Flights();
         DriverFlight df = new DriverFlight();
         int adult = Integer.parseInt(adults); 
         int child = Integer.parseInt(childs);
@@ -109,18 +115,21 @@ public class AllDetails extends Application{
         top_gp.add(detail_bg,0,0,4,2);
         detail_bg.setWidth(240); //setting the width of rectangle   
         detail_bg.setHeight(70);
+        detail_bg.setStyle("-fx-fill: green");
         
         Rectangle trav_info_bg = new Rectangle();
         //trav_info_bg.getStyleClass().add("");
         top_gp.add(trav_info_bg,4,0,4,2);
         trav_info_bg.setWidth(240); //setting the width of rectangle   
         trav_info_bg.setHeight(70);
+        trav_info_bg.setStyle("-fx-fill:white;");
         
         Rectangle preview_bg = new Rectangle();
         //preview_bg.getStyleClass().add("");
         top_gp.add(preview_bg,8,0,4,2);
         preview_bg.setWidth(240); //setting the width of rectangle   
         preview_bg.setHeight(70);
+        preview_bg.setStyle("-fx-fill:white;");
         
         Label detail_lbl = new Label("Details");
         detail_lbl.setId("text"); 
@@ -154,10 +163,17 @@ public class AllDetails extends Application{
             }
             else if(borderPane.getCenter()==rootPane2)
             {
+                trav_info_bg.setStyle("-fx-fill:white;");
                 borderPane.setCenter(rootPane1);
             }
             else if(borderPane.getCenter()==rootPane3)
             {
+                table.getItems().clear();
+                next_btn.setDisable(false);
+                next_btn.setVisible(true);
+                book_btn.setDisable(true);
+                book_btn.setVisible(false);
+                preview_bg.setStyle("-fx-fill:white;");
                 borderPane.setCenter(rootPane2);
             }
              
@@ -234,6 +250,7 @@ public class AllDetails extends Application{
                                 
                                         primaryStage.show();
                                         borderPane.setCenter(rootPane2);
+                                        trav_info_bg.setStyle("-fx-fill:green;");
                                         loginStage.close();
                                         break;  
                                     }
@@ -274,17 +291,23 @@ public class AllDetails extends Application{
                     {
                         for(i=0;i<adult;i++)
                         {
-                            detail.addAll(FXCollections.observableArrayList(new Passenger(i+1, f_m_name[i].getText(), "Adult")));
+                            detail.addAll(FXCollections.observableArrayList(new Passenger(i+1, f_m_name[i].getText()+" "+l_name[i].getText(), "Adult")));
                         }
                         for(j=0;j<child;j++,i++)
                         {
-                            detail.addAll(FXCollections.observableArrayList(new Passenger(i+1, f_m_name[i].getText(), "Child")));
+                            detail.addAll(FXCollections.observableArrayList(new Passenger(i+1, f_m_name[i].getText()+" "+l_name[i].getText(), "Child")));
                         }
                         for(j=0;j<infant;j++,i++)
                         {
-                           detail.addAll(FXCollections.observableArrayList(new Passenger(i+1, f_m_name[i].getText(), "Infant")));
+                           detail.addAll(FXCollections.observableArrayList(new Passenger(i+1, f_m_name[i].getText()+" "+l_name[i].getText(), "Infant")));
                         }
+                        preview_bg.setStyle("-fx-fill:green;");
                         borderPane.setCenter(rootPane3); 
+                        next_btn.setDisable(true);
+                        next_btn.setVisible(false);
+                        book_btn.setDisable(false);
+                        book_btn.setVisible(true);
+                        hb.getChildren().add(book_btn);
                     } 
                 }
                 
@@ -768,19 +791,19 @@ public class AllDetails extends Application{
         flight_No_lbl.setStyle("-fx-font-size: 15px;-fx-font-weight: bold;");
         GridPane.setHalignment(flight_No_lbl, HPos.CENTER); 
         GridPane.setValignment(flight_No_lbl, VPos.TOP);
-        preview_gp.add(flightNo_lbl, 0, 5);
+        preview_gp.add(flight_No_lbl, 0, 5);
         
         Label departlbl = new Label("Depart");
         departlbl.setStyle("-fx-font-size: 20px;-fx-font-weight: bold;");
         GridPane.setHalignment(departlbl, HPos.CENTER); 
         GridPane.setValignment(departlbl, VPos.CENTER);
-        preview_gp.add(depart_lbl, 1, 3);
+        preview_gp.add(departlbl, 1, 3);
         
         Label arrivelbl = new Label("Arrive");
         arrivelbl.setStyle("-fx-font-size: 20px;-fx-font-weight: bold;");
         GridPane.setHalignment(arrivelbl, HPos.CENTER); 
         GridPane.setValignment(arrivelbl, VPos.CENTER);
-        preview_gp.add(arrive_lbl, 3, 3);
+        preview_gp.add(arrivelbl, 3, 3);
         
         Label srclbl = new Label(src);
         srclbl.setStyle("-fx-font-size: 18px;-fx-font-weight: bold;");
@@ -963,6 +986,60 @@ public class AllDetails extends Application{
         Label passengerDetail_lbl = new Label("Passenger Details");
         passengerDetail_lbl.setId("text");
         
+        book_btn = new Button("Book");
+        book_btn.setPrefSize(300, 40);
+        
+        /*book_btn.setOnAction(e->{
+           
+            confirm_book = new Alert(Alert.AlertType.CONFIRMATION, "Confirmation", ButtonType.YES, ButtonType.NO);
+            confirm_book.setTitle("CONFIRMATION");
+            confirm_book.setContentText("Confirm Booking ?");
+            confirm_book.show();
+            
+            confirm_book.setOnCloseRequest(new EventHandler<DialogEvent>(){
+                    @Override
+                    public void handle(DialogEvent event) {
+                        if(confirm_book.getResult()==ButtonType.YES)
+                        {
+                           
+                            booked = new Alert(Alert.AlertType.INFORMATION, "INFORMATION");
+                            booked.setTitle("INFORMATION");
+                            booked.setContentText("Booked Flight Successfully");
+                            booked.show();
+                            
+                            booked.setOnCloseRequest(new EventHandler<DialogEvent>(){
+                            @Override
+                            public void handle(DialogEvent event) {
+                            if(booked.getResult()==ButtonType.OK)
+                            {
+                                Alert newSearch = new Alert(Alert.AlertType.INFORMATION, "INFORMATION", ButtonType.YES, ButtonType.NO);
+                                newSearch.setTitle("INFORMATION");
+                                newSearch.setContentText("Search for Flights ?");
+                                newSearch.show();
+                                
+                                newSearch.setOnCloseRequest(new EventHandler<DialogEvent>(){
+                                    @Override
+                                    public void handle(DialogEvent event) {
+                                    if(newSearch.getResult()==ButtonType.YES)
+                                    {
+                                        Stage stage = new Stage();
+                                        w.start(stage);
+                                    }   
+                                    else
+                                    {
+                                        primaryStage.close();
+                                    }
+                                    }
+                                });
+                            }
+                            }
+                            });
+                        }
+                    }
+            });
+         
+        });*/
+        
         VBox vbox = new VBox();
         vbox.setSpacing(10);
         vbox.setPadding(new Insets(10, 0, 0, 10));
@@ -971,12 +1048,7 @@ public class AllDetails extends Application{
         HBox hbox = new HBox();
         hbox.setSpacing(10);
         hbox.setPadding(new Insets(10, 0, 0, 10));
-        hbox.getChildren().addAll(preview_gp, vbox);
-        
-        book_btn = new Button("Next");
-        book_btn.setPrefSize(300, 40);
-        
-        //book_btn
+        hbox.getChildren().addAll(preview_gp, vbox, book_btn);
         
         rootPane3 = new ScrollPane();
         rootPane3.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
