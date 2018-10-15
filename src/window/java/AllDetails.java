@@ -168,6 +168,7 @@ public class AllDetails extends Application{
             }
             else if(borderPane.getCenter()==rootPane3)
             {
+                table.getItems().clear();
                 next_btn.setDisable(false);
                 next_btn.setVisible(true);
                 book_btn.setDisable(true);
